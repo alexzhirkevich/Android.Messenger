@@ -61,7 +61,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             app:shapeAppearanceOverlay="@style/roundedImageView"
-            android:transitionName="@string/transition_image_fullscreen"
+            android:transitionName="@string/util_transition_image_fullscreen"
             android:id="@+id/message_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

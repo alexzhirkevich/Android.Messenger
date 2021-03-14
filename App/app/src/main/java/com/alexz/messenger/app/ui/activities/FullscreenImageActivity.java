@@ -36,17 +36,6 @@ public class FullscreenImageActivity extends AppCompatActivity {
         if (imageView != null && uri != null){
             Glide.with(this).load(uri).into(imageView);
         }
-
-//        if (imageView!=null) {
-//            imageView.setOnClickListener(view -> {
-//               if (getSupportActionBar().isShowing()) {
-//                   getSupportActionBar().hide();
-//               }
-//               else {
-//                   getSupportActionBar().show();
-//               }
-//            });
-//        }
     }
 
     @Override

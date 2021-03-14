@@ -5,28 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_dialog">
+    android:background="@color/app_back">
 
-    <com.alexz.messenger.app.ui.common.ContentGridLayout
-        android:id="@+id/content_grid_layout"
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
-        app:columnCount="2"
-        app:rowCount="2"
-        app:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/logo1024"
-            app:layout_columnWeight="1"
-            app:layout_rowWeight="1"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/logo1024"
-            app:layout_columnWeight="1"
-            app:layout_rowWeight="1"/>
-    </com.alexz.messenger.app.ui.common.ContentGridLayout>
+    <include layout="@layout/item_post" />
 
 </RelativeLayout>

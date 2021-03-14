@@ -21,27 +21,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.messenger.app.BuildConfig;
 
-public class AuthRepository {
+public abstract class AuthRepository {
 
     private static final String TAG = AuthRepository.class.getCanonicalName();
     private static volatile AuthRepository instance;
 
-    private AuthRepository() {
-    }
-
-    public static AuthRepository getInstance() {
-        if (instance == null) {
-            instance = new AuthRepository();
-        }
-        return instance;
-    }
-
-    @Nullable
-    public FirebaseUser getCurrentUser(){
-        return FirebaseAuth.getInstance().getCurrentUser();
-    }
-
-    public Task<AuthResult> googleLogin(GoogleSignInAccount account) {
+    public static Task<AuthResult> googleLogin(GoogleSignInAccount account) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
         return FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(task -> {
@@ -50,7 +35,7 @@ public class AuthRepository {
             }
         });
     }
-    private void addUserToDatabase(FirebaseUser user) {
+    private static void addUserToDatabase(FirebaseUser user) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
                 .child(FirebaseUtil.USERS)
                 .child(user.getUid())

@@ -1,27 +1,16 @@
 package com.alexz.messenger.app.data.repo;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.alexz.messenger.app.data.model.Result;
 import com.alexz.messenger.app.data.model.imp.Chat;
-import com.alexz.messenger.app.ui.activities.ChatActivity;
 import com.alexz.messenger.app.util.FirebaseUtil;
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.messenger.app.BuildConfig;
 import com.messenger.app.R;
 
-public class DialogsRepository {
+public abstract class DialogsRepository {
 
     public static void createChat(Chat d){
         String userId = FirebaseUtil.getCurrentUser().getId();
@@ -60,7 +49,13 @@ public class DialogsRepository {
         .addOnSuccessListener(aVoid -> getChat(chatId).get()
                 .addOnSuccessListener(snapshot -> {
                     if (snapshot.exists()) {
-                        future.set(new Result.Success<Chat>(snapshot.getValue(Chat.class)));
+                        future.set(new Result.Success<>(snapshot.getValue(Chat.class)));
+                        FirebaseDatabase.getInstance().getReference()
+                                .child(FirebaseUtil.CHATS)
+                                .child(chatId)
+                                .child(FirebaseUtil.USERS)
+                                .child(FirebaseUtil.getCurrentUser().getId())
+                                .setValue("");
                         if (BuildConfig.DEBUG) {
                             Log.e("FIND CHAT", "SUCCESS: Chat added");
                         }

@@ -9,7 +9,7 @@
     tools:context="com.alexz.messenger.app.ui.activities.FullscreenImageActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:transitionName="@string/transition_image_fullscreen"
+        android:transitionName="@string/util_transition_image_fullscreen"
         android:id="@+id/imageview_fullscreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

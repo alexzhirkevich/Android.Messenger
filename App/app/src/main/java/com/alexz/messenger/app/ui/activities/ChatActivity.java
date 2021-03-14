@@ -295,7 +295,7 @@ public class ChatActivity extends BaseActivity
             @Override
             public void onItemClick(View view, Message data) {
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        ChatActivity.this,view,getString(R.string.transition_image_fullscreen));
+                        ChatActivity.this,view,getString(R.string.util_transition_image_fullscreen));
                 FullscreenImageActivity.startActivity(ChatActivity.this, data.getImageUrl(),options.toBundle());
             }
 

@@ -136,12 +136,22 @@ public abstract class FirebaseMapRecyclerAdapter<Model extends IBaseModel, VH ex
                             chatsCount = snapshot.getChildrenCount();
                             keysQuery.addChildEventListener(keysQueryListener);
                             Log.w(TAG, "Loading " + chatsCount + " chats");
+                            if (chatsCount == 0 && loadingCallback != null){
+                                uiHandler.post(() -> loadingCallback.onEndLoading());
+                            }
+                        } else{
+                            if (loadingCallback != null){
+                                uiHandler.post(() -> loadingCallback.onEndLoading());
+                            }
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Log.w(TAG, "Failed to get keys count");
+                        if (loadingCallback != null){
+                            uiHandler.post(() -> loadingCallback.onEndLoading());
+                        }
                     }
                 });
 

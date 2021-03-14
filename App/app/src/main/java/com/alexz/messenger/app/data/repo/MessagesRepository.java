@@ -9,7 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MessagesRepository {
+public abstract class MessagesRepository {
 
     public static DatabaseReference getMessagesReference(String chatId) {
         return  FirebaseDatabase.getInstance().getReference()
