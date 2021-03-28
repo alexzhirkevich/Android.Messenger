@@ -59,7 +59,7 @@
         android:textSize="12sp"
         tools:ignore="HardcodedText" />
 
-    <com.alexz.messenger.app.ui.common.AvatarImageView
+    <com.alexz.messenger.app.ui.views.AvatarImageView
         android:layout_alignParentStart="true"
         android:id="@+id/post_avatar"
         android:src="@drawable/logo256"

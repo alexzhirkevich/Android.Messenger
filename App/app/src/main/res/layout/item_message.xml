@@ -9,7 +9,7 @@
     android:layout_marginHorizontal="10dp"
     android:layout_marginTop="@dimen/chat_message_space">
 
-    <com.alexz.messenger.app.ui.common.AvatarImageView
+    <com.alexz.messenger.app.ui.views.AvatarImageView
         android:id="@+id/message_avatar"
         android:padding="1dp"
         android:layout_width="40dp"
@@ -59,22 +59,24 @@
             android:textColor="@color/white"
             android:textSize="@dimen/message_text_size" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            app:shapeAppearanceOverlay="@style/roundedImageView"
-            android:transitionName="@string/util_transition_image_fullscreen"
-            android:id="@+id/message_image"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/message_content_cardview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/message_text"
-            android:background="@android:color/transparent"
+            app:cardCornerRadius="20dp"
             android:layout_alignParentStart="true"
             android:layout_marginHorizontal="1dp"
-            android:layout_marginVertical="1dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:longClickable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/logo256"/>
+            android:layout_marginVertical="1dp">
+            <com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout
+                android:id="@+id/message_media_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent">
+<!--                android:layout_marginHorizontal="1dp"-->
+<!--                android:layout_marginVertical="1dp">-->
+            </com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout>
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
     <TextView

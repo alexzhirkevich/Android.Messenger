@@ -12,7 +12,7 @@
         android:background="?selectableItemBackground"
         tools:context="com.alexz.messenger.app.data.model.imp.Chat">
 
-        <com.alexz.messenger.app.ui.common.AvatarImageView
+        <com.alexz.messenger.app.ui.views.AvatarImageView
             android:id="@+id/dialog_avatar"
             android:layout_width="70dp"
             android:layout_height="70dp"

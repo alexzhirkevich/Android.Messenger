@@ -16,7 +16,7 @@
         style="@style/Toolbar"
         app:popupTheme="@style/Theme.App.PopupOverlay">
 
-        <com.alexz.messenger.app.ui.common.AvatarImageView
+        <com.alexz.messenger.app.ui.views.AvatarImageView
             android:id="@+id/chat_avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"

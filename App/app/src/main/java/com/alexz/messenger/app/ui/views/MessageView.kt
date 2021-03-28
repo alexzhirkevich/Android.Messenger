@@ -1,0 +1,219 @@
+package com.alexz.messenger.app.ui.views
+
+import android.content.Context
+import android.net.Uri
+import android.util.AttributeSet
+import android.view.View
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.cardview.widget.CardView
+import androidx.core.view.GravityCompat
+import com.alexz.messenger.app.data.model.interfaces.IMediaMessage
+import com.alexz.messenger.app.data.model.interfaces.IMessage
+import com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout
+import com.alexz.messenger.app.util.DateUtil
+import com.alexz.messenger.app.util.FirebaseUtil
+import com.alexz.messenger.app.util.MetrixUtil
+import com.messenger.app.R
+import java.util.*
+
+class MessageView : RelativeLayout {
+
+    lateinit var msgDataLayout: RelativeLayout
+        private set
+    lateinit var avatarView: AvatarImageView
+        private set
+    lateinit var imageView: ImageView
+        private set
+    lateinit var nameView: TextView
+        private set
+    lateinit var textView: TextView
+        private set
+    lateinit var dateView: TextView
+        private set
+    lateinit var contentCardView: CardView
+        private set
+    lateinit var contentGrid : ContentGridLayout
+        private set
+
+    private val textVerticalMargin: Int = resources.getDimension(R.dimen.message_text_vertical_margin).toInt()
+
+    constructor(context: Context) : super(context) {
+        init(context)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(context)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        init(context)
+    }
+
+    fun bind(message:IMessage){
+        val outcoming = message.senderId == FirebaseUtil.getCurrentUser().id
+        if (!outcoming && !message.isPrivate) {
+            val uri = message.senderPhotoUrl
+            avatarView.visibility = View.VISIBLE
+            avatarView.setImageURI(Uri.parse(uri))
+            nameView.text = message.senderName
+            nameView.visibility = View.VISIBLE
+        } else {
+            avatarView.visibility = View.INVISIBLE
+            nameView.visibility = View.INVISIBLE
+            nameView.text = ""
+        }
+        message.text
+        textView.text = message.text
+        if (message is IMediaMessage<*>) {
+            val contentList = (message as IMediaMessage<*>).mediaContent
+            if (!contentList.isEmpty()) {
+                contentGrid.clearContent()
+                for (content in (message as IMediaMessage<*>).mediaContent) {
+                    contentGrid.addContent(content)
+                }
+                contentGrid.reGroup()
+                contentGrid.visibility = View.VISIBLE
+            }
+        } else {
+            contentGrid.clearContent()
+            contentGrid.layoutParams.height = 0
+            contentGrid.layoutParams.width = 0
+            contentGrid.requestLayout()
+            contentGrid.visibility = View.GONE
+        }
+        message.time
+        dateView.text = DateUtil.getTime(Date(message.time))
+        transformLayoutParams(message, outcoming)
+    }
+
+    fun setNameClickListener(nameClickListener: OnClickListener?) {
+        nameView.setOnClickListener { view: View? ->
+            nameClickListener?.onClick(view)
+        }
+    }
+
+    fun setAvatarClickListener(avatarClickListener: OnClickListener?) {
+        avatarView.setOnClickListener { view: View? ->
+            avatarClickListener?.onClick(view)
+        }
+    }
+
+    fun setImageClickListener(imageClickListener: OnClickListener?) {
+        imageView.setOnClickListener { view: View? ->
+            imageClickListener?.onClick(view)
+        }
+    }
+
+    fun setNameLongClickListener(nameClickListener: OnLongClickListener?) {
+        nameView.setOnLongClickListener { view: View? ->
+            if (nameClickListener != null) {
+                return@setOnLongClickListener nameClickListener.onLongClick(view)
+            }
+            false
+        }
+    }
+
+    fun setAvatarLongClickListener(avatarClickListener: OnLongClickListener?) {
+        avatarView.setOnLongClickListener { view: View? ->
+            if (avatarClickListener != null) {
+                return@setOnLongClickListener avatarClickListener.onLongClick(view)
+            }
+            false
+        }
+    }
+
+    fun setImageLongClickListener(imageClickListener: OnLongClickListener?) {
+        imageView.setOnLongClickListener { view: View? ->
+            if (imageClickListener != null) {
+                return@setOnLongClickListener imageClickListener.onLongClick(view)
+            }
+            false
+        }
+    }
+
+    private fun init(context: Context) {
+        inflate(context, R.layout.item_message, this)
+        msgDataLayout = findViewById(R.id.message_data_layout)
+        avatarView = findViewById(R.id.message_avatar)
+        nameView = findViewById(R.id.message_sender)
+        textView = findViewById(R.id.message_text)
+        dateView = findViewById(R.id.message_date)
+        contentGrid = findViewById(R.id.message_media_content)
+        contentCardView = findViewById(R.id.message_content_cardview)
+        isClickable = true
+        isLongClickable = true
+    }
+
+    private fun transformLayoutParams(message: IMessage, outcoming: Boolean) {
+        val dataParams = msgDataLayout.layoutParams as LayoutParams
+        //RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) date.getLayoutParams();
+        val textParams = textView.layoutParams as LayoutParams
+        val contentParams = contentCardView.layoutParams as LayoutParams
+
+        //dateParams.addRule(RelativeLayout.BELOW,R.id.message_image);
+        contentParams.removeRule(ALIGN_PARENT_TOP)
+        contentParams.removeRule(BELOW)
+        dataParams.removeRule(END_OF)
+        dataParams.removeRule(ALIGN_PARENT_END)
+        dataParams.removeRule(ALIGN_PARENT_START)
+        textParams.removeRule(TEXT_ALIGNMENT_GRAVITY)
+        textParams.removeRule(ALIGN_PARENT_TOP)
+        textParams.removeRule(BELOW)
+        dataParams.marginEnd = 0
+        dataParams.marginStart = 0
+        if (outcoming) {
+            msgDataLayout.setBackgroundColor(msgDataLayout.resources.getColor(R.color.message_outcoming))
+            msgDataLayout.background = AppCompatResources.getDrawable(msgDataLayout.context, R.drawable.drawable_message_outcoming)
+            dataParams.addRule(ALIGN_PARENT_END)
+            textParams.addRule(TEXT_ALIGNMENT_GRAVITY, GravityCompat.END)
+            textParams.addRule(ALIGN_PARENT_TOP)
+            textView.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
+            textParams.setMargins(textParams.leftMargin, textVerticalMargin, textParams.rightMargin, textParams.bottomMargin)
+            dataParams.marginStart = MetrixUtil.dpToPx(msgDataLayout.context, 50)
+            if (message is IMediaMessage<*> && (message as IMediaMessage<*>).mediaContent.isNotEmpty()) {
+                if (message.text.isEmpty()) {
+                    contentParams.addRule(ALIGN_PARENT_TOP)
+                } else {
+                    contentParams.addRule(BELOW, R.id.message_text)
+                }
+            } else {
+                //dateParams.addRule(RelativeLayout.BELOW,R.id.message_text);
+            }
+        } else {
+            textView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            msgDataLayout.setBackgroundColor(msgDataLayout.resources.getColor(R.color.message_incoming))
+            dataParams.marginEnd = MetrixUtil.dpToPx(msgDataLayout.context, 50)
+            textParams.addRule(TEXT_ALIGNMENT_GRAVITY, GravityCompat.START)
+            dataParams.addRule(END_OF, R.id.message_avatar)
+            if (message.isPrivate) {
+                msgDataLayout.background = AppCompatResources.getDrawable(msgDataLayout.context, R.drawable.drawable_message_incoming_private)
+            } else {
+                msgDataLayout.background = AppCompatResources.getDrawable(msgDataLayout.context, R.drawable.drawable_message_incoming_group)
+            }
+            if (message.text.isEmpty()) {
+                if (message.isPrivate) {
+                    contentParams.addRule(ALIGN_PARENT_TOP)
+                } else {
+                    contentParams.addRule(BELOW, R.id.message_sender)
+                }
+            } else {
+                //dateParams.addRule(RelativeLayout.BELOW,R.id.message_text);
+                contentParams.addRule(BELOW, R.id.message_text)
+                if (message.isPrivate) {
+                    textParams.addRule(ALIGN_PARENT_TOP)
+                    textParams.setMargins(textParams.leftMargin, textVerticalMargin, textParams.rightMargin, textParams.bottomMargin)
+                } else {
+                    textParams.addRule(BELOW, R.id.message_sender)
+                    textParams.setMargins(textParams.leftMargin, 0, textParams.rightMargin, textParams.bottomMargin)
+                }
+            }
+        }
+        msgDataLayout.requestLayout()
+        textView.requestLayout()
+        contentGrid.requestLayout()
+        //date.requestLayout();
+    }
+}

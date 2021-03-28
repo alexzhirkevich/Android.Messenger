@@ -5,11 +5,16 @@ import android.util.Pair;
 import android.webkit.MimeTypeMap;
 
 import com.alexz.messenger.app.data.model.imp.Chat;
-import com.alexz.messenger.app.data.model.Result;
+import com.alexz.messenger.app.data.model.result.Error;
+import com.alexz.messenger.app.data.model.result.Future;
+import com.alexz.messenger.app.data.model.result.MutableFuture;
+import com.alexz.messenger.app.data.model.result.Result;
 import com.alexz.messenger.app.data.model.imp.User;
+import com.alexz.messenger.app.data.model.result.Success;
 import com.alexz.messenger.app.data.repo.MessagesRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,7 +41,14 @@ public class FirebaseUtil {
 
     public static User getCurrentUser(){
         FirebaseUser user = getCurrentFireUser();
-        return new User(user.getUid(),user.getPhotoUrl().toString(),user.getDisplayName());
+        User cUser;
+        if (user != null) {
+            cUser = new User(user.getDisplayName(), user.getPhotoUrl().toString(), System.currentTimeMillis(), true);
+            cUser.setId(user.getUid());
+        }
+        else
+            cUser = new User();
+        return  cUser;
     }
 
 
@@ -54,29 +66,28 @@ public class FirebaseUtil {
         }
     }
 
-    public static Result.Future<Chat> getChatInfo(String chatId){
-        Result.MutableFuture<Chat> future = new Result.MutableFuture<>();
+    public static Future<Chat> getChatInfo(String chatId){
+        MutableFuture<Chat> future = new MutableFuture<>();
         MessagesRepository.getChatInfo(chatId)
                 .addOnSuccessListener(snapshot -> {
                     if (snapshot.exists()) {
                         Chat chat = snapshot.getValue(Chat.class);
-                        future.set(new Result.Success<>(chat));
+                        future.post(new Success<>(chat));
                     } else {
-                        future.set(new Result.Error(R.string.error_chat_not_found));
+                        future.post(new Error<>(R.string.error_chat_not_found));
                     }
                 })
                 .addOnFailureListener(e -> {
-                    future.set(new Result.Error(R.string.error_chat_load));
+                    future.post(new Error(R.string.error_chat_load));
                 });
         return future;
     }
 
-    public static Result.Future<Pair<Uri,StorageReference>> uploadPhoto(Uri path){
+    public static Future<Pair<Uri,StorageReference>> uploadPhoto(Uri path){
 
         String ext = MimeTypeMap.getFileExtensionFromUrl(path.toString());
 
-        Result.MutableFuture<Pair<Uri,StorageReference>> res = new Result.MutableFuture<>();
-        res.setHasProgress(true);
+        MutableFuture<Pair<Uri,StorageReference>> res = new MutableFuture<>();
 
         StorageReference ref = FirebaseStorage.getInstance().getReference()
                 .child(FirebaseUtil.getCurrentUser().getId())
@@ -84,9 +95,9 @@ public class FirebaseUtil {
         ref.putFile(path)
                 .addOnSuccessListener(taskSnapshot ->
                         taskSnapshot.getMetadata().getReference().getDownloadUrl()
-                                .addOnSuccessListener(task -> res.set(new Result.Success<>(new Pair<>(task,ref))))
-                                .addOnFailureListener(e -> res.set(new Result.Error(R.string.error_upload_file))))
-                .addOnFailureListener(e -> res.set(new Result.Error(R.string.error_upload_file)))
+                                .addOnSuccessListener(task -> res.post(new Success<>(new Pair<>(task,ref))))
+                                .addOnFailureListener(e -> res.post(new Error(R.string.error_upload_file))))
+                .addOnFailureListener(e -> res.post(new Error(R.string.error_upload_file)))
                 .addOnProgressListener(snapshot -> res.setProgress(100.0 * ((UploadTask.TaskSnapshot)snapshot).getBytesTransferred() / ((UploadTask.TaskSnapshot)snapshot).getTotalByteCount()));
 
         return res;

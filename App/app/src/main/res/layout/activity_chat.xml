@@ -30,7 +30,7 @@
             android:background="@color/gray"/>
 
         <!--    INPUT     -->
-    <com.alexz.messenger.app.ui.messages.MessageInput
+    <com.alexz.messenger.app.ui.views.MessageInput
         android:id="@+id/message_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
