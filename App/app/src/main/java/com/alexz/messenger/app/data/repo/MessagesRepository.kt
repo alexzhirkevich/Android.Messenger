@@ -8,18 +8,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 object MessagesRepository {
-    fun getMessagesReference(chatId: String?): DatabaseReference {
+    fun getMessagesReference(chatId: String): DatabaseReference {
         return FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.CHATS)
-                .child(chatId!!)
+                .child(chatId)
                 .child(FirebaseUtil.MESSAGES)
     }
 
     @JvmStatic
-    fun getChatInfo(chatId: String?): Task<DataSnapshot> {
+    fun getChatInfo(chatId: String): Task<DataSnapshot> {
         return FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.CHATS)
-                .child(chatId!!)
+                .child(chatId)
                 .child(FirebaseUtil.INFO)
                 .get()
     }

@@ -43,7 +43,4 @@ open class MediaContent(override var type: Int = IMediaContent.IMAGE,override va
             return arrayOfNulls(size)
         }
     }
-
-
-
 }

@@ -6,18 +6,18 @@ import com.google.firebase.database.FirebaseDatabase
 
 object UserListRepository {
     @JvmStatic
-    fun getUsers(chatID: String?): DatabaseReference {
+    fun getUsers(chatID: String): DatabaseReference {
         return FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.CHATS)
-                .child(chatID!!)
+                .child(chatID)
                 .child(FirebaseUtil.USERS)
     }
 
     @JvmStatic
-    fun getUser(userID: String?): DatabaseReference {
+    fun getUser(userID: String): DatabaseReference {
         return FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.USERS)
-                .child(userID!!)
+                .child(userID)
                 .child(FirebaseUtil.INFO)
     }
 }

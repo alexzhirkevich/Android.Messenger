@@ -12,11 +12,8 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alexz.messenger.app.data.model.imp.Chat
-import com.alexz.messenger.app.data.model.result.Result
-import com.alexz.messenger.app.data.model.result.ResultListener
+import com.alexz.firerecadapter.LoadingCallback
 import com.alexz.messenger.app.ui.adapters.UserListRecyclerAdapter
-import com.alexz.messenger.app.ui.common.firerecyclerview.LoadingCallback
 import com.alexz.messenger.app.ui.views.AvatarImageView
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.messenger.app.R
@@ -84,26 +81,22 @@ class UserListActivity : BaseActivity() {
     private fun setupChatInfo(chatId: String) {
         val avatarImageView = findViewById<AvatarImageView>(R.id.chat_avatar)
         val tvChatName = findViewById<TextView>(R.id.chat_name)
-        FirebaseUtil.getChatInfo(chatId).addResultListener(object : ResultListener<Chat?> {
-            override fun onProgress(percent: Double?) {}
-            override fun onSuccess(result: Result.ISuccess<Chat?>) {
-                val chat = result.value
-                if (chat != null) {
-                    val avatarUrl = chat.imageUri
-                    val chatName = chat.name
-                    Result
-                    if (tvChatName != null) {
-                        tvChatName.text = chatName
+        FirebaseUtil.getChatInfo(chatId)
+                .addOnSuccessResultListener {
+                    if (it != null) {
+                        val avatarUrl = it.imageUri
+                        val chatName = it.name
+                        Result
+                        if (tvChatName != null) {
+                            tvChatName.text = chatName
+                        }
+                        avatarImageView?.setImageURI(Uri.parse(avatarUrl))
                     }
-                    avatarImageView?.setImageURI(Uri.parse(avatarUrl))
                 }
-            }
-
-            override fun onError(error: Result.IError) {
-                Toast.makeText(this@UserListActivity, error.error, Toast.LENGTH_SHORT).show()
-                finish()
-            }
-        })
+                .addOnErrorResultListener {
+                    Toast.makeText(this@UserListActivity, getString(it), Toast.LENGTH_SHORT).show()
+                    finish()
+                }
     }
 
     companion object {

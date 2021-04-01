@@ -5,16 +5,14 @@ import android.util.Pair;
 import android.webkit.MimeTypeMap;
 
 import com.alexz.messenger.app.data.model.imp.Chat;
-import com.alexz.messenger.app.data.model.result.Error;
-import com.alexz.messenger.app.data.model.result.Future;
-import com.alexz.messenger.app.data.model.result.MutableFuture;
-import com.alexz.messenger.app.data.model.result.Result;
 import com.alexz.messenger.app.data.model.imp.User;
-import com.alexz.messenger.app.data.model.result.Success;
+import com.alexz.messenger.app.data.model.result.MutableFuture;
 import com.alexz.messenger.app.data.repo.MessagesRepository;
+import com.alexz.result.Error;
+import com.alexz.result.Future;
+import com.alexz.result.Success;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -34,6 +32,12 @@ public class FirebaseUtil {
     public static final String LASTMESSAGE = "lastMessage";
     public static final String ONLINE = "online";
     public static final String LASTONLINE = "lastOnline";
+    public static final String VOICE_URI = "voiceUri";
+    public static final String VOICE_LEN = "voiceLen";
+    public static final String MEDIA_CONTENT = "mediaContent";
+
+
+
 
     public static FirebaseUser getCurrentFireUser(){
         return FirebaseAuth.getInstance().getCurrentUser();

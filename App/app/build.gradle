@@ -65,6 +65,12 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-messaging'
+
+    implementation 'com.github.alexzhirkevich:result-ktx:1.0.2'
+    implementation 'com.github.alexzhirkevich:firebase-recycler-adapter:1.0.0'
+
+    implementation 'com.github.alxrm:audiowave-progressbar:0.9.2'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

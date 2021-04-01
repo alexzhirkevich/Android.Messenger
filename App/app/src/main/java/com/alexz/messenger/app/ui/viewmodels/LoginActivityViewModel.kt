@@ -2,12 +2,12 @@ package com.alexz.messenger.app.ui.viewmodels
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import com.alexz.messenger.app.data.model.result.Error
-import com.alexz.messenger.app.data.model.result.Future
 import com.alexz.messenger.app.data.model.result.MutableFuture
-import com.alexz.messenger.app.data.model.result.Success
 import com.alexz.messenger.app.data.repo.AuthRepository
 import com.alexz.messenger.app.util.FirebaseUtil
+import com.alexz.result.Error
+import com.alexz.result.Future
+import com.alexz.result.Success
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -38,10 +38,6 @@ class LoginActivityViewModel : ViewModel() {
            res.post(Error(R.string.error_google_login))
         }
 
-
-
         return res
     }
-
-
 }

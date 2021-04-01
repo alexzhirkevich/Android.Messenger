@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Pair
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -15,8 +14,6 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.fragment.app.Fragment
 import com.alexz.messenger.app.data.model.imp.Chat
-import com.alexz.messenger.app.data.model.result.Result
-import com.alexz.messenger.app.data.model.result.ResultListener
 import com.alexz.messenger.app.data.repo.DialogsRepository.createChat
 import com.alexz.messenger.app.data.repo.DialogsRepository.findChat
 import com.alexz.messenger.app.ui.activities.ChatActivity
@@ -49,16 +46,15 @@ class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.conte
         override fun onClick(view: View) {
             if (editId != null) {
                 val id = editId.text.toString().trim { it <= ' ' }
-                findChat(id).addResultListener(object : ResultListener<Chat> {
-                    override fun onProgress(percent: Double?) {}
-                    override fun onSuccess(result: Result.ISuccess<Chat>) {
-                        ChatActivity.startActivity(context, result.value)
-                    }
-
-                    override fun onError(error: Result.IError) {
-                        Toast.makeText(context, error!!.error, Toast.LENGTH_SHORT).show()
-                    }
-                })
+                findChat(id)
+                        .addOnSuccessResultListener {
+                            if (it != null) {
+                                ChatActivity.startActivity(context, it)
+                            }
+                        }
+                        .addOnErrorResultListener {
+                            Toast.makeText(context, context.getString(it), Toast.LENGTH_SHORT).show()
+                        }
                 onBackPressed()
             }
         }
@@ -171,30 +167,22 @@ class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.conte
                 btnOk!!.isEnabled = false
                 photoUpload.visibility = View.VISIBLE
                 FirebaseUtil.uploadPhoto(imageReturnedIntent?.data)
-                        .addResultListener(object : ResultListener<Pair<Uri?, StorageReference?>> {
-                            override fun onSuccess(result: Result.ISuccess<Pair<Uri?, StorageReference?>>) {
-                                imageUri = result.value?.first
-                                storageReference = result.value!!.second
-                                deletePhoto = true
-                                btnPhoto.setText(R.string.title_remove_photo)
-                                btnPhoto.post { btnPhoto.isEnabled = true }
-                                btnOk.post { btnOk.isEnabled = true }
-                                photoUpload.post { photoUpload.visibility = View.GONE }
-                            }
-
-                            override fun onError(error: Result.IError) {
-                                Toast.makeText(context, error.error, Toast.LENGTH_SHORT).show()
-                                btnPhoto.post { btnPhoto.isEnabled = true }
-                                btnOk.post { btnOk.isEnabled = true }
-                                photoUpload.post { photoUpload.visibility = View.GONE }
-                            }
-
-                            override fun onProgress(percent: Double?) {
-                                if (percent != null) {
-                                    photoUpload.progress = percent.toInt()
-                                }
-                            }
-                        })
+                        .addOnSuccessResultListener {
+                            imageUri = it?.first
+                            storageReference = it?.second
+                            deletePhoto = true
+                            btnPhoto.setText(R.string.title_remove_photo)
+                            btnPhoto.post { btnPhoto.isEnabled = true }
+                            btnOk.post { btnOk.isEnabled = true }
+                            photoUpload.post { photoUpload.visibility = View.GONE }
+                        }
+                        .addOnErrorResultListener {
+                            Toast.makeText(context, context.getString(it), Toast.LENGTH_SHORT).show()
+                            btnPhoto.post { btnPhoto.isEnabled = true }
+                            btnOk.post { btnOk.isEnabled = true }
+                            photoUpload.post { photoUpload.visibility = View.GONE }
+                        }
+                        .addOnProgressListener { it?.let { photoUpload.progress = it.toInt() } }
             }
         }
 

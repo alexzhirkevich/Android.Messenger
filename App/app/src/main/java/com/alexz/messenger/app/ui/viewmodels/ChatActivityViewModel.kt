@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.alexz.firerecadapter.Listenable
 import com.alexz.messenger.app.data.model.imp.Chat
 import com.alexz.messenger.app.data.model.imp.Message
 import com.alexz.messenger.app.data.repo.DialogsRepository.getChat
 import com.alexz.messenger.app.data.repo.MessagesRepository
-import com.alexz.messenger.app.ui.common.firerecyclerview.Listenable
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -17,6 +17,11 @@ import com.messenger.app.BuildConfig
 
 class ChatActivityViewModel : ViewModel(), Listenable {
 
+    var chatId: String? = null
+    val chatChangingState: LiveData<Chat>
+        get() = chatInfoChanged
+
+    private var chatRef: DatabaseReference? = null
     private val chatInfoChanged = MutableLiveData<Chat>()
     private var listener: ValueEventListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -34,14 +39,12 @@ class ChatActivityViewModel : ViewModel(), Listenable {
             }
         }
     }
-    private var chatRef: DatabaseReference? = null
-    var chatId: String? = null
-    val chatChangingState: LiveData<Chat>
-        get() = chatInfoChanged
 
     override fun startListening() {
-        chatRef = getChat(chatId)
-        chatRef?.addValueEventListener(listener!!)
+        chatId?.let {
+            chatRef = getChat(it)
+            chatRef?.addValueEventListener(listener)
+        }
     }
 
     override fun stopListening() {

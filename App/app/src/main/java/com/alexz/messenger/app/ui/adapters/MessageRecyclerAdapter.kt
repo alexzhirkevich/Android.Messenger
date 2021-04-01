@@ -1,15 +1,16 @@
 package com.alexz.messenger.app.ui.adapters
 
 import android.view.ViewGroup
+import com.alexz.ItemClickListener
+import com.alexz.firerecadapter.FirebaseListRecyclerAdapter
+import com.alexz.firerecadapter.FirebaseViewHolder
 import com.alexz.messenger.app.data.model.imp.MediaMessage
 import com.alexz.messenger.app.data.model.imp.Message
-import com.alexz.messenger.app.data.model.interfaces.IMediaMessage
+import com.alexz.messenger.app.data.model.imp.VoiceMessage
 import com.alexz.messenger.app.ui.adapters.MessageRecyclerAdapter.MessageViewHolder
-import com.alexz.messenger.app.ui.common.ItemClickListener
-import com.alexz.messenger.app.ui.common.firerecyclerview.FirebaseListRecyclerAdapter
-import com.alexz.messenger.app.ui.common.firerecyclerview.FirebaseViewHolder
 import com.alexz.messenger.app.ui.views.MessageView
 import com.alexz.messenger.app.util.FirebaseUtil
+import com.alexz.messenger.app.util.FirebaseUtil.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
@@ -29,10 +30,14 @@ class MessageRecyclerAdapter(private val chatID: String) :
     }
 
     override fun parse(snapshot: DataSnapshot): Message? {
-        return if (snapshot.hasChild(IMediaMessage.MEDIA_CONTENT)) {
-            snapshot.getValue(MediaMessage::class.java)
-        } else {
-            super.parse(snapshot)
+        return when {
+            snapshot.hasChild(MEDIA_CONTENT) -> {
+                snapshot.getValue(MediaMessage::class.java)
+            }
+            snapshot.hasChild(VOICE_LEN) and snapshot.hasChild(VOICE_URI) -> {
+                return snapshot.getValue(VoiceMessage::class.java)
+            }
+            else -> super.parse(snapshot)
         }
     }
 

@@ -44,6 +44,13 @@
             android:textColor="@color/color_primary"
             android:textSize="@dimen/message_sender_size" />
 
+        <com.alexz.messenger.app.ui.views.VoiceView
+            android:id="@+id/message_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@id/message_sender"/>
+
         <TextView
             android:id="@+id/message_text"
             android:layout_width="wrap_content"

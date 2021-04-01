@@ -2,6 +2,7 @@ package com.alexz.messenger.app.data.model.imp
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.alexz.firerecadapter.BaseModel
 import com.alexz.messenger.app.data.model.interfaces.IChat
 
 class Chat(override var imageUri: String = "",
@@ -42,16 +43,16 @@ class Chat(override var imageUri: String = "",
         return 0
     }
 
-    override fun compareTo(c: Chat): Int {
-        if (c.lastMessage != null && lastMessage != null) {
-            return c.lastMessage!!.time.compareTo(lastMessage!!.time)
+    override fun compareTo(other: Chat): Int {
+        if (other.lastMessage != null && lastMessage != null) {
+            return other.lastMessage!!.time.compareTo(lastMessage!!.time)
         }
-        return c.creationTime.compareTo(c.creationTime)
+        return other.creationTime.compareTo(other.creationTime)
     }
 
     companion object CREATOR : Parcelable.Creator<Chat> {
-        override fun createFromParcel(`in`: Parcel): Chat? {
-            return Chat(`in`)
+        override fun createFromParcel(parcel: Parcel): Chat? {
+            return Chat(parcel)
         }
 
         override fun newArray(size: Int): Array<Chat?> {

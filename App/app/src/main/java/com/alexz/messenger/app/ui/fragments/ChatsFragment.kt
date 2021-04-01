@@ -13,16 +13,15 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alexz.ItemClickListener
+import com.alexz.firerecadapter.LoadingCallback
 import com.alexz.messenger.app.data.model.imp.Chat
+import com.alexz.messenger.app.data.repo.DialogsRepository
 import com.alexz.messenger.app.ui.activities.ChatActivity
 import com.alexz.messenger.app.ui.adapters.ChatRecyclerAdapter
-import com.alexz.messenger.app.ui.common.ItemClickListener
-import com.alexz.messenger.app.ui.common.firerecyclerview.LoadingCallback
 import com.alexz.messenger.app.ui.dialogwindows.AddChatDialog
-import com.alexz.messenger.app.ui.viewmodels.DialogsActivityViewModel
 import com.alexz.messenger.app.util.KeyboardUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.messenger.app.R
@@ -34,14 +33,12 @@ class ChatsFragment : Fragment(), ItemClickListener<Chat> {
     private lateinit var adapter: ChatRecyclerAdapter
     private var drawerLayout: DrawerLayout? = null
     private var editSearch: EditText? = null
-    private lateinit var viewModel: DialogsActivityViewModel
     private lateinit var dialogRecyclerView: RecyclerView
     private lateinit var addChatDialog: AddChatDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_chats, container, false)
         drawerLayout = activity?.findViewById(R.id.drawer_layout)
-        viewModel = ViewModelProvider(this).get(DialogsActivityViewModel::class.java)
         setupRecyclerView(view)
         setupFloatingButton()
         setupToolbar()
@@ -107,8 +104,8 @@ class ChatsFragment : Fragment(), ItemClickListener<Chat> {
             pm.gravity = Gravity.RIGHT
             pm.inflate(R.menu.menu_dialogs)
             pm.setOnMenuItemClickListener {
-                if (it.itemId == R.id.message_delete) {
-                    viewModel.removeChat(data)
+                if (it.itemId == R.id.message_delete && data != null) {
+                    DialogsRepository.removeChat(data)
                     return@setOnMenuItemClickListener true
                 }
                 false

@@ -7,7 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/app_back">
 
+    <include layout="@layout/item_post" android:id="@+id/post"/>
 
-    <include layout="@layout/item_post" />
+    <com.alexz.messenger.app.ui.views.VoiceView
+        android:id="@+id/view_voice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post"/>
 
 </RelativeLayout>

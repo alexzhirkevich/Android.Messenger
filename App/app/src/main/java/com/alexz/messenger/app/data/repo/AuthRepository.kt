@@ -24,16 +24,16 @@ object AuthRepository {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         return FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener { task: Task<AuthResult> ->
             if (task.isSuccessful) {
-                addUserToDatabase(task.result!!.user)
+                task.result?.user?.let { addUserToDatabase(it) }
             }
         }
     }
 
     @JvmStatic
-    private fun addUserToDatabase(user: FirebaseUser?) {
+    private fun addUserToDatabase(user: FirebaseUser) {
         val ref = FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.USERS)
-                .child(user!!.uid)
+                .child(user.uid)
                 .child(FirebaseUtil.INFO)
                 .child(FirebaseUtil.ID)
         ref.addListenerForSingleValueEvent(object : ValueEventListener {

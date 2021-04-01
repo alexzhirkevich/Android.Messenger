@@ -2,11 +2,11 @@ package com.alexz.messenger.app.data.repo
 
 import android.util.Log
 import com.alexz.messenger.app.data.model.imp.Chat
-import com.alexz.messenger.app.data.model.result.Error
-import com.alexz.messenger.app.data.model.result.Future
 import com.alexz.messenger.app.data.model.result.MutableFuture
-import com.alexz.messenger.app.data.model.result.Success
 import com.alexz.messenger.app.util.FirebaseUtil
+import com.alexz.result.Error
+import com.alexz.result.Future
+import com.alexz.result.Success
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -14,6 +14,14 @@ import com.messenger.app.BuildConfig
 import com.messenger.app.R
 
 object DialogsRepository {
+
+    @JvmStatic
+    val chatIds: DatabaseReference
+        get() = FirebaseDatabase.getInstance().reference
+                .child(FirebaseUtil.USERS)
+                .child(FirebaseUtil.getCurrentUser().id)
+                .child(FirebaseUtil.CHATS)
+
     @JvmStatic
     fun createChat(d: Chat) {
         val userId = FirebaseUtil.getCurrentUser().id
@@ -35,16 +43,16 @@ object DialogsRepository {
     }
 
     @JvmStatic
-    fun findChat(chatId: String?): Future<Chat> {
+    fun findChat(chatId: String): Future<Chat> {
         val future = MutableFuture<Chat>()
         val id = FirebaseUtil.getCurrentUser().id
         val addRef = FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.USERS)
                 .child(id)
                 .child(FirebaseUtil.CHATS)
-                .child(chatId!!)
+                .child(chatId)
         addRef.setValue("")
-                .addOnSuccessListener { aVoid: Void? ->
+                .addOnSuccessListener {
                     getChat(chatId).get()
                             .addOnSuccessListener { snapshot: DataSnapshot ->
                                 if (snapshot.exists()) {
@@ -69,26 +77,19 @@ object DialogsRepository {
     }
 
     @JvmStatic
-    fun removeEmptyChatId(chatId: String?) {
+    fun removeEmptyChatId(chatId: String) {
         FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.USERS)
                 .child(FirebaseUtil.getCurrentUser().id)
                 .child(FirebaseUtil.CHATS)
-                .child(chatId!!).setValue(null)
+                .child(chatId).removeValue()
     }
 
     @JvmStatic
-    val chatIds: DatabaseReference
-        get() = FirebaseDatabase.getInstance().reference
-                .child(FirebaseUtil.USERS)
-                .child(FirebaseUtil.getCurrentUser().id)
-                .child(FirebaseUtil.CHATS)
-
-    @JvmStatic
-    fun getChat(chatId: String?): DatabaseReference {
+    fun getChat(chatId: String): DatabaseReference {
         return FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.CHATS)
-                .child(chatId!!)
+                .child(chatId)
                 .child(FirebaseUtil.INFO)
     }
 

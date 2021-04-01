@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.GravityCompat
 import com.alexz.messenger.app.data.model.interfaces.IMediaMessage
 import com.alexz.messenger.app.data.model.interfaces.IMessage
+import com.alexz.messenger.app.data.model.interfaces.IVoiceMessage
 import com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout
 import com.alexz.messenger.app.util.DateUtil
 import com.alexz.messenger.app.util.FirebaseUtil
@@ -37,6 +38,8 @@ class MessageView : RelativeLayout {
         private set
     lateinit var contentGrid : ContentGridLayout
         private set
+    lateinit var voiceView : VoiceView
+        private set
 
     private val textVerticalMargin: Int = resources.getDimension(R.dimen.message_text_vertical_margin).toInt()
 
@@ -53,6 +56,7 @@ class MessageView : RelativeLayout {
     }
 
     fun bind(message:IMessage){
+
         val outcoming = message.senderId == FirebaseUtil.getCurrentUser().id
         if (!outcoming && !message.isPrivate) {
             val uri = message.senderPhotoUrl
@@ -67,22 +71,40 @@ class MessageView : RelativeLayout {
         }
         message.text
         textView.text = message.text
-        if (message is IMediaMessage<*>) {
-            val contentList = (message as IMediaMessage<*>).mediaContent
-            if (!contentList.isEmpty()) {
-                contentGrid.clearContent()
-                for (content in (message as IMediaMessage<*>).mediaContent) {
-                    contentGrid.addContent(content)
+        textView.visibility = View.VISIBLE
+        voiceView.visibility = View.GONE
+        when(message) {
+            is IMediaMessage<*> -> {
+                val contentList = (message as IMediaMessage<*>).mediaContent
+                if (!contentList.isEmpty()) {
+                    contentGrid.clearContent()
+                    for (content in (message as IMediaMessage<*>).mediaContent) {
+                        contentGrid.addContent(content)
+                    }
+                    contentGrid.reGroup()
+                    contentGrid.visibility = View.VISIBLE
                 }
-                contentGrid.reGroup()
-                contentGrid.visibility = View.VISIBLE
             }
-        } else {
-            contentGrid.clearContent()
-            contentGrid.layoutParams.height = 0
-            contentGrid.layoutParams.width = 0
-            contentGrid.requestLayout()
-            contentGrid.visibility = View.GONE
+            is IVoiceMessage -> {
+                contentGrid.visibility = View.GONE
+                textView.visibility = View.GONE
+                voiceView.visibility = View.VISIBLE
+                if (outcoming)
+                    voiceView.background = AppCompatResources.getDrawable(context,R.drawable.drawable_message_outcoming)
+                else{
+                    voiceView.background = AppCompatResources.getDrawable(context,android.R.color.transparent)
+
+                }
+                voiceView.uri = Uri.parse(message.voiceUri)
+                voiceView.length = message.voiceLen.toLong()
+            }
+            else -> {
+                contentGrid.clearContent()
+                contentGrid.layoutParams.height = 0
+                contentGrid.layoutParams.width = 0
+                contentGrid.requestLayout()
+                contentGrid.visibility = View.GONE
+            }
         }
         message.time
         dateView.text = DateUtil.getTime(Date(message.time))
@@ -143,6 +165,7 @@ class MessageView : RelativeLayout {
         dateView = findViewById(R.id.message_date)
         contentGrid = findViewById(R.id.message_media_content)
         contentCardView = findViewById(R.id.message_content_cardview)
+        voiceView = findViewById(R.id.message_voice)
         isClickable = true
         isLongClickable = true
     }
@@ -152,6 +175,7 @@ class MessageView : RelativeLayout {
         //RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) date.getLayoutParams();
         val textParams = textView.layoutParams as LayoutParams
         val contentParams = contentCardView.layoutParams as LayoutParams
+        val voiceParams = voiceView.layoutParams as LayoutParams
 
         //dateParams.addRule(RelativeLayout.BELOW,R.id.message_image);
         contentParams.removeRule(ALIGN_PARENT_TOP)
@@ -179,10 +203,11 @@ class MessageView : RelativeLayout {
                 } else {
                     contentParams.addRule(BELOW, R.id.message_text)
                 }
-            } else {
-                //dateParams.addRule(RelativeLayout.BELOW,R.id.message_text);
+            } else if (message is IVoiceMessage){
+                voiceParams.addRule(ALIGN_PARENT_TOP)
             }
         } else {
+            voiceParams.removeRule(ALIGN_PARENT_TOP)
             textView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             msgDataLayout.setBackgroundColor(msgDataLayout.resources.getColor(R.color.message_incoming))
             dataParams.marginEnd = MetrixUtil.dpToPx(msgDataLayout.context, 50)
@@ -214,6 +239,7 @@ class MessageView : RelativeLayout {
         msgDataLayout.requestLayout()
         textView.requestLayout()
         contentGrid.requestLayout()
+        voiceView.requestLayout()
         //date.requestLayout();
     }
 }

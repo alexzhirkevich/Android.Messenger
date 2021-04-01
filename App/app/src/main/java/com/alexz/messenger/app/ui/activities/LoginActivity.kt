@@ -17,8 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
-import com.alexz.messenger.app.data.model.result.Result
-import com.alexz.messenger.app.data.model.result.ResultListener
 import com.alexz.messenger.app.ui.viewmodels.LoginActivityViewModel
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.alexz.messenger.app.util.MetrixUtil
@@ -27,7 +25,6 @@ import com.alexz.messenger.app.util.VibrateUtil
 import com.google.android.exoplayer2.util.Log
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.SignInButton
-import com.google.firebase.auth.FirebaseUser
 import com.messenger.app.R
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
@@ -107,20 +104,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode){
+        when (requestCode) {
             MyGoogleUtils.REQ_SIGN_IN -> if (resultCode == Activity.RESULT_OK && data != null) {
-               viewModel.googleLogin(data).addResultListener(object : ResultListener<FirebaseUser> {
-                   override fun onSuccess(result: Result.ISuccess<FirebaseUser>) {
-                       btnGoogleSighIn.visibility = View.GONE
-                       updateUI()
-                       Log.getThrowableString(Exception())
-                   }
-                   override fun onError(error: Result.IError) {
-                       val errorMsg = getString(error.error)
-                       Toast.makeText(this@LoginActivity, errorMsg, Toast.LENGTH_LONG).show()
-                   }
-               })
-            } else Toast.makeText(this,getString(R.string.error_google_login),Toast.LENGTH_LONG).show()
+                viewModel.googleLogin(data)
+                        .addOnSuccessResultListener() {
+                            btnGoogleSighIn.visibility = View.GONE
+                            updateUI()
+                            Log.getThrowableString(Exception())
+                        }
+                        .addOnErrorResultListener {
+                            Toast.makeText(this@LoginActivity, getString(it), Toast.LENGTH_LONG).show()
+                        }
+            } else Toast.makeText(this, getString(R.string.error_google_login), Toast.LENGTH_LONG).show()
         }
     }
 

@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Pair
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -28,15 +27,12 @@ import com.alexz.messenger.app.data.model.imp.MediaContent
 import com.alexz.messenger.app.data.model.imp.MediaMessage
 import com.alexz.messenger.app.data.model.imp.Message
 import com.alexz.messenger.app.data.model.interfaces.IMediaContent
-import com.alexz.messenger.app.data.model.result.Result
-import com.alexz.messenger.app.data.model.result.ResultListener
 import com.alexz.messenger.app.ui.adapters.MessageRecyclerAdapter
-import com.alexz.messenger.app.ui.common.ItemClickListener
+import com.alexz.ItemClickListener
 import com.alexz.messenger.app.ui.viewmodels.ChatActivityViewModel
 import com.alexz.messenger.app.ui.views.AvatarImageView
 import com.alexz.messenger.app.ui.views.MessageInput
 import com.alexz.messenger.app.util.FirebaseUtil
-import com.google.firebase.storage.StorageReference
 import com.messenger.app.R
 
 class ChatActivity : BaseActivity(),
@@ -96,24 +92,24 @@ class ChatActivity : BaseActivity(),
         return true
     }
 
-    fun onSendClicked(btn: ImageButton, input: TextView) {
+    private fun onSendClicked(btn: ImageButton, input: TextView) {
         if (input.text.toString().trim { it <= ' ' }.isEmpty() && uploadedImage == null) {
             return
         }
-        val m = MediaMessage(chat!!.id)
-        m.text = input.text.toString().trim { it <= ' ' }
-        m.isPrivate = !chat!!.isGroup
-
-        m.mediaContent = uploadedImage?.let {
-            listOf(MediaContent(IMediaContent.IMAGE, it))
-        }?: emptyList()
-        viewModel.sendMessage(m, getString(R.string.title_file))
-        input.text = ""
-        mRecyclerView.postDelayed({ mRecyclerView.smoothScrollToPosition(mRecyclerView.bottom) }, 100)
-        uploadedImage?.let { uploadedImage = null; restoreAttachButton() }
+        chat?.let {
+            val m = MediaMessage(it.id)
+            m.text = input.text.toString().trim()
+            m.isPrivate = !it.isGroup
+            m.mediaContent = uploadedImage?.let { uri -> listOf(MediaContent(IMediaContent.IMAGE, uri)) }
+                    ?: emptyList()
+            viewModel.sendMessage(m, getString(R.string.title_file))
+            input.text = ""
+            mRecyclerView.postDelayed({ mRecyclerView.smoothScrollToPosition(mRecyclerView.bottom) }, 100)
+            uploadedImage?.let { uploadedImage = null; restoreAttachButton() }
+        }
     }
 
-    fun onAttachClicked(btn: ImageButton, input: TextView) {
+    private fun onAttachClicked(btn: ImageButton, input: TextView) {
         if (uploadedImage == null) {
             val photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
@@ -130,19 +126,14 @@ class ChatActivity : BaseActivity(),
             SELECT_PHOTO -> if (resultCode == Activity.RESULT_OK) {
                 onStartImageLoad()
                 FirebaseUtil.uploadPhoto(imageReturnedIntent?.data)
-                        .addResultListener(object : ResultListener<Pair<Uri, StorageReference>> {
-                            override fun onSuccess(result: Result.ISuccess<Pair<Uri, StorageReference>>) {
-                                uploadedImage = result.value?.first.toString()
-                                onImageAttached(imageReturnedIntent?.data, true)
-                            }
-
-                            override fun onError(error: Result.IError) {
-                                Toast.makeText(this@ChatActivity, error.error, Toast.LENGTH_SHORT).show()
-                                onImageAttached(null, false)
-                            }
-
-                            override fun onProgress(percent: Double?) {}
-                        })
+                        .addOnSuccessResultListener {
+                            uploadedImage = it?.first.toString()
+                            onImageAttached(imageReturnedIntent?.data, true)
+                        }
+                        .addOnErrorResultListener {
+                            Toast.makeText(this@ChatActivity, getString(it), Toast.LENGTH_SHORT).show()
+                            onImageAttached(null, false)
+                        }
             }
             PERM_STORAGE -> if (resultCode == Activity.RESULT_OK) {
                 onAttachClicked(messageInput.attachButton, messageInput.inputTextView)
@@ -256,11 +247,11 @@ class ChatActivity : BaseActivity(),
 
     private fun setupInput() {
         messageInput = findViewById(R.id.message_input)
-        messageInput.sendButton.setOnClickListener{
-            onSendClicked(it as ImageButton,messageInput.inputTextView);
+        messageInput.sendButton.setOnClickListener {
+            onSendClicked(it as ImageButton, messageInput.inputTextView);
         }
-        messageInput.attachButton.setOnClickListener{
-            onAttachClicked(it as ImageButton,messageInput.inputTextView)
+        messageInput.attachButton.setOnClickListener {
+            onAttachClicked(it as ImageButton, messageInput.inputTextView)
         }
     }
 
@@ -286,24 +277,15 @@ class ChatActivity : BaseActivity(),
             loadInfo = true
         }
         if (loadInfo) {
-            FirebaseUtil.getChatInfo(chatId).addResultListener(object : ResultListener<Chat> {
-                override fun onProgress(percent: Double?) {}
-                override fun onSuccess(result: Result.ISuccess<Chat>) {
-                    val chat = result.value
-                    if (chat != null) {
-                        if (tvChatName != null) {
-                            tvChatName.text = chat.name
-                        }
-                        avatarImageView?.setImageURI(Uri.parse(chat.imageUri))
+            FirebaseUtil.getChatInfo(chatId)
+                    .addOnSuccessResultListener {
+                        tvChatName?.text = it?.name
+                        avatarImageView?.setImageURI(Uri.parse(it?.imageUri))
                     }
-                }
-
-                override fun onError(error: Result.IError) {
-                    val errorMsg = getString(error.error)
-                    Toast.makeText(this@ChatActivity, errorMsg, Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-            })
+                    .addOnErrorResultListener() {
+                        Toast.makeText(this@ChatActivity, getString(it), Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
         }
     }
 

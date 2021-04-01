@@ -2,10 +2,10 @@ package com.alexz.messenger.app.data.model.imp
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.alexz.firerecadapter.BaseModel
 import com.alexz.messenger.app.data.model.interfaces.IPost
-import java.io.IOError
 
-open class Post constructor(override var channelId: String) : BaseModel(channelId), IPost, Parcelable {
+class Post constructor(override var channelId: String) : BaseModel(channelId), IPost, Parcelable {
     override var text: String = ""
     override var content: List<String> = ArrayList()
     override var time: Long = 0
@@ -25,6 +25,32 @@ open class Post constructor(override var channelId: String) : BaseModel(channelI
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Post) return false
+        if (!super.equals(other)) return false
+
+        if (channelId != other.channelId) return false
+        if (text != other.text) return false
+        if (content != other.content) return false
+        if (time != other.time) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + channelId.hashCode()
+        result = 31 * result + text.hashCode()
+        result = 31 * result + content.hashCode()
+        result = 31 * result + time.hashCode()
+        return result
+    }
+
+    override fun toString(): String {
+        return "Post(channelId='$channelId', text='$text', content=$content, time=$time)"
     }
 
     companion object CREATOR : Parcelable.Creator<Post> {
