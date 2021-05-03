@@ -13,17 +13,23 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.fragment.app.Fragment
-import com.alexz.messenger.app.data.model.imp.Chat
-import com.alexz.messenger.app.data.repo.DialogsRepository.createChat
-import com.alexz.messenger.app.data.repo.DialogsRepository.findChat
+import com.alexz.messenger.app.data.entities.imp.Chat
+import com.alexz.messenger.app.data.providers.interfaces.ChatsProvider
+import com.alexz.messenger.app.data.providers.interfaces.StorageProvider
+import com.alexz.messenger.app.data.repo.ChatsRepository
+import com.alexz.messenger.app.data.repo.StorageRepository
 import com.alexz.messenger.app.ui.activities.ChatActivity
-import com.alexz.messenger.app.util.FirebaseUtil
 import com.google.firebase.storage.StorageReference
 import com.messenger.app.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.context), View.OnClickListener, DialogResult {
+class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.context),
+        View.OnClickListener, DialogResult {
 
     private var newChatDialog: NewChatDialog? = null
+    private val chatsProvider: ChatsProvider by lazy { ChatsRepository() }
+    private val storageProvider: StorageProvider by lazy { StorageRepository() }
 
     override fun onClick(view: View) {
         if (view.id == R.id.btn_new_chat) {
@@ -40,21 +46,22 @@ class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.conte
         newChatDialog?.onDialogResult(requestCode, resultCode, resultIntent)
     }
 
-    class FindChatDialog(context: Context?) : AlertDialog(context), View.OnClickListener, TextWatcher, OnEditorActionListener {
+    inner class FindChatDialog(context: Context?) : AlertDialog(context),
+            View.OnClickListener, TextWatcher, OnEditorActionListener {
         private val editId: EditText?
         private val btnOk: Button?
         override fun onClick(view: View) {
             if (editId != null) {
                 val id = editId.text.toString().trim { it <= ' ' }
-                findChat(id)
-                        .addOnSuccessResultListener {
-                            if (it != null) {
-                                ChatActivity.startActivity(context, it)
-                            }
-                        }
-                        .addOnErrorResultListener {
-                            Toast.makeText(context, context.getString(it), Toast.LENGTH_SHORT).show()
-                        }
+                chatsProvider.joinChat(id)
+                        .subscribe(
+                                {
+                                    if (it != null) {
+                                        ChatActivity.startActivity(context, it)
+                                    }
+                                }, {
+                            Toast.makeText(context, context.getString(R.string.error_channel_join), Toast.LENGTH_SHORT).show()
+                        })
                 onBackPressed()
             }
         }
@@ -92,7 +99,8 @@ class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.conte
         }
     }
 
-    class NewChatDialog(fragment: Fragment) : AlertDialog(fragment.context), View.OnClickListener, TextWatcher, OnEditorActionListener, DialogResult {
+    inner class NewChatDialog(fragment: Fragment) : AlertDialog(fragment.context),
+            View.OnClickListener, TextWatcher, OnEditorActionListener, DialogResult {
         private val editName: EditText?
         private val btnPhoto: Button?
         private val btnOk: Button?
@@ -114,16 +122,11 @@ class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.conte
                 if (editName != null) {
                     name = editName.text.toString().trim { it <= ' ' }
                 }
-                if (!name.isEmpty()) {
+                if (name.isNotEmpty()) {
                     deletePhoto = false
                     onBackPressed()
-                    val c = Chat(imageUri?.toString()?:"",
-                            name,
-                            FirebaseUtil.getCurrentUser().id,
-                            System.currentTimeMillis(),
-                            null,
-                            true)
-                    createChat(c)
+                    val c = Chat(name = name, imageUri = imageUri?.toString().orEmpty())
+                    chatsProvider.createChat(c)
                     ChatActivity.startActivity(context, c)
                 } else {
                     Toast.makeText(context, R.string.error_empty_input, Toast.LENGTH_LONG).show()
@@ -166,23 +169,29 @@ class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.conte
                 btnPhoto!!.isEnabled = false
                 btnOk!!.isEnabled = false
                 photoUpload.visibility = View.VISIBLE
-                FirebaseUtil.uploadPhoto(imageReturnedIntent?.data)
-                        .addOnSuccessResultListener {
-                            imageUri = it?.first
-                            storageReference = it?.second
-                            deletePhoto = true
-                            btnPhoto.setText(R.string.title_remove_photo)
-                            btnPhoto.post { btnPhoto.isEnabled = true }
-                            btnOk.post { btnOk.isEnabled = true }
-                            photoUpload.post { photoUpload.visibility = View.GONE }
-                        }
-                        .addOnErrorResultListener {
-                            Toast.makeText(context, context.getString(it), Toast.LENGTH_SHORT).show()
-                            btnPhoto.post { btnPhoto.isEnabled = true }
-                            btnOk.post { btnOk.isEnabled = true }
-                            photoUpload.post { photoUpload.visibility = View.GONE }
-                        }
-                        .addOnProgressListener { it?.let { photoUpload.progress = it.toInt() } }
+                imageReturnedIntent?.data?.let { uri ->
+                    storageProvider.uploadImage(uri)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnNext {
+                                if (it.second != null) {
+                                    imageUri = it?.second
+                                    deletePhoto = true
+                                    btnPhoto.setText(R.string.title_remove_photo)
+                                    btnPhoto.post { btnPhoto.isEnabled = true }
+                                    btnOk.post { btnOk.isEnabled = true }
+                                    photoUpload.post { photoUpload.visibility = View.GONE }
+                                } else {
+                                    photoUpload.progress = it.first.toInt()
+                                }
+                            }
+                            .doOnError {
+                                Toast.makeText(context, context.getString(R.string.error_image_load), Toast.LENGTH_SHORT).show()
+                                btnPhoto.post { btnPhoto.isEnabled = true }
+                                btnOk.post { btnOk.isEnabled = true }
+                                photoUpload.post { photoUpload.visibility = View.GONE }
+                            }.subscribe()
+                }
             }
         }
 
@@ -201,19 +210,18 @@ class AddChatDialog(private val fragment: Fragment) : AlertDialog(fragment.conte
             btnPhoto.setOnEditorActionListener(this)
             btnPhoto?.setOnClickListener(this)
         }
-    }
 
-    companion object {
+        init {
+            val layout = LinearLayout(fragment.context)
+            layoutInflater.inflate(R.layout.dialog_add_chat, layout)
+            setView(layout)
+            val btnNew = layout.findViewById<Button>(R.id.btn_new_chat)
+            val btnFind = layout.findViewById<Button>(R.id.btn_find_chat)
+            btnNew?.setOnClickListener(this)
+            btnFind?.setOnClickListener(this)
+        }
+    }
+    companion object{
         const val REQ_NEW_CHAT_PHOTO = 1701
-    }
-
-    init {
-        val layout = LinearLayout(fragment.context)
-        layoutInflater.inflate(R.layout.dialog_add_chat, layout)
-        setView(layout)
-        val btnNew = layout.findViewById<Button>(R.id.btn_new_chat)
-        val btnFind = layout.findViewById<Button>(R.id.btn_find_chat)
-        btnNew?.setOnClickListener(this)
-        btnFind?.setOnClickListener(this)
     }
 }

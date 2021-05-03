@@ -15,21 +15,18 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Theme.App.NoActionBar">
+    <style name="Theme.App.NoActionBar" parent="Theme.App">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+    </style>
+    <style name="Theme.Fullscreen" parent="Theme.App">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorSecondary">@android:color/black</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+
     </style>
 
-    <style name="Toolbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
-        <!-- <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item> -->
-        <item name="android:background">?attr/colorPrimary</item>
-        <item name="icon">@drawable/ic_menu</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    </style>
-
-    <style name="Theme.App.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.App.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
 </resources>

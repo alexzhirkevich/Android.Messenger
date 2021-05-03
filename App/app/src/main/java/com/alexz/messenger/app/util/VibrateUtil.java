@@ -14,9 +14,9 @@ public class VibrateUtil {
 
     private final Vibrator vibrator;
 
-    public static final int POWER_LOW = 1;
-    public static final int POWER_MEDUIM = 2;
-    public static final int POWER_HIGH = 3;
+    public static final float POWER_LOW = 0.1f;
+    public static final float POWER_MEDUIM = 1f;
+    public static final float POWER_HIGH = 3f;
 
     private VibrationEffect effect;
     private AudioAttributes attrs;
@@ -70,10 +70,10 @@ public class VibrateUtil {
     }
 
     @RequiresPermission(value = Manifest.permission.VIBRATE)
-    public VibrateUtil vibrate(int ms, int power){
+    public VibrateUtil vibrate(int ms, float power){
         if (vibrator != null && vibrator.hasVibrator()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                vibrator.vibrate(VibrationEffect.createWaveform(new long[]{ms},new int[]{power*10},-1));
+                vibrator.vibrate(VibrationEffect.createWaveform(new long[]{ms},new int[]{(int)(power*10)},-1));
             }else
                 vibrator.vibrate(ms);
         }

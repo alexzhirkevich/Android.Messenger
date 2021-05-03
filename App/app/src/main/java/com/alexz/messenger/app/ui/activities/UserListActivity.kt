@@ -9,19 +9,23 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexz.firerecadapter.LoadingCallback
 import com.alexz.messenger.app.ui.adapters.UserListRecyclerAdapter
+import com.alexz.messenger.app.ui.viewmodels.UserListActivityViewModel
 import com.alexz.messenger.app.ui.views.AvatarImageView
-import com.alexz.messenger.app.util.FirebaseUtil
 import com.messenger.app.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class UserListActivity : BaseActivity() {
 
     private lateinit var usersRecyclerView: RecyclerView
     private lateinit var adapter: UserListRecyclerAdapter
+    private val viewModel : UserListActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,8 +85,10 @@ class UserListActivity : BaseActivity() {
     private fun setupChatInfo(chatId: String) {
         val avatarImageView = findViewById<AvatarImageView>(R.id.chat_avatar)
         val tvChatName = findViewById<TextView>(R.id.chat_name)
-        FirebaseUtil.getChatInfo(chatId)
-                .addOnSuccessResultListener {
+        viewModel.getChat(chatId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
                     if (it != null) {
                         val avatarUrl = it.imageUri
                         val chatName = it.name
@@ -92,11 +98,12 @@ class UserListActivity : BaseActivity() {
                         }
                         avatarImageView?.setImageURI(Uri.parse(avatarUrl))
                     }
-                }
-                .addOnErrorResultListener {
-                    Toast.makeText(this@UserListActivity, getString(it), Toast.LENGTH_SHORT).show()
-                    finish()
-                }
+                },
+                        {
+                            Toast.makeText(this@UserListActivity, getString(R.string.error_chat_load),
+                                    Toast.LENGTH_SHORT).show()
+                            finish()
+                        })
     }
 
     companion object {

@@ -5,21 +5,22 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name="com.alexz.messenger.app.ChatApplication"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App"
-        android:usesCleartextTraffic="true">
-        <activity android:name="com.alexz.messenger.app.ui.activities.FullscreenVideoActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
+        android:theme="@style/Theme.App">
+        <activity
+            android:name="com.alexz.messenger.app.ui.activities.FullscreenVideoActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name="com.alexz.messenger.app.ui.activities.UserListActivity"
             android:theme="@style/Theme.App.NoActionBar" />
@@ -28,9 +29,15 @@
             android:label="@string/menu_settings" />
         <activity
             android:name="com.alexz.messenger.app.ui.activities.FullscreenImageActivity"
-            android:label="@string/title_photo" />
+            android:label="@string/title_photo"
+            android:theme="@style/Theme.Fullscreen"/>
         <activity
             android:name="com.alexz.messenger.app.ui.activities.ChatActivity"
+            android:label=""
+            android:theme="@style/Theme.App.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.alexz.messenger.app.ui.activities.ChannelActivity"
             android:label=""
             android:theme="@style/Theme.App.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -41,26 +48,34 @@
             android:theme="@style/Theme.App.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="https"
+                    android:host="firemessenger.com"
+                    android:pathPrefix="/joinchat" />
+                <data android:scheme="https"
+                    android:host="firemessenger.com"
+                    android:pathPrefix="/joinchannel" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.alexz.messenger.app.ui.activities.DialogsActivity"
+            android:name="com.alexz.messenger.app.ui.activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.App.NoActionBar" />
-
-<!--        <service-->
-<!--            android:name="com.alexz.messenger.app.data.services.NewMessageService"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="false"-->
-<!--            android:stopWithTask="false" />-->
-<!--        <service-->
-<!--            android:name="com.alexz.messenger.app.data.services.NewMessageJobService"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="false"-->
-<!--            android:permission="android.permission.BIND_JOB_SERVICE"-->
-<!--            android:stopWithTask="false" />-->
+            android:theme="@style/Theme.App.NoActionBar" /> <!-- <service -->
+        <!-- android:name="com.alexz.messenger.app.data.services.NewMessageService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="false" -->
+        <!-- android:stopWithTask="false" /> -->
+        <!-- <service -->
+        <!-- android:name="com.alexz.messenger.app.data.services.NewMessageJobService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="false" -->
+        <!-- android:permission="android.permission.BIND_JOB_SERVICE" -->
+        <!-- android:stopWithTask="false" /> -->
         <service
             android:name="com.alexz.messenger.app.data.services.CloudMessagingService"
             android:exported="false">

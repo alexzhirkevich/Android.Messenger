@@ -10,15 +10,21 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
 import androidx.core.view.GravityCompat
-import com.alexz.messenger.app.data.model.interfaces.IMediaMessage
-import com.alexz.messenger.app.data.model.interfaces.IMessage
-import com.alexz.messenger.app.data.model.interfaces.IVoiceMessage
+import com.alexz.messenger.app.data.entities.interfaces.IMediaMessage
+import com.alexz.messenger.app.data.entities.interfaces.IMessage
+import com.alexz.messenger.app.data.entities.interfaces.IVoiceMessage
+import com.alexz.messenger.app.data.providers.interfaces.MessagesProvider
+import com.alexz.messenger.app.data.providers.interfaces.UserListProvider
+import com.alexz.messenger.app.data.repo.MessagesRepository
+import com.alexz.messenger.app.data.repo.UserListRepository
 import com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout
-import com.alexz.messenger.app.util.DateUtil
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.alexz.messenger.app.util.MetrixUtil
+import com.alexz.messenger.app.util.getTime
 import com.messenger.app.R
-import java.util.*
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MessageView : RelativeLayout {
 
@@ -41,6 +47,10 @@ class MessageView : RelativeLayout {
     lateinit var voiceView : VoiceView
         private set
 
+    private var bindedMessage: IMessage?=null
+
+    var disposable : Disposable? = null
+
     private val textVerticalMargin: Int = resources.getDimension(R.dimen.message_text_vertical_margin).toInt()
 
     constructor(context: Context) : super(context) {
@@ -55,28 +65,47 @@ class MessageView : RelativeLayout {
         init(context)
     }
 
-    fun bind(message:IMessage){
-
-        val outcoming = message.senderId == FirebaseUtil.getCurrentUser().id
-        if (!outcoming && !message.isPrivate) {
-            val uri = message.senderPhotoUrl
+    fun bind(message: IMessage) {
+        disposable?.dispose()
+        disposable = usersProvider.getUser(message.senderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{
+                    if (bindedMessage?.isPrivate == true ||
+                            bindedMessage?.senderId == FirebaseUtil.currentFireUser?.uid) {
+                        nameView.text = ""
+                    } else {
+                        nameView.text = it.name
+                    }
+                    if (bindedMessage?.isPrivate == false) {
+                        if (it.imageUri.isNotEmpty()) {
+                            avatarView.setImageURI(Uri.parse(it.imageUri))
+                        } else {
+                            avatarView.setImageResource(R.drawable.logo512)
+                        }
+                    }
+                }
+        bindedMessage = message
+        val isOutcoming = message.senderId == FirebaseUtil.currentFireUser?.uid
+        if (!isOutcoming && !message.isPrivate) {
             avatarView.visibility = View.VISIBLE
-            avatarView.setImageURI(Uri.parse(uri))
-            nameView.text = message.senderName
-            nameView.visibility = View.VISIBLE
+            //avatarView.setImageURI(Uri.parse(uri))
+            //nameView.text = message.senderName
+            //nameView.visibility = View.VISIBLE
         } else {
             avatarView.visibility = View.INVISIBLE
-            nameView.visibility = View.INVISIBLE
-            nameView.text = ""
+            //nameView.visibility = View.GONE
+            //nameView.text = ""
         }
         message.text
         textView.text = message.text
         textView.visibility = View.VISIBLE
         voiceView.visibility = View.GONE
+        contentGrid.visibility = View.GONE
         when(message) {
             is IMediaMessage<*> -> {
                 val contentList = (message as IMediaMessage<*>).mediaContent
-                if (!contentList.isEmpty()) {
+                if (contentList.isNotEmpty()) {
                     contentGrid.clearContent()
                     for (content in (message as IMediaMessage<*>).mediaContent) {
                         contentGrid.addContent(content)
@@ -86,10 +115,9 @@ class MessageView : RelativeLayout {
                 }
             }
             is IVoiceMessage -> {
-                contentGrid.visibility = View.GONE
                 textView.visibility = View.GONE
                 voiceView.visibility = View.VISIBLE
-                if (outcoming)
+                if (isOutcoming)
                     voiceView.background = AppCompatResources.getDrawable(context,R.drawable.drawable_message_outcoming)
                 else{
                     voiceView.background = AppCompatResources.getDrawable(context,android.R.color.transparent)
@@ -99,16 +127,12 @@ class MessageView : RelativeLayout {
                 voiceView.length = message.voiceLen.toLong()
             }
             else -> {
-                contentGrid.clearContent()
-                contentGrid.layoutParams.height = 0
-                contentGrid.layoutParams.width = 0
-                contentGrid.requestLayout()
                 contentGrid.visibility = View.GONE
             }
         }
         message.time
-        dateView.text = DateUtil.getTime(Date(message.time))
-        transformLayoutParams(message, outcoming)
+        dateView.text = getTime(message.time)
+        transformLayoutParams(message, isOutcoming)
     }
 
     fun setNameClickListener(nameClickListener: OnClickListener?) {
@@ -241,5 +265,10 @@ class MessageView : RelativeLayout {
         contentGrid.requestLayout()
         voiceView.requestLayout()
         //date.requestLayout();
+    }
+
+    companion object {
+        val messagesProvider : MessagesProvider by lazy { MessagesRepository() }
+        val usersProvider : UserListProvider by lazy { UserListRepository() }
     }
 }

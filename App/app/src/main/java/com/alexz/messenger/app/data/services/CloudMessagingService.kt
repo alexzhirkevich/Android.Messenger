@@ -8,7 +8,8 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.alexz.messenger.app.data.model.imp.Chat
+import com.alexz.messenger.app.data.entities.imp.Chat
+import com.alexz.messenger.app.data.entities.imp.User
 import com.alexz.messenger.app.ui.activities.ChatActivity
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.google.firebase.database.FirebaseDatabase
@@ -31,7 +32,7 @@ class CloudMessagingService : FirebaseMessagingService(){
 
         FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtil.USERS)
-                .child(FirebaseUtil.getCurrentUser().id)
+                .child(User().id)
                 .child("token")
                 .setValue(token);
 

@@ -77,8 +77,8 @@
             android:layout_marginVertical="1dp">
             <com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout
                 android:id="@+id/message_media_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:background="@android:color/transparent">
 <!--                android:layout_marginHorizontal="1dp"-->
 <!--                android:layout_marginVertical="1dp">-->

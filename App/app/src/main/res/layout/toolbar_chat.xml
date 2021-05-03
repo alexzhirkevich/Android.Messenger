@@ -4,19 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_appbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/Theme.App.AppBarOverlay">
-
+    android:layout_height="wrap_content">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/chat_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:menu="@menu/menu_chat"
-        style="@style/Toolbar"
-        app:popupTheme="@style/Theme.App.PopupOverlay">
-
+        style="@style/Toolbar">
         <com.alexz.messenger.app.ui.views.AvatarImageView
+            android:transitionName="util_transition_toolbar_image"
             android:id="@+id/chat_avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"
@@ -26,6 +23,7 @@
             android:layout_gravity="center_vertical"/>
         <TextView
             android:id="@+id/chat_name"
+            android:transitionName="@string/util_transition_toolbar_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingStart="5dp"

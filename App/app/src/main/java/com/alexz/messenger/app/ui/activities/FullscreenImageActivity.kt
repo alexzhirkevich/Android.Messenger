@@ -4,23 +4,43 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.messenger.app.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_fullscreen_image.*
 
 class FullscreenImageActivity : AppCompatActivity() {
 
-    private var imageView: ImageView? = null
+    private val viewModel : MediaViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fullscreen_image)
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val uri = intent.getStringExtra(EXTRA_IMAGE_URI)
-        imageView = findViewById(R.id.imageview_fullscreen)
-        imageView?.let {Glide.with(this).load(uri).into(it) }
+        supportActionBar?.apply {
+            setHomeButtonEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+        }
+        intent.getStringExtra(EXTRA_IMAGE_URI)?.let {
+            viewModel.loadImage(it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ bmp ->
+                        imageview_fullscreen.setImageBitmap(bmp)
+                    }, {
+                        Toast.makeText(this, getString(R.string.error_image_load), Toast.LENGTH_SHORT).show()
+                    })
+        }
+
+        imageview_fullscreen.setOnClickListener {
+            if (supportActionBar?.isShowing == true){
+                supportActionBar?.hide()
+            } else{
+                supportActionBar?.show()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

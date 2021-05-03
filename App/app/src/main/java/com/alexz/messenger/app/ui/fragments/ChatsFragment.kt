@@ -10,18 +10,21 @@ import android.view.*
 import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alexz.ItemClickListener
+import com.alexz.firerecadapter.ItemClickListener
 import com.alexz.firerecadapter.LoadingCallback
-import com.alexz.messenger.app.data.model.imp.Chat
-import com.alexz.messenger.app.data.repo.DialogsRepository
+import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
+import com.alexz.messenger.app.data.entities.imp.Chat
 import com.alexz.messenger.app.ui.activities.ChatActivity
 import com.alexz.messenger.app.ui.adapters.ChatRecyclerAdapter
 import com.alexz.messenger.app.ui.dialogwindows.AddChatDialog
+import com.alexz.messenger.app.ui.viewmodels.ChatActivityViewModel
 import com.alexz.messenger.app.util.KeyboardUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.messenger.app.R
@@ -36,20 +39,26 @@ class ChatsFragment : Fragment(), ItemClickListener<Chat> {
     private lateinit var dialogRecyclerView: RecyclerView
     private lateinit var addChatDialog: AddChatDialog
 
+    private val viewModel : ChatActivityViewModel by viewModels()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_chats, container, false)
         drawerLayout = activity?.findViewById(R.id.drawer_layout)
         setupRecyclerView(view)
         setupFloatingButton()
         setupToolbar()
-        adapter.startListening()
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        adapter.startListening()
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         adapter.stopListening()
+
     }
 
     override fun onResume() {
@@ -58,6 +67,12 @@ class ChatsFragment : Fragment(), ItemClickListener<Chat> {
             addChatDialog.show()
         }
         super.onResume()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        fab.setOnClickListener {}
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -94,18 +109,24 @@ class ChatsFragment : Fragment(), ItemClickListener<Chat> {
         return true
     }
 
-    override fun onItemClick(view: View, data: Chat?) {
-        context?.let { ChatActivity.startActivity(it, data) }
+    override fun onItemClick(viewHolder: FirebaseViewHolder<Chat>) {
+        if (context != null && activity != null) {
+            if (viewHolder is ChatRecyclerAdapter.ChatViewHolder) {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(),
+                        viewHolder.imgView, getString(R.string.util_transition_toolbar_image))
+                ChatActivity.startActivity(requireContext(), viewHolder.entity, options.toBundle())
+            }
+        }
     }
 
-    override fun onLongItemClick(view: View, data: Chat?): Boolean {
+    override fun onLongItemClick(viewHolder: FirebaseViewHolder<Chat>): Boolean {
         activity?.let { activity ->
-            val pm = PopupMenu(activity, view)
+            val pm = PopupMenu(activity, viewHolder.itemView)
             pm.gravity = Gravity.RIGHT
             pm.inflate(R.menu.menu_dialogs)
             pm.setOnMenuItemClickListener {
-                if (it.itemId == R.id.message_delete && data != null) {
-                    DialogsRepository.removeChat(data)
+                if (it.itemId == R.id.message_delete ) {
+                    viewHolder.entity?.let { chat -> viewModel.removeChat(chat.id) }
                     return@setOnMenuItemClickListener true
                 }
                 false

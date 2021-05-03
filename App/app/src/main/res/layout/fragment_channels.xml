@@ -7,12 +7,22 @@
     android:layout_height="match_parent"
     android:background="@color/app_back">
 
-    <include layout="@layout/item_post" android:id="@+id/post"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/channel_rec_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideOverlay"
+        android:fadeScrollbars="true"
+        android:scrollbarSize="2dp"
+        tools:listitem="@layout/item_channel"
+        android:scrollbarThumbVertical="@color/gray"/>
 
-    <com.alexz.messenger.app.ui.views.VoiceView
-        android:id="@+id/view_voice"
+    <ProgressBar
+        android:id="@+id/channel_loading_pb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/post"/>
-
+        android:indeterminateDrawable="@drawable/progressbar"
+        android:visibility="invisible"
+        android:layout_centerInParent="true" />
 </RelativeLayout>

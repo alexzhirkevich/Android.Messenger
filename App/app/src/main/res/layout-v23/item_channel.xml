@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/dialog_cardview_elevation">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackground"
+        android:background="@drawable/drawable_dialogs_bg"
+        tools:context="com.alexz.messenger.app.data.entities.imp.Chat">
+
+        <com.alexz.messenger.app.ui.views.AvatarImageView
+            android:id="@+id/channel_avatar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:padding="5dp"
+            android:src="@drawable/logo256"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/channel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:text="Name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dialog_name_size"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/channel_last_post_date"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/channel_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/chat_last_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sender:"
+            android:maxLines="2"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/dialog_sender_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/channel_name"
+            app:layout_constraintTop_toBottomOf="@id/channel_name"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@id/channel_last_post_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:text="04:20"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/dialog_date_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/channel_name" />
+
+        <TextView
+            android:id="@+id/channel_unread_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:text="1"
+            android:gravity="center"
+            android:textColor="@color/color_background_dark"
+            android:background="@drawable/drawable_oval"
+            android:textSize="@dimen/dialog_unread_size"
+            app:layout_constraintEnd_toEndOf="@+id/channel_last_post_date"
+            app:layout_constraintTop_toBottomOf="@+id/channel_last_post_date" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

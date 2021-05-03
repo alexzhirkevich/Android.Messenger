@@ -33,7 +33,7 @@ class VoiceView : RelativeLayout {
             }
         }
 
-    var uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/messenger-302121.appspot.com/o/test.mp3?alt=media&token=54dbf39a-e58a-4b08-b815-f2bfb139327a")
+    var uri : Uri? = null
     set(value){
         field = value
         if (isPrepared) {
@@ -84,9 +84,6 @@ class VoiceView : RelativeLayout {
 
         wave.setRawData(Random.nextBytes(1024))
 
-        if (context != null) {
-            mediaPlayer.setDataSource(context, uri)
-        }
         mediaPlayer.setAudioAttributes(
                 AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -158,6 +155,7 @@ class VoiceView : RelativeLayout {
 
     private fun prepareAsync() {
         isPreparing = true
+        mediaPlayer.setDataSource(context, uri!!)
         mediaPlayer.setOnPreparedListener {
             isPreparing = false
             isPrepared = true

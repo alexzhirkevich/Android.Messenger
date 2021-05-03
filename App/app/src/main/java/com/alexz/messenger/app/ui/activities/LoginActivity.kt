@@ -2,56 +2,43 @@ package com.alexz.messenger.app.ui.activities
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.lifecycle.ViewModelProvider
-import com.alexz.messenger.app.ui.viewmodels.LoginActivityViewModel
+import com.alexz.messenger.app.data.repo.UiHandler
+import com.alexz.messenger.app.ui.viewmodels.AuthViewModel
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.alexz.messenger.app.util.MetrixUtil
 import com.alexz.messenger.app.util.MyGoogleUtils
 import com.alexz.messenger.app.util.VibrateUtil
-import com.google.android.exoplayer2.util.Log
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.SignInButton
 import com.messenger.app.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var btnGoogleSighIn: SignInButton
-    private lateinit var viewModel: LoginActivityViewModel
-    private lateinit var logo: CardView
-    private lateinit var question: TextView
-    private lateinit var btn1: Button
-    private lateinit var btn2: Button
+    private val viewModel : AuthViewModel by viewModels()
     private var counter = 0
 
-    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //overridePendingTransition(R.anim.anim_alpha_in,R.anim.anim_alpha_out)
         setContentView(R.layout.activity_login)
-        btnGoogleSighIn = findViewById(R.id.btn_google_sign_in)
-        btnGoogleSighIn.setOnClickListener(View.OnClickListener { view: View? -> onGoogleSignIn(view) })
-        btnGoogleSighIn.visibility = View.INVISIBLE
-        question = findViewById(R.id.question)
-        btn1 = findViewById(R.id.button1)
-        btn2 = findViewById(R.id.button2)
-        btn1.visibility = View.INVISIBLE
-        btn2.visibility = View.INVISIBLE
+        btnGoogleSignIn.apply {
+            setOnClickListener(View.OnClickListener { view: View? -> onGoogleSignIn(view) })
+            visibility = View.INVISIBLE
+        }
+        button1.visibility = View.INVISIBLE
+        button2.visibility = View.INVISIBLE
         question.visibility = View.INVISIBLE
-        viewModel = ViewModelProvider(this).get(LoginActivityViewModel::class.java)
-        logo = findViewById(R.id.logo)
         logo.setOnClickListener(this)
         val easter = View.OnClickListener {
             val view1 = LayoutInflater.from(this).inflate(R.layout.easter, logo, false)
@@ -60,8 +47,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             t.duration = Toast.LENGTH_LONG
             t.show()
             question.visibility = View.INVISIBLE
-            btn1.visibility = View.INVISIBLE
-            btn2.visibility = View.INVISIBLE
+            button1.visibility = View.INVISIBLE
+            button2.visibility = View.INVISIBLE
             logo.animate().scaleX(1f).scaleY(1f).setDuration(500).setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationStart(animation: Animator) {
                     super.onAnimationEnd(animation)
@@ -70,22 +57,26 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }).start()
             VibrateUtil.with(this).vibrate(100, VibrateUtil.POWER_LOW)
         }
-        btn1.setOnClickListener(easter)
-        btn2.setOnClickListener(easter)
+        button1.setOnClickListener(easter)
+        button2.setOnClickListener(easter)
     }
 
     private fun updateUI() {
-        Handler(Looper.getMainLooper())
-                .postDelayed({ startActivity(Intent(this, DialogsActivity::class.java)) }, 100)
+        if (intent.action == Intent.ACTION_VIEW && intent.data != null) {
+            UiHandler.postDelayed({ MainActivity.startActivity(this, intent.data) }, 200)
+        } else {
+            UiHandler.postDelayed({ MainActivity.startActivity(this) }, 200)
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        val user = FirebaseUtil.getCurrentFireUser();
+        val user = FirebaseUtil.currentFireUser;
         if (user != null) {
             updateUI()
+//            AuthRepository.updateUserInfo()
         } else {
-            btnGoogleSighIn.visibility = View.VISIBLE
+            btnGoogleSignIn.visibility = View.VISIBLE
         }
     }
 
@@ -104,18 +95,27 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val errToast = Toast.makeText(this, getString(R.string.error_google_login), Toast.LENGTH_LONG)
         when (requestCode) {
-            MyGoogleUtils.REQ_SIGN_IN -> if (resultCode == Activity.RESULT_OK && data != null) {
-                viewModel.googleLogin(data)
-                        .addOnSuccessResultListener() {
-                            btnGoogleSighIn.visibility = View.GONE
-                            updateUI()
-                            Log.getThrowableString(Exception())
-                        }
-                        .addOnErrorResultListener {
-                            Toast.makeText(this@LoginActivity, getString(it), Toast.LENGTH_LONG).show()
-                        }
-            } else Toast.makeText(this, getString(R.string.error_google_login), Toast.LENGTH_LONG).show()
+            AuthViewModel.REQ_SIGN_IN -> if (resultCode == Activity.RESULT_OK && data != null) {
+                viewModel.getGoogleSignInAccount(data)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            viewModel.login(it)
+                                    .doOnSuccess {
+                                        btnGoogleSignIn.visibility = View.GONE
+                                        updateUI()
+                                    }.doOnError {
+                                        errToast.show()
+                                    }
+                                    .subscribeOn(Schedulers.newThread())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe()
+                        }, { errToast.show() })
+
+            } else
+                errToast.show()
         }
     }
 
@@ -127,11 +127,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         counter = savedInstanceState.getInt(STR_COUNTER)
-        btnGoogleSighIn = findViewById(R.id.btn_google_sign_in)
-        logo = findViewById(R.id.logo)
-        question = findViewById(R.id.question)
-        btn1 = findViewById(R.id.button1)
-        btn2 = findViewById(R.id.button2)
     }
 
     override fun onClick(view: View) {
@@ -207,11 +202,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             120 -> {
                 counter++
                 question.setText(R.string.easter_kitties)
-                btn1.setText(R.string.yes)
-                btn2.setText(R.string.easter_yes)
+                button1.setText(R.string.yes)
+                button2.setText(R.string.easter_yes)
                 question.visibility = View.VISIBLE
-                btn1.visibility = View.VISIBLE
-                btn2.visibility = View.VISIBLE
+                button1.visibility = View.VISIBLE
+                button2.visibility = View.VISIBLE
                 VibrateUtil.with(this).vibrate(50, VibrateUtil.POWER_LOW)
                 logo.animate().scaleX(0f).scaleY(0f).setDuration(500).setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {

@@ -10,9 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        tools:context="com.alexz.messenger.app.data.model.imp.Chat">
+        tools:context="com.alexz.messenger.app.data.entities.imp.Chat">
 
         <com.alexz.messenger.app.ui.views.AvatarImageView
+            android:transitionName="@string/util_transition_toolbar_image"
             android:id="@+id/dialog_avatar"
             android:layout_width="70dp"
             android:layout_height="70dp"
@@ -28,6 +29,7 @@
 
         <TextView
             android:id="@+id/dialog_name"
+            android:transitionName="@string/util_transition_toolbar_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

@@ -1,56 +1,39 @@
 package com.alexz.messenger.app.data.repo
 
-import com.alexz.messenger.app.data.model.imp.Message
-import com.alexz.messenger.app.util.FirebaseUtil
-import com.google.android.gms.tasks.Task
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.alexz.messenger.app.data.LocalDatabase
+import com.alexz.messenger.app.data.entities.dao.MessagesDao
+import com.alexz.messenger.app.data.entities.imp.Message
+import com.alexz.messenger.app.data.providers.imp.FirestoreMessagesProvider
+import com.alexz.messenger.app.data.providers.interfaces.MessagesProvider
+import com.alexz.messenger.app.util.with
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
-object MessagesRepository {
-    fun getMessagesReference(chatId: String): DatabaseReference {
-        return FirebaseDatabase.getInstance().reference
-                .child(FirebaseUtil.CHATS)
-                .child(chatId)
-                .child(FirebaseUtil.MESSAGES)
+class MessagesRepository(
+        private val provider: MessagesProvider = FirestoreMessagesProvider(),
+        private val dao : MessagesDao = LocalDatabase.INSTANCE.messagesDao()) : MessagesProvider {
+
+    override fun getMessage(chatId: String, msgId: String): Observable<Message> = Observable.concatArray(
+            dao.get(msgId).toObservable(),provider.getMessage(chatId,msgId)
+    )
+
+    override fun sendMessage(message: Message): Completable =
+            provider.sendMessage(message).andThen { dao.add(message) }
+
+    override fun lastMessage(chatId: String): Observable<Message> = Observable.create {
+        dao.lastMessageId(chatId).subscribe(
+                { id ->
+                    dao.get(id).subscribe(
+                            { msg ->
+                                it.onNext(msg)
+                                it.with(provider.lastMessage(chatId))
+                            },
+                            { _ -> it.with(provider.lastMessage(chatId)) }
+                    )
+                },
+                { _ -> it.with(provider.lastMessage(chatId)) })
     }
 
-    @JvmStatic
-    fun getChatInfo(chatId: String): Task<DataSnapshot> {
-        return FirebaseDatabase.getInstance().reference
-                .child(FirebaseUtil.CHATS)
-                .child(chatId)
-                .child(FirebaseUtil.INFO)
-                .get()
-    }
-
-    @JvmStatic
-    fun sendMessage(m: Message, replaceText: String) {
-        val ref = FirebaseDatabase.getInstance().reference
-                .child(FirebaseUtil.CHATS)
-                .child(m.chatId)
-                .child(FirebaseUtil.MESSAGES).push()
-        m.id = ref.key!!
-        m.senderId = FirebaseUtil.getCurrentUser().id
-        ref.setValue(m)
-        if (m.text.isEmpty()) {
-            m.text = replaceText
-        }
-        FirebaseDatabase.getInstance().reference
-                .child(FirebaseUtil.CHATS)
-                .child(m.chatId)
-                .child(FirebaseUtil.INFO)
-                .child(FirebaseUtil.LASTMESSAGE)
-                .setValue(m)
-    }
-
-    @JvmStatic
-    fun deleteMessage(item: Message) {
-        FirebaseDatabase.getInstance().reference
-                .child(FirebaseUtil.CHATS)
-                .child(item.chatId)
-                .child(FirebaseUtil.MESSAGES)
-                .child(item.id)
-                .removeValue()
-    }
+    override fun deleteMessage(chatId: String, msgId: String): Completable =
+            provider.deleteMessage(chatId,msgId).andThen { dao.delete(msgId) }
 }

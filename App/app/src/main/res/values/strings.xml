@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Chatik bez backenda</string>
+    <string name="app_name">Firebase Messenger</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -16,7 +16,7 @@
     <string name="menu_chat_users">Chat members</string>
 
     <string name="action_message_copied">Message copied to clipboard</string>
-    <string name="action_chat_id_copied">Chat id copied to clipboard</string>
+    <string name="action_link_copied">Link copied to clipboard</string>
 
     <string name="title_new_chat">New chat</string>
     <string name="title_find_chat">Find chat</string>
@@ -74,6 +74,7 @@
     <string name="error_empty_message">Message can\'t be empty</string>
     <string name="error_empty_input">Input is empty</string>
     <string name="error_chat_not_found">Chat not found</string>
+    <string name="error_post_creation">Failed to create post</string>
 
     <!-- Preference Titles -->
     <string name="header_theme">Theme</string>
@@ -91,6 +92,19 @@
 
     <string name="util_transition_image_fullscreen" translatable="false">util_transition_image_fullscreen</string>
     <string name="util_transition_video_fullscreen" translatable="false">util_transition_video_fullscreen</string>
+    <string name="util_transition_toolbar_image" translatable="false">util_transition_toolbar_image</string>
+    <string name="util_transition_toolbar_text" translatable="false">util_transition_toolbar_text</string>
+
     <string name="util_lorem_long" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="title_voice">Voice</string>
+    <string name="error_voice_send">Failed to send voice message</string>
+    <string name="hint_text">Text…</string>
+    <string name="msg_cant_post_no_more">You no more can post to this channel</string>
+    <string name="button_add_content">Add media</string>
+    <string name="menu_channel_edit">Edit</string>
+    <string name="error_channel_create">Channel creation failed</string>
+    <string name="error_channel_join">Failed to join the channel</string>
+    <string name="error_chat_join">Failed to join the chat</string>
+    <string name="error_image_load">Failed to load image</string>
 </resources>
 

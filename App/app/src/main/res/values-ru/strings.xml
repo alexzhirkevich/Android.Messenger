@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Чатик без бэкэнда</string>
+    <string name="app_name">Firebase Messenger</string>
     <string name="navigation_drawer_open">Открыть панель навигации</string>
     <string name="navigation_drawer_close">Закрыть панель навигации</string>
     <string name="nav_header_title">Android Studio</string>
@@ -16,7 +16,7 @@
     <string name="menu_chat_users">Список участников</string>
 
     <string name="action_message_copied">Сообщение скопировано в буфер обмена</string>
-    <string name="action_chat_id_copied">Код приглашения скопирован в буфер обмена</string>
+    <string name="action_link_copied">Ссылка скопирована в буфер обмена</string>
 
     <string name="title_new_chat">Создать чат</string>
     <string name="title_find_chat">Найти чат</string>
@@ -54,6 +54,8 @@
     <string name="error_empty_input">Ввод пуст</string>
     <string name="error_chat_not_found">Чат не найден</string>
     <string name="error_upload_file">Не удалось загрузить файл</string>
+    <string name="error_post_creation">Не удалось опубликовать пост</string>
+
 
     <string name="easter_1">I don\'t have any function.</string>
     <string name="easter_2">I\'m not joking bro. Stop this</string>
@@ -87,8 +89,16 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-
-
+    <string name="title_voice">Голосовое сообщение</string>
+    <string name="error_voice_send">Ошибка отправки</string>
+    <string name="hint_text">Текст…</string>
+    <string name="msg_cant_post_no_more">Вы больше не можете создавать посты в этом канале</string>
+    <string name="button_add_content">Добавить медиа</string>
+    <string name="menu_channel_edit">Редактировать</string>
+    <string name="error_channel_create">Не удалось создать чат</string>
+    <string name="error_channel_join">Не удалось присоединиться к каналу</string>
+    <string name="error_chat_join">Не удалось присоединиться к чату</string>
+    <string name="error_image_load">Не удалось загрузить изображение</string>
 
 
 </resources>

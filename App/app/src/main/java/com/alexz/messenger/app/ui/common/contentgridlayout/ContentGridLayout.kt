@@ -10,7 +10,7 @@ import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityOptionsCompat
 import androidx.gridlayout.widget.GridLayout
-import com.alexz.messenger.app.data.model.interfaces.IMediaContent
+import com.alexz.messenger.app.data.entities.interfaces.IMediaContent
 import com.alexz.messenger.app.ui.activities.FullscreenImageActivity
 import com.alexz.messenger.app.ui.activities.FullscreenVideoActivity
 import com.alexz.messenger.app.util.MetrixUtil
@@ -24,233 +24,256 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import com.messenger.app.BuildConfig
 import com.messenger.app.R
-import java.util.*
 
-class ContentGridLayout : GridLayout, ContentHolder {
-    private val contents = ArrayList<IMediaContent>()
+class ContentGridLayout : GridLayout {
+
+    private val contents = HashMap<IMediaContent, View>()
     private var paddings = 0
 
-    override var contentClickListener: ContentClickListener? = null
+    private var recycledViews = HashMap<Int, MutableSet<View>>()
 
+    val content: List<IMediaContent>
+        get() = contents.keys.toList()
 
-    constructor(context: Context) : super(context) {
-        init(context)
-    }
+    var contentClickListener: ContentClickListener? = null
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context)
-    }
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init(context)
-    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     fun clearContent() {
+        //contents.forEach { recycle(it.key.type, it.value) }
         contents.clear()
     }
 
     fun addContent(content: IMediaContent) {
         if (contents.size >= 10) {
-            contents.removeAt(0)
+            //val last = this.content.last()
+            //recycle(last.type, contents[last])
+            contents.remove(this.content.last())
         }
-        contents.add(content)
+        contents[content] = createViewForContent(content)
     }
 
     fun reGroup() {
-        removeAllViews()
-        when (contents.size) {
-            1 -> {
-                rowCount = 1
-                columnCount = 1
-                val view = createViewForContent(contents[0])
-                val params = LayoutParams()
-                params.columnSpec = spec(UNDEFINED, 1f)
-                params.rowSpec = spec(UNDEFINED, 1f)
-                addView(view, params)
-                requestLayout()
-            }
-            2 -> {
-                rowCount = 1
-                columnCount = 2
-                var i = 0
-                while (i < 2) {
-                    val view = createViewForContent(contents[i])
-                    val params = view.layoutParams as LayoutParams
-                    params.columnSpec = spec(UNDEFINED, 1f)
-                    params.rowSpec = spec(UNDEFINED, 1f)
-                    view.requestLayout()
-                    addView(view)
-                    i++
-                }
-            }
-            3, 4 -> {
-                columnCount = 2
-                rowCount = contents.size - 1
-                var view = createViewForContent(contents[0])
-                var params = view.layoutParams as LayoutParams
-                params.columnSpec = spec(UNDEFINED, 1, contents.size - 1.toFloat())
-                params.rowSpec = spec(UNDEFINED, contents.size - 1, contents.size - 1.toFloat())
-                view.requestLayout()
-                addView(view)
-                var i = 1
-                while (i < contents.size) {
-                    view = createViewForContent(contents[i])
-                    params = view.layoutParams as LayoutParams
-                    params.columnSpec = spec(UNDEFINED, 1, 1f)
-                    params.rowSpec = spec(UNDEFINED, 1, 1f)
-                    view.requestLayout()
-                    addView(view)
-                    i++
-                }
-            }
-            5 -> {
-                columnCount = 3
-                rowCount = 3
-                var view = createViewForContent(contents[0])
-                var params = view.layoutParams as LayoutParams
-                params.columnSpec = spec(UNDEFINED, 2, 1f)
-                params.rowSpec = spec(UNDEFINED, 2, 2f)
-                view.requestLayout()
-                addView(view)
-                view = createViewForContent(contents[1])
-                params = view.layoutParams as LayoutParams
-                params.columnSpec = spec(UNDEFINED, 1, 1f)
-                params.rowSpec = spec(UNDEFINED, 2, 2f)
-                view.requestLayout()
-                addView(view)
-                var i = 2
-                while (i < 5) {
-                    view = createViewForContent(contents[i])
-                    params = view.layoutParams as LayoutParams
-                    params.columnSpec = spec(UNDEFINED, 1, 1f)
-                    params.rowSpec = spec(UNDEFINED, 1, 1f)
-                    view.requestLayout()
-                    addView(view)
-                    i++
-                }
-            }
-            6 -> {
-                columnCount = 3
-                rowCount = 3
-                var view = createViewForContent(contents[0])
-                var params = view.layoutParams as LayoutParams
-                params.columnSpec = spec(UNDEFINED, 2, 1f)
-                params.rowSpec = spec(UNDEFINED, 2, 2f)
-                view.requestLayout()
-                addView(view)
-                var i = 1
-                while (i < 6) {
-                    view = createViewForContent(contents[i])
-                    params = view.layoutParams as LayoutParams
-                    params.columnSpec = spec(UNDEFINED, 1, 1f)
-                    params.rowSpec = spec(UNDEFINED, 1, 1f)
-                    view.requestLayout()
-                    addView(view)
-                    i++
-                }
-            }
-            7 -> {
-                columnCount = 3
-                rowCount = 4
-                var view = createViewForContent(contents[0])
-                var params = view.layoutParams as LayoutParams
-                params.columnSpec = spec(UNDEFINED, 3, 1f)
-                params.rowSpec = spec(UNDEFINED, 3, 3f)
-                view.requestLayout()
-                addView(view)
-                var i = 1
-                while (i < 7) {
-                    view = createViewForContent(contents[i])
-                    params = view.layoutParams as LayoutParams
-                    params.columnSpec = spec(UNDEFINED, 1, 1f)
-                    params.rowSpec = spec(UNDEFINED, 1, 1f)
-                    view.requestLayout()
-                    addView(view)
-                    i++
-                }
-            }
-            8 -> {
-                columnCount = 2
-                rowCount = 4
-                var i = 0
-                while (i < 8) {
-                    val view = createViewForContent(contents[i])
-                    val params = view.layoutParams as LayoutParams
-                    params.columnSpec = spec(UNDEFINED, 1, 1f)
-                    params.rowSpec = spec(UNDEFINED, 1, 1f)
-                    view.requestLayout()
-                    addView(view)
-                    i++
-                }
-            }
-            9 -> {
-                columnCount = 6
-                rowCount = 4
-                var i = 0
-                while (i < 9) {
-                    val view = createViewForContent(contents[i])
-                    val params = view.layoutParams as LayoutParams
-                    if (i < 6) {
-                        params.columnSpec = spec(UNDEFINED, 3, 3f)
-                        params.rowSpec = spec(UNDEFINED, 1, 2f)
-                    } else {
-                        params.columnSpec = spec(UNDEFINED, 2, 2f)
-                        params.rowSpec = spec(UNDEFINED, 1, 1f)
+        try {
+            removeAllViewsInLayout()
+            when (contents.size) {
+                1 -> {
+                    rowCount = 1
+                    columnCount = 1
+                    val view = contents[content[0]]
+                    (view?.layoutParams as LayoutParams?)?.apply {
+                        columnSpec = spec(UNDEFINED, 1f)
+                        rowSpec = spec(UNDEFINED, 1f)
                     }
-                    view.requestLayout()
+                    view?.requestLayout()
                     addView(view)
-                    i++
                 }
-            }
-            10 -> {
-                columnCount = 6
-                rowCount = 4
-                var i = 0
-                while (i < 10) {
-                    val view = createViewForContent(contents[i])
-                    val params = view.layoutParams as LayoutParams
-                    if (i < 4) {
-                        params.columnSpec = spec(UNDEFINED, 3, 3f)
-                        params.rowSpec = spec(UNDEFINED, 1, 2f)
-                    } else {
-                        params.columnSpec = spec(UNDEFINED, 2, 2f)
-                        params.rowSpec = spec(UNDEFINED, 1, 1f)
+                2 -> {
+                    rowCount = 1
+                    columnCount = 2
+                    for (i in 0..1) {
+                        val view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            columnSpec = spec(UNDEFINED, 1f)
+                            rowSpec = spec(UNDEFINED, 1f)
+                        }
+                        view?.requestLayout()
+                        addView(view)
                     }
-                    view.requestLayout()
+                }
+                3, 4 -> {
+                    columnCount = 2
+                    rowCount = contents.size - 1
+                    var view = contents[content[0]]
+                    (view?.layoutParams as LayoutParams?)?.apply {
+                        columnSpec = spec(UNDEFINED, 1, contents.size - 1.toFloat())
+                        rowSpec = spec(UNDEFINED, contents.size - 1, contents.size - 1.toFloat())
+                    }
+                    view?.requestLayout()
                     addView(view)
-                    i++
+
+                    for (i in 1 until contents.size) {
+                        view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            columnSpec = spec(UNDEFINED, 1, 1f)
+                            rowSpec = spec(UNDEFINED, 1, 1f)
+                        }
+                        view?.requestLayout()
+                        addView(view)
+                    }
+                }
+                5 -> {
+                    columnCount = 3
+                    rowCount = 3
+                    for (i in 0..1) {
+                        val view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            columnSpec = spec(UNDEFINED, 2 - i, 1f)
+                            rowSpec = spec(UNDEFINED, 2, 2f)
+                        }
+                        view?.requestLayout()
+                        addView(view)
+                    }
+                    for (i in 2 until 5) {
+                        val view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            columnSpec = spec(UNDEFINED, 1, 1f)
+                            rowSpec = spec(UNDEFINED, 1, 1f)
+                        }
+                        view?.requestLayout()
+                        addView(view)
+                    }
+                }
+                6 -> {
+                    columnCount = 3
+                    rowCount = 3
+                    var view = contents[content[0]]
+                    (view?.layoutParams as LayoutParams?)?.apply {
+                        columnSpec = spec(UNDEFINED, 2, 1f)
+                        rowSpec = spec(UNDEFINED, 2, 2f)
+                    }
+                    view?.requestLayout()
+                    addView(view)
+                    for (i in 1 until 6) {
+                        view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            columnSpec = spec(UNDEFINED, 1, 1f)
+                            rowSpec = spec(UNDEFINED, 1, 1f)
+                        }
+                        view?.requestLayout()
+                        addView(view)
+                    }
+                }
+                7 -> {
+                    columnCount = 3
+                    rowCount = 4
+                    var view = contents[content[0]]
+                    (view?.layoutParams as LayoutParams?)?.apply {
+                        columnSpec = spec(UNDEFINED, 3, 1f)
+                        rowSpec = spec(UNDEFINED, 3, 3f)
+                    }
+                    view?.requestLayout()
+                    addView(view)
+
+                    for (i in 1 until 7) {
+                        view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            columnSpec = spec(UNDEFINED, 1, 1f)
+                            rowSpec = spec(UNDEFINED, 1, 1f)
+                        }
+                        view?.requestLayout()
+                        addView(view)
+                    }
+                }
+                8 -> {
+                    columnCount = 2
+                    rowCount = 4
+                    for (i in 0 until 8) {
+                        val view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            columnSpec = spec(UNDEFINED, 1, 1f)
+                            rowSpec = spec(UNDEFINED, 1, 1f)
+                        }
+                        view?.requestLayout()
+                        addView(view)
+                    }
+                }
+                9 -> {
+                    columnCount = 6
+                    rowCount = 4
+                    for (i in 0 until 9) {
+                        val view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            if (i < 6) {
+                                columnSpec = spec(UNDEFINED, 3, 3f)
+                                rowSpec = spec(UNDEFINED, 1, 2f)
+                            } else {
+                                columnSpec = spec(UNDEFINED, 2, 2f)
+                                rowSpec = spec(UNDEFINED, 1, 1f)
+                            }
+                        }
+                        view?.requestLayout()
+                        addView(view)
+                    }
+                }
+                10 -> {
+                    columnCount = 6
+                    rowCount = 4
+                    for (i in 0 until 10) {
+                        val view = contents[content[i]]
+                        (view?.layoutParams as LayoutParams?)?.apply {
+                            if (i < 4) {
+                                columnSpec = spec(UNDEFINED, 3, 3f)
+                                rowSpec = spec(UNDEFINED, 1, 2f)
+                            } else {
+                                columnSpec = spec(UNDEFINED, 2, 2f)
+                                rowSpec = spec(UNDEFINED, 1, 1f)
+                            }
+                        }
+                        view?.requestLayout()
+                        addView(view)
+                    }
+                }
+                else -> if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "Invalid content count: " + contents.size)
                 }
             }
-            else -> if (BuildConfig.DEBUG) {
-                Log.d(TAG, "Invalid content count: " + contents.size)
-            }
+            requestLayout()
+            invalidate()
+        } catch (ignore: Exception) {
         }
     }
 
-    private fun init(context: Context) {
+    init {
         orientation = HORIZONTAL
         paddings = MetrixUtil.dpToPx(context, 1)
+    }
+
+    fun setFullscreenTransition(transitionActivity: Activity?) {
+        contentClickListener = object : ContentClickListener {
+            override fun onImageClick(view: ImageView, content: IMediaContent) {
+                if (transitionActivity != null) {
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            transitionActivity, view, context.getString(R.string.util_transition_image_fullscreen))
+                    FullscreenImageActivity.startActivity(transitionActivity, content.url, options.toBundle())
+                }
+            }
+
+            override fun onVideoClick(playerView: PlayerView, content: IMediaContent) {
+                if (transitionActivity != null) {
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            transitionActivity, playerView, context.getString(R.string.util_transition_video_fullscreen))
+                    FullscreenVideoActivity.startActivity(transitionActivity, content.url, options.toBundle())
+                }
+            }
+        }
     }
 
     private fun createViewForContent(content: IMediaContent): View {
         val view = when (content.type) {
             IMediaContent.IMAGE -> {
+                //val v = getRecycled(IMediaContent.IMAGE)
                 val view = ImageView(context)
+                view.scaleType = ImageView.ScaleType.CENTER_CROP
                 view.transitionName = resources.getString(R.string.util_transition_image_fullscreen)
+
                 Glide.with(this)
                         .load(content.url)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .centerCrop()
                         .into(view)
-                view.setOnClickListener { v: View? ->
-                    if (contentClickListener != null) {
-                        contentClickListener!!.onImageClick(view, content)
-                    }
+
+                view.setOnClickListener {
+                    contentClickListener?.onImageClick(view, content)
                 }
                 view
             }
             IMediaContent.VIDEO -> {
-                val view = PlayerView(context)
+                val view = /*getRecycled(IMediaContent.IMAGE) as PlayerView? ?:*/ PlayerView(context)
                 view.useArtwork = true
                 view.defaultArtwork = AppCompatResources.getDrawable(context, R.drawable.logo512)
                 view.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH
@@ -277,36 +300,37 @@ class ContentGridLayout : GridLayout, ContentHolder {
             }
             else -> throw IllegalArgumentException("Invalid MediaContent type: ${content.type}")
         }
-        val params = LayoutParams()
-        params.width = 0
-        params.height = 0
+        view.layoutParams = LayoutParams().apply {
+        }
         view.setPadding(paddings, paddings, paddings, paddings)
-        view.layoutParams = params
         view.isClickable = true
         view.isFocusable = true
         view.isLongClickable = true
         return view
     }
 
-    fun setFullscreenTransition(transitionActivity: Activity?) {
-        contentClickListener = object : ContentClickListener {
-            override fun onImageClick(view: ImageView, content: IMediaContent) {
-                if (transitionActivity != null) {
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            transitionActivity, view, context.getString(R.string.util_transition_image_fullscreen))
-                    FullscreenImageActivity.startActivity(transitionActivity, content.url, options.toBundle())
-                }
-            }
+//    private fun getRecycled(type: Int) = synchronized(recycledViews) {
+//        try {
+//            val set = recycledViews[type]
+//            if (set != null && set.isNotEmpty()) {
+//                val v = recycledViews[type]?.first()
+//                recycledViews[type]?.remove(v)
+//                v
+//            } else null
+//        } catch (ignore: Exception) {
+//            null
+//        }
+//    }
 
-            override fun onVideoClick(playerView: PlayerView, content: IMediaContent) {
-                if (transitionActivity != null) {
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            transitionActivity, playerView, context.getString(R.string.util_transition_video_fullscreen))
-                    FullscreenVideoActivity.startActivity(transitionActivity, content.url, options.toBundle())
-                }
-            }
-        }
-    }
+//    private fun recycle(type:Int,view:View?) = synchronized(recycledViews){
+//        if (view != null) {
+//            if (recycledViews.containsKey(type)) {
+//                recycledViews[type]?.add(view)
+//            } else {
+//                recycledViews[type] = mutableSetOf(view)
+//            }
+//        }
+//    }
 
     companion object {
         private val TAG = ContentGridLayout::class.java.simpleName

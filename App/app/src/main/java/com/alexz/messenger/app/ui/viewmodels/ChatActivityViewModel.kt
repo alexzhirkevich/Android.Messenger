@@ -1,65 +1,45 @@
 package com.alexz.messenger.app.ui.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.ClipData
+import android.content.ClipboardManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModel
-import com.alexz.firerecadapter.Listenable
-import com.alexz.messenger.app.data.model.imp.Chat
-import com.alexz.messenger.app.data.model.imp.Message
-import com.alexz.messenger.app.data.repo.DialogsRepository.getChat
+import com.alexz.messenger.app.ChatApplication.Companion.AppContext
+import com.alexz.messenger.app.data.entities.imp.Chat
+import com.alexz.messenger.app.data.entities.imp.Message
+import com.alexz.messenger.app.data.providers.interfaces.ChatsProvider
+import com.alexz.messenger.app.data.providers.interfaces.MessagesProvider
+import com.alexz.messenger.app.data.providers.interfaces.StorageProvider
+import com.alexz.messenger.app.data.repo.ChatsRepository
 import com.alexz.messenger.app.data.repo.MessagesRepository
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.messenger.app.BuildConfig
+import com.alexz.messenger.app.data.repo.StorageRepository
+import com.alexz.messenger.app.util.FirebaseUtil
+import io.reactivex.rxjava3.core.Observable
 
-class ChatActivityViewModel : ViewModel(), Listenable {
+class ChatActivityViewModel(
+        private val messagesProvider: MessagesProvider = MessagesRepository(),
+        private val storageProvider: StorageProvider = StorageRepository(),
+        private val chatsProvider: ChatsProvider =  ChatsRepository()
+) : ViewModel() ,
+        MessagesProvider by messagesProvider,
+        StorageProvider by storageProvider,
+        ChatsProvider by chatsProvider{
 
-    var chatId: String? = null
-    val chatChangingState: LiveData<Chat>
-        get() = chatInfoChanged
 
-    private var chatRef: DatabaseReference? = null
-    private val chatInfoChanged = MutableLiveData<Chat>()
-    private var listener: ValueEventListener = object : ValueEventListener {
-        override fun onDataChange(snapshot: DataSnapshot) {
-            if (snapshot.exists()) {
-                chatInfoChanged.postValue(snapshot.getValue(Chat::class.java))
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Chat info updated")
-                }
-            }
-        }
+    fun createObserver(id: String): Observable<Chat> = chatsProvider.getChat(id)
 
-        override fun onCancelled(error: DatabaseError) {
-            if (BuildConfig.DEBUG) {
-                Log.e(TAG, "Error while updating chat info")
-            }
+
+    fun copyInviteLink(chatId: String) {
+        val cd = ClipData.newPlainText("fm-chat-invite", FirebaseUtil.createChatInviteLink(chatId))
+        getSystemService(AppContext, ClipboardManager::class.java)?.apply {
+            setPrimaryClip(cd)
         }
     }
 
-    override fun startListening() {
-        chatId?.let {
-            chatRef = getChat(it)
-            chatRef?.addValueEventListener(listener)
+    fun copyMessage( msg: Message) {
+        val cd = ClipData.newPlainText("Msg from " + msg.senderId, msg.text)
+        getSystemService(AppContext,ClipboardManager::class.java)?.apply {
+            setPrimaryClip(cd)
         }
-    }
-
-    override fun stopListening() {
-        listener.let { chatRef?.removeEventListener(it) }
-    }
-
-    fun sendMessage(m: Message, replace: String) {
-        MessagesRepository.sendMessage(m, replace)
-    }
-
-    fun deleteMessage(m: Message?) {
-        MessagesRepository.deleteMessage(m!!)
-    }
-
-    companion object {
-        private val TAG = ChatActivityViewModel::class.java.simpleName
     }
 }

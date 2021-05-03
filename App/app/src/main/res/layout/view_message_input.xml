@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/message_input_height">
 
     <FrameLayout
         android:layout_width="@dimen/message_input_height"
@@ -15,17 +15,18 @@
         android:layout_height="@dimen/message_input_height"
         android:indeterminateDrawable="@drawable/progressbar"
         android:visibility="invisible"/>
-    <ImageButton
-        android:id="@+id/button_message_attach"
-        android:background="@android:color/transparent"
-        android:layout_width="@dimen/message_input_height"
-        android:layout_height="@dimen/message_input_height"
-        android:layout_gravity="bottom"
-        android:src="@drawable/ic_attach"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="1dp"/>
+
+        <ImageButton
+            android:id="@+id/button_message_attach"
+            android:background="@drawable/transparent_ripple_circle"
+            android:layout_width="@dimen/message_input_height"
+            android:layout_height="@dimen/message_input_height"
+            android:layout_gravity="bottom"
+            android:src="@drawable/ic_attach"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="1dp"/>
     </FrameLayout>
 
 
@@ -52,11 +53,10 @@
         android:layout_height="@dimen/message_input_height"
         android:layout_gravity="bottom"
         android:layout_marginEnd="5dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/transparent_ripple_circle"
         android:padding="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_send"
-        android:tint="?attr/colorPrimary" />
-
+        android:src="@drawable/ic_mic"
+        android:tint="?attr/colorPrimary"/>
 
 </LinearLayout>

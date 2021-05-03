@@ -5,27 +5,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.alexz.firerecadapter.FirebaseMapRecyclerAdapter
-import com.alexz.firerecadapter.FirebaseViewHolder
-import com.alexz.messenger.app.data.model.imp.User
-import com.alexz.messenger.app.data.repo.UserListRepository.getUser
-import com.alexz.messenger.app.data.repo.UserListRepository.getUsers
+import com.alexz.firerecadapter.AdapterCallback
+import com.alexz.firerecadapter.firestore.FirestoreMapRecyclerAdapter
+import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
+import com.alexz.messenger.app.data.LocalDatabase
+import com.alexz.messenger.app.data.entities.imp.User
 import com.alexz.messenger.app.ui.adapters.UserListRecyclerAdapter.UserViewHolder
 import com.alexz.messenger.app.ui.views.AvatarImageView
-import com.alexz.messenger.app.util.DateUtil
-import com.google.firebase.database.Query
+import com.alexz.messenger.app.util.FirebaseUtil.USERS
+import com.alexz.messenger.app.util.FirebaseUtil.chatsCollection
+import com.alexz.messenger.app.util.FirebaseUtil.usersCollection
+import com.alexz.messenger.app.util.getTime
+import com.google.firebase.firestore.DocumentReference
 import com.messenger.app.R
-import java.util.*
 
 class UserListRecyclerAdapter(private val chatId: String) :
-        FirebaseMapRecyclerAdapter<User, UserViewHolder>(User::class.java) {
-    override fun onCreateKeyQuery(): Query {
-        return getUsers(chatId)
+        FirestoreMapRecyclerAdapter<User, UserViewHolder>(User::class.java,
+                chatsCollection.document(chatId).collection(USERS)
+        ) {
+
+    init {
+        adapterCallback = object : AdapterCallback<User> {
+            override fun onItemAdded(item: User) {
+               usersDao.add(item)
+            }
+
+            override fun onItemRemoved(item: User) {
+                usersDao.delete(item.id)
+            }
+
+            override fun onItemChanged(item: User) {
+                usersDao.add(item)
+            }
+        }
     }
 
-    override fun onCreateModelQuery(modelId: String): Query {
-        return getUser(modelId)
-    }
+    override fun onCreateEntityReference(id: String): DocumentReference =
+            usersCollection.document(id)
 
     override fun onCreateClickableViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
@@ -37,17 +53,21 @@ class UserListRecyclerAdapter(private val chatId: String) :
         private val name: TextView = itemView.findViewById(R.id.user_name)
         private val online: TextView = itemView.findViewById(R.id.user_last_online)
 
-        override fun bind(model: User) {
-            super.bind(model)
-            if (model.imageUri.isNotEmpty()) {
-                avatar.setImageURI(Uri.parse(model.imageUri))
+        override fun bind(entity: User) {
+            super.bind(entity)
+            if (entity.imageUri.isNotEmpty()) {
+                avatar.setImageURI(Uri.parse(entity.imageUri))
             }
-            name.text = model.name
-            if (model.isOnline) {
+            name.text = entity.name
+            if (entity.isOnline) {
                 online.text = online.resources.getString(R.string.title_online)
             } else {
-                online.text = DateUtil.getTime(Date(model.lastOnline))
+                online.text = getTime(entity.lastOnline)
             }
         }
+    }
+
+    companion object{
+        val usersDao = LocalDatabase.INSTANCE.usersDao()
     }
 }

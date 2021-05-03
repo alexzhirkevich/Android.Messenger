@@ -11,10 +11,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/drawable_dialogs_bg"
         android:foreground="?android:selectableItemBackground"
-        tools:context="com.alexz.messenger.app.data.model.imp.Chat"
+        tools:context="com.alexz.messenger.app.data.entities.imp.Chat"
         android:elevation="5dp">
 
         <com.alexz.messenger.app.ui.views.AvatarImageView
+            android:transitionName="@string/util_transition_toolbar_image"
             android:id="@id/dialog_avatar"
             android:layout_width="70dp"
             android:layout_height="70dp"
