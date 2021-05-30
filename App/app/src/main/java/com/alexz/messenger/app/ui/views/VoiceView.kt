@@ -89,7 +89,7 @@ class VoiceView : RelativeLayout {
                         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                         .setUsage(AudioAttributes.USAGE_MEDIA)
                         .build()
-        );
+        )
 
         progressAnim = ObjectAnimator.ofFloat(wave, "progress", 0F, 100F).apply {
             interpolator = LinearInterpolator()

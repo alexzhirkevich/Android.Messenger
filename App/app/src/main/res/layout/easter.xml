@@ -6,20 +6,20 @@
     android:gravity="center"
     android:background="@color/black">
 
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/kitty"
-        android:scaleType="centerCrop">
-    </ImageView>
+<!--    <ImageView-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:src="@drawable/kitty"-->
+<!--        android:scaleType="centerCrop">-->
+<!--    </ImageView>-->
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text = "@string/easter_13"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textColor="@color/white">
-    </TextView>
+<!--    <TextView-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text = "@string/easter_13"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textColor="@color/white">-->
+<!--    </TextView>-->
 
 </LinearLayout>

@@ -40,12 +40,15 @@ abstract class FirestoreMapRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHo
                 onEndLoading()
             } else {
                 modelsCount = snapshot?.size() ?: -1
+                if (modelsCount <=0){
+                    onEndLoading()
+                }
                 snapshot?.documentChanges?.forEach { dc ->
                     when (dc.type) {
                         DocumentChange.Type.ADDED -> observe(dc.document.id)
                         DocumentChange.Type.REMOVED -> removeObserver(dc.document.id)
-                        DocumentChange.Type.MODIFIED ->
-                            removeObserver(dc.document.id).also { observe(dc.document.id) }
+                        DocumentChange.Type.MODIFIED -> removeObserver(dc.document.id)
+                                .also { observe(dc.document.id) }
                     }
                 }
             }

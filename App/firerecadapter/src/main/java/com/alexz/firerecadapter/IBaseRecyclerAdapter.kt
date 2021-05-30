@@ -25,7 +25,6 @@ interface IBaseRecyclerAdapter<Entity : IEntity, VH : IFirebaseViewHolder<Entity
     var adapterCallback: AdapterCallback<Entity>?
     var loadingCallback: LoadingCallback?
 
-    var localProvider: ILocalProvider<Entity>?
 
     /**
      * Same as [RecyclerView.Adapter.onCreateViewHolder]

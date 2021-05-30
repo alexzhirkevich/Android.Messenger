@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:transitionName="@string/transition_logo"
+        android:layout_width="@dimen/login_logo_size"
+        android:layout_height="@dimen/login_logo_size"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/logo"/>
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_ver"
+        android:textColor="@color/gray"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/main_text_size"
+        android:fontFamily="@font/gotham_pro_bold"
+        android:layout_below="@id/logo"/>
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_marginVertical="10dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/background_input"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/gray"
+        android:fontFamily="@font/gotham_pro_light"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/main_text_size" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_marginVertical="10dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/_main_layout_btns"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/background_input"
+        android:drawableStart="@drawable/ic_pass"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/gray"
+        android:fontFamily="@font/gotham_pro_light"
+        android:hint="@string/passwd"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/main_text_size" />
+
+    <LinearLayout
+        android:id="@+id/_main_layout_btns"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="60dp">
+
+        <TextView
+            android:id="@+id/text_register"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/main_text_size"
+            android:fontFamily="@font/gotham_pro"
+            android:textAllCaps="false"
+            android:text="@string/register"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginHorizontal="15dp"/>
+
+        <Button
+            android:id="@+id/login"
+            android:transitionName="@string/transition_btn_signin"
+            android:elevation="5dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/background_login_btn"
+            android:backgroundTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:fontFamily="@font/gotham_pro_bold"
+            android:paddingHorizontal="30dp"
+            android:textSize="17sp"
+            android:enabled="true"
+            android:text="@string/login"
+            android:layout_marginHorizontal="15dp"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

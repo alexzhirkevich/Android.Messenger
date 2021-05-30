@@ -2,7 +2,7 @@ package com.alexz.messenger.app.data.providers.interfaces
 
 import android.graphics.Bitmap
 import android.net.Uri
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.Observable
 
 interface StorageProvider {
 

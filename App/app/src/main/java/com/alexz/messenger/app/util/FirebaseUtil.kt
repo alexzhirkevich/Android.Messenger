@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 object FirebaseUtil {
+    const val TIME= "time"
     const val MEDIA_MESSAGES = "media_messages"
     const val VOICE_MESSAGES = "voice_messages"
     const val ID = "id"
@@ -33,8 +34,9 @@ object FirebaseUtil {
     const val VOICES = "voices"
     const val DATA = "data"
     const val REFERENCE = "reference"
+    const val NOTIFY_TOKEN = "notificationToken"
 
-    val URL_BASE = "https://firemessenger.com/"
+    const val URL_BASE = "https://firemessenger.com/"
     const val LINK_CHANNEL = "joinchannel/"
     const val LINK_CHAT = "joinchat/"
 

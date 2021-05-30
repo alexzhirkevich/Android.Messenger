@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.messenger.app.BuildConfig
+import kotlin.math.roundToInt
 
 class AvatarImageView : AppCompatImageView {
     var imageUri: String? = null
@@ -26,7 +27,7 @@ class AvatarImageView : AppCompatImageView {
 
     fun dpToPx(dp: Int): Int {
         val displayMetrics = context.resources.displayMetrics
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+        return (dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
     }
 
     @RequiresPermission(Manifest.permission.INTERNET)

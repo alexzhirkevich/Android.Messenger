@@ -1,23 +1,18 @@
 package com.alexz.messenger.app.data.providers.interfaces
 
 import com.alexz.messenger.app.data.entities.imp.Channel
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
+import com.alexz.messenger.app.data.entities.imp.ChannelAdmin
+import com.alexz.messenger.app.data.entities.imp.User
+import io.reactivex.Observable
+import io.reactivex.Single
 
-interface ChannelsProvider : PostsProvider {
+interface ChannelsProvider : EntityProvider<Channel>  {
 
-    fun getChannel(channelId: String) : Observable<Channel>
+    fun getUsers(channelId: String,limit:Int = 30) : Observable<List<User>>
 
-    fun getChannels(userId: String) : Observable<List<String>>
+    fun find(namePart: String): Single<List<Channel>>
 
-    fun getUsers(channelId: String) : Observable<List<String>>
+    fun join(channelId: String): Single<Channel>
 
-    fun createChannel(channel: Channel): Completable
-
-    fun removeChannel(channel: Channel) : Completable
-
-    fun findChannels(namePart: String): Single<List<Channel>>
-
-    fun joinChannel(channelId: String): Single<Channel>
+    fun getAdmins(channelId: String) : Observable<List<ChannelAdmin>>
 }

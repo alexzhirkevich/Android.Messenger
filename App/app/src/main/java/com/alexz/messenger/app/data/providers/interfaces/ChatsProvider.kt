@@ -1,21 +1,14 @@
 package com.alexz.messenger.app.data.providers.interfaces
 
 import com.alexz.messenger.app.data.entities.imp.Chat
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
+import com.alexz.messenger.app.data.entities.imp.User
+import io.reactivex.Maybe
+import io.reactivex.Observable
+import io.reactivex.Single
 
-interface ChatsProvider {
+interface ChatsProvider : EntityProvider<Chat> {
 
-    fun getChats(userId : String) : Observable<List<String>>
+    fun getUsers(chatId : String,limit : Int = 30) : Observable<List<User>>
 
-    fun getUsers(chatId : String) : Observable<List<String>>
-
-    fun getChat(chatId: String) : Observable<Chat>
-
-    fun createChat(chat: Chat): Completable
-
-    fun removeChat(chatId: String) : Completable
-
-    fun joinChat(chatId: String): Single<Chat>
+    fun join(chatId: String): Maybe<Chat>
 }

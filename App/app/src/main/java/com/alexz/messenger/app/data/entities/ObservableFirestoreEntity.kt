@@ -6,8 +6,8 @@
 //import com.google.firebase.firestore.DocumentReference
 //import com.google.firebase.firestore.DocumentSnapshot
 //import com.google.firebase.firestore.ListenerRegistration
-//import io.reactivex.rxjava3.core.Observable
-//import io.reactivex.rxjava3.core.Observer
+//import io.reactivex.Observable
+//import io.reactivex.Observer
 //
 //class ObservableFirestoreEntity<Entity : IEntity>(
 //        private var clazz: Class<Entity>,

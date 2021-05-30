@@ -1,12 +1,13 @@
 package com.alexz.messenger.app.data.entities.dao
 
 import com.alexz.firerecadapter.IEntity
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.Completable
+import io.reactivex.Maybe
+import io.reactivex.Single
 
 interface EntityDao<Entity : IEntity>  {
 
-    fun get(id : String) : Single<Entity>
+    fun get(id : String) : Maybe<Entity>
 
     fun add(entity: Entity): Completable
 

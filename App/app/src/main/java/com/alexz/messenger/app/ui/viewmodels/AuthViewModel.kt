@@ -10,7 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.messenger.app.R
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.Single
 
 class AuthViewModel : ViewModel(){
 
@@ -40,11 +40,11 @@ class AuthViewModel : ViewModel(){
 
     companion object {
         const val G_PLUS_SCOPE =
-                "oauth2:https://www.googleapis.com/auth/plus.me";
+                "oauth2:https://www.googleapis.com/auth/plus.me"
         const val USERINFO_SCOPE =
-                "https://www.googleapis.com/auth/userinfo.profile";
+                "https://www.googleapis.com/auth/userinfo.profile"
         const val EMAIL_SCOPE = "https://www.googleapis.com/auth/userinfo.email"
-        const val SCOPES = G_PLUS_SCOPE + " " + USERINFO_SCOPE + " " + EMAIL_SCOPE;
-        const val REQ_SIGN_IN = 123;
+        const val SCOPES = G_PLUS_SCOPE + " " + USERINFO_SCOPE + " " + EMAIL_SCOPE
+        const val REQ_SIGN_IN = 123
     }
 }

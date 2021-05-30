@@ -1,11 +1,9 @@
 package com.alexz.messenger.app.data.providers.interfaces
 
 import com.alexz.messenger.app.data.entities.imp.Post
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.Observable
 
-interface PostsProvider {
-    fun addPost(post: Post): Completable
+interface PostsProvider : EntityProvider<Post> {
 
-    fun lastPost(channelId: String) : Observable<Post>
+    fun last(channelId: String) : Observable<Post>
 }

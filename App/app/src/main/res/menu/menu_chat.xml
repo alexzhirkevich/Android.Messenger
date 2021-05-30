@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group>
-        <item
-            android:id="@+id/menu_chat_invite"
-            android:title="@string/menu_chat_invite"/>
-        <item
-            android:id="@+id/menu_chat_users"
-            android:title="@string/menu_chat_users"/>
-    </group>
+<!--    <group>-->
+<!--        <item-->
+<!--            android:id="@+id/menu_chat_invite"-->
+<!--            android:title="@string/menu_chat_invite"/>-->
+<!--        <item-->
+<!--            android:id="@+id/menu_chat_users"-->
+<!--            android:title="@string/menu_chat_users"/>-->
+<!--    </group>-->
 </menu>

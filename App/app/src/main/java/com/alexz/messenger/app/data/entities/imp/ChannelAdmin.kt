@@ -3,6 +3,7 @@ package com.alexz.messenger.app.data.entities.imp
 import android.os.Parcel
 import android.os.Parcelable
 import com.alexz.firerecadapter.Entity
+import com.alexz.firerecadapter.IEntity
 import com.alexz.messenger.app.data.entities.interfaces.IChannelAdmin
 
 class ChannelAdmin(
@@ -17,8 +18,7 @@ class ChannelAdmin(
             canEdit= parcel.readByte() != 0.toByte(),
             canPost = parcel.readByte() != 0.toByte(),
             canDelete = parcel.readByte() != 0.toByte(),
-            canBan = parcel.readByte() != 0.toByte()) {
-    }
+            canBan = parcel.readByte() != 0.toByte())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
@@ -29,6 +29,16 @@ class ChannelAdmin(
     }
 
     override fun describeContents(): Int {
+        return 0
+    }
+
+    override fun compareTo(other: IEntity): Int {
+        if (other is ChannelAdmin){
+            canBan.compareTo(other.canBan).takeIf { it != 0 }?.let { return it }
+            canEdit.compareTo(other.canEdit).takeIf { it != 0 }?.let { return it }
+            canDelete.compareTo(other.canDelete).takeIf { it != 0 }?.let { return it }
+            return canPost.compareTo(other.canPost)
+        }
         return 0
     }
 

@@ -2,9 +2,9 @@ package com.alexz.messenger.app.data.entities.dao
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.alexz.messenger.app.ChatApplication.Companion.AppContext
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Maybe
+import com.alexz.messenger.app.data.ChatApplication.Companion.AppContext
+import io.reactivex.Completable
+import io.reactivex.Maybe
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream

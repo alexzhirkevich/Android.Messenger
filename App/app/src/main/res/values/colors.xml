@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
     <color name="green">#33cc33</color>
     <color name="red">#ff3300</color>
     <color name="app_back">#101010</color>
     <color name="avatar_border">@color/white</color>
-    <color name="gray">#999999</color>
+
     <color name="color_background_dark">#151515</color>
     <color name="color_background">#252525</color>
     <color name="rippelColor">@color/color_primary_variant</color>
@@ -17,4 +16,11 @@
     <color name="color_primary">#8B012C</color>
     <color name="color_primary_variant">#6c0121</color>
     <color name="ic_logo_background">#FFFFFF</color>
+
+
+    <color name="black">#272727</color>
+    <color name="shadow">#202020</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue">#548ec4</color>
+    <color name="gray">#919191</color>
 </resources>

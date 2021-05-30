@@ -4,12 +4,14 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import com.alexz.firerecadapter.Entity
+import com.alexz.firerecadapter.IEntity
 import com.alexz.messenger.app.data.entities.interfaces.IUser
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.google.firebase.auth.FirebaseUser
 
 @androidx.room.Entity(
-        tableName = User.TABLE_NAME
+        tableName = User.TABLE_NAME,
+        inheritSuperIndices = true
 )
 class User(
         id : String = FirebaseUtil.currentFireUser?.uid.orEmpty(),
@@ -21,7 +23,7 @@ class User(
            override var lastOnline: Long = System.currentTimeMillis(),
         @ColumnInfo(name = "is_online")
            override var isOnline: Boolean = true) :
-        Entity(id), IUser, Parcelable, Comparable<User> {
+        Entity(id), IUser, Parcelable {
 
     private constructor(parcel: Parcel) : this(
             id = parcel.readString().orEmpty(),
@@ -41,8 +43,8 @@ class User(
         return 0
     }
 
-    override fun compareTo(other: User): Int {
-        return name.compareTo(other.name)
+    override fun compareTo(other: IEntity): Int {
+        return if (other is User) name.compareTo(other.name) else 0
     }
 
     override fun equals(other: Any?): Boolean {

@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import com.alexz.messenger.app.ChatApplication.Companion.AppContext
+import com.alexz.messenger.app.data.ChatApplication.Companion.AppContext
 import com.alexz.messenger.app.data.providers.interfaces.StorageProvider
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.bumptech.glide.Glide
@@ -12,8 +12,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.Observable
 import java.io.ByteArrayOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -72,7 +71,7 @@ class FirebaseStorageProvider : StorageProvider {
                 val buffer = ByteArray(1024)
                 var len: Int
 
-                while (c.inputStream.read(buffer).also { len = it } != -1) {
+                while (c.inputStream.read(buffer).also {l-> len = l } != -1) {
                     fos.write(buffer, 0, len) //Write new file
                 }
 
@@ -96,8 +95,8 @@ class FirebaseStorageProvider : StorageProvider {
                         }
                         .addOnFailureListener { t -> it.onError(t) }
                         .addOnProgressListener { ts ->
-                            val progress = 1.0 * (ts as UploadTask.TaskSnapshot).bytesTransferred /
-                                    (ts as UploadTask.TaskSnapshot).totalByteCount
+                            val progress = 1.0 * ts.bytesTransferred /
+                                    ts.totalByteCount
                             it.onNext(Pair(progress, null))
                         }
             }

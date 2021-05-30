@@ -6,21 +6,21 @@
     android:background="?attr/colorPrimary"
     android:padding="5dp">
 
-    <Button
-        android:id="@+id/btn_new_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:text="@string/title_new_chat" />
-    <Button
-        android:id="@+id/btn_find_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:text="@string/title_find_chat" />
+<!--    <Button-->
+<!--        android:id="@+id/btn_new_chat"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="10dp"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:text="@string/title_new_chat" />-->
+<!--    <Button-->
+<!--        android:id="@+id/btn_find_chat"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="10dp"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:text="@string/title_find_chat" />-->
 
 </LinearLayout>

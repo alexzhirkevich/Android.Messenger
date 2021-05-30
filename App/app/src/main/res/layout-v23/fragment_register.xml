@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:transitionName="@string/transition_logo"
+        android:layout_width="@dimen/reg_logo_size"
+        android:layout_height="@dimen/reg_logo_size"
+        android:layout_above="@id/_info_layout"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo"/>
+
+    <LinearLayout
+        android:id="@+id/_info_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/name">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/register_view_pager"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/register_tab_layout"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
+        app:tabIndicatorColor="@color/white"
+        app:tabIndicatorHeight="20dp"
+        app:tabBackground="@drawable/tab_background"
+        app:tabMode="fixed"
+        app:tabIndicator="@drawable/tab_indicator_circle"
+        android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+<!--    <TextView-->
+<!--        android:id="@+id/text_try"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/logo"-->
+<!--        android:layout_marginTop="-25dp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:fontFamily="@font/gotham_pro_bold"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:gravity="center"-->
+<!--        android:lineSpacingExtra="2dp"-->
+<!--        android:text="Try new messenger\n Community"/>-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/bubbles"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="20dp"-->
+<!--        android:layout_below="@id/text_try"-->
+<!--        android:src="@drawable/bubbles"-->
+<!--        android:layout_centerHorizontal="true"/>-->
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_marginVertical="10dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/email"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/background_input"
+        android:drawableStart="@drawable/ic_account"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/gray"
+        android:fontFamily="@font/gotham_pro_light"
+        android:hint="@string/your_name"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/main_text_size" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_marginVertical="10dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/background_input"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/gray"
+        android:fontFamily="@font/gotham_pro_light"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/main_text_size" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_marginVertical="10dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/_layout_rules"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/background_input"
+        android:drawableStart="@drawable/ic_pass"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/gray"
+        android:fontFamily="@font/gotham_pro_light"
+        android:hint="@string/passwd"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/main_text_size" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/_layout_rules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/create_account"
+        android:layout_centerInParent="true">
+
+        <CheckBox
+            android:id="@+id/checkbox_rule"
+            android:layout_gravity="center"
+            android:layout_width="30dp"
+            android:buttonTint="@color/gray"
+            android:layout_marginHorizontal="5dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:id="@+id/rules_1"
+            android:layout_marginEnd="5dp"
+            android:text="@string/accept_rules_1"
+            android:textSize="13sp"
+            android:textColor="@color/gray"
+            android:fontFamily="@font/gotham_pro_light"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/rules_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/gotham_pro"
+            android:text="@string/accept_rules_2"
+            android:textColor="@color/blue"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/create_account"
+        android:transitionName="@string/transition_btn_signin"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
+        android:width="300dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:background="@drawable/background_login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray"
+        android:fontFamily="@font/gotham_pro_bold"
+        android:paddingHorizontal="30dp"
+        android:textSize="17sp"
+        android:enabled="false"
+        android:text="@string/create_account"
+        android:layout_marginHorizontal="15dp"/>
+
+
+
+</RelativeLayout>

@@ -1,35 +1,35 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical">
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:scrollbars="vertical">-->
 
-        <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.alexz.messenger.app.ui.fragments.ChannelPostsFragment">
+<!--        <RelativeLayout-->
+<!--        xmlns:tools="http://schemas.android.com/tools"-->
+<!--        xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical"-->
+<!--        tools:context="com.alexz.messenger.app.ui.fragments.ChannelPostsFragment">-->
 
-            <include layout="@layout/item_post_mutable" android:id="@+id/_post_mutable"/>
+<!--            <include layout="@layout/item_post_mutable" android:id="@+id/_post_mutable"/>-->
 
-            <Button
-                android:id="@+id/btn_add_media"
-                android:layout_below="@id/_post_mutable"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:paddingHorizontal="20dp"
-                android:textAllCaps="false"
-                android:text="@string/button_add_content"
-                android:textSize="15sp"
-                android:gravity="center"
-                android:drawableStart="@drawable/ic_plus"
-                android:background="@drawable/background_dark_rounded_button_ripple"/>
-        </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+<!--            <Button-->
+<!--                android:id="@+id/btn_add_media"-->
+<!--                android:layout_below="@id/_post_mutable"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:paddingHorizontal="20dp"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:text="@string/button_add_content"-->
+<!--                android:textSize="15sp"-->
+<!--                android:gravity="center"-->
+<!--                android:drawableStart="@drawable/ic_plus"-->
+<!--                android:background="@drawable/background_dark_rounded_button_ripple"/>-->
+<!--        </RelativeLayout>-->
+<!--    </androidx.core.widget.NestedScrollView>-->
 </FrameLayout>

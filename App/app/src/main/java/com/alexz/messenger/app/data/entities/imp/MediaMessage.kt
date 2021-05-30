@@ -2,21 +2,18 @@ package com.alexz.messenger.app.data.entities.imp
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
 import com.alexz.messenger.app.data.entities.interfaces.IMediaMessage
 import com.alexz.messenger.app.util.FirebaseUtil
 
 
-@Entity(tableName = MediaMessage.TABLE_NAME)
+//@Entity(tableName = MediaMessage.TABLE_NAME,
+//        inheritSuperIndices = true)
 class MediaMessage: Message, IMediaMessage<MediaContent>, Parcelable {
 
-    @ColumnInfo(name = "media_content",defaultValue = "")
-    override var mediaContent: List<MediaContent> = ArrayList()
+    //@ColumnInfo(name = "media_content",defaultValue = "")
+    override var mediaContent: List<MediaContent> = listOf()
 
-    protected constructor() :super()
-
-    constructor(chatId : String) :super(chatId)
+    constructor(chatId : String = "") :super(chatId)
 
     private constructor(parcel: Parcel) : super(parcel) {
         parcel.readList(mediaContent, MediaContent::class.java.classLoader)

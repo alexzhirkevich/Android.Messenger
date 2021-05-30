@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:scrollbarSize="1dp"
+        android:scrollbarThumbVertical="@color/gray">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/layout_profile" android:id="@+id/layout_profile"/>
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="@dimen/main_horizontal_margin"
+                android:layout_height="1dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/layout_profile"
+                android:layout_marginTop="40dp"
+                android:background="@color/white"
+                android:foreground="@color/white"
+                android:backgroundTint="@color/white"/>
+
+            <Button
+                android:id="@+id/contacts"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
+                android:layout_below="@id/separator"
+                android:layout_marginTop="40dp"
+                android:text="@string/contacts"
+                android:drawableStart="@drawable/ic_contact"
+                style="@style/MenuButton"/>
+
+            <Button
+                android:id="@+id/settings3"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
+                android:layout_below="@id/contacts"
+                android:text="@string/settings"
+                android:drawableStart="@drawable/ic_settings"
+                style="@style/MenuButton"/>
+
+            <Button
+                android:id="@+id/settings2"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
+                android:layout_below="@id/settings3"
+                android:text="@string/settings"
+                android:drawableStart="@drawable/ic_settings"
+                style="@style/MenuButton"/>
+
+
+            <Button
+                android:id="@+id/settings"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
+                android:layout_below="@id/settings2"
+                android:text="@string/settings"
+                android:drawableStart="@drawable/ic_settings"
+                style="@style/MenuButton"/>
+
+            <Button
+                android:id="@+id/report_issue"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
+                android:layout_below="@id/settings"
+                android:text="@string/report_issue"
+                android:drawableStart="@drawable/ic_person"
+                style="@style/MenuButton"/>
+
+            <Button
+                android:id="@+id/faq"
+                android:layout_marginBottom="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
+                android:layout_below="@id/report_issue"
+                android:text="@string/faq"
+                android:drawableStart="@drawable/ic_person"
+                style="@style/MenuButton" />
+
+            <Button
+                android:id="@+id/exit"
+                android:layout_marginBottom="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
+                android:layout_below="@id/faq"
+                android:text="@string/signout"
+                android:drawableStart="@drawable/ic_exit"
+                style="@style/MenuButton"/>
+
+                </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</RelativeLayout>

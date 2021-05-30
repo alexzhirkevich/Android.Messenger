@@ -2,37 +2,38 @@ package com.alexz.messenger.app.data.entities.imp
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.ForeignKey
-import com.alexz.firerecadapter.Entity
+import com.alexz.firerecadapter.IEntity
+import com.alexz.messenger.app.data.entities.EntityCollection
 import com.alexz.messenger.app.data.entities.interfaces.IChat
 import com.alexz.messenger.app.util.FirebaseUtil
 
-@androidx.room.Entity(
-        tableName = Chat.TABLE_NAME,
-        foreignKeys = [
-            ForeignKey(entity = User::class, parentColumns = ["id"],childColumns = ["creator_id"],onDelete = ForeignKey.CASCADE),
-            ForeignKey(entity = Message::class, parentColumns = ["id"],childColumns = ["last_message_id"],onDelete = ForeignKey.SET_DEFAULT)
-        ]
-)
+//@androidx.room.Entity(
+//        tableName = Chat.TABLE_NAME,
+//        foreignKeys = [
+//            ForeignKey(entity = User::class, parentColumns = ["id"],childColumns = ["creator_id"],onDelete = ForeignKey.CASCADE),
+//            ForeignKey(entity = Message::class, parentColumns = ["id"],childColumns = ["last_message_id"],onDelete = ForeignKey.SET_DEFAULT)
+//        ],
+//        inheritSuperIndices = true,
+//        indices = [Index(value = ["creator_id"]),Index(value = ["last_message_id"])]
+//)
 class Chat(
         id : String = "",
-        @ColumnInfo(name = "name")
-        override var name: String = "Chat Name",
-        @ColumnInfo(name = "image_uri")
+  //      @ColumnInfo(name = "name")
+        override var name: String = "",
+   //     @ColumnInfo(name = "image_uri")
         override var imageUri: String = "",
-        @ColumnInfo(name = "last_message_id")
+   //     @ColumnInfo(name = "last_message_id")
         override val lastMessageId : String = "",
-        @ColumnInfo(name = "last_message_time")
-        override val lastMessageTime: Long = 0,
-        @ColumnInfo(name = "creator_id")
+    //    @ColumnInfo(name = "last_message_time")
+        override val lastMessageTime: Long = Long.MAX_VALUE,
+    //    @ColumnInfo(name = "creator_id")
         override var creatorId: String = "",
-        @ColumnInfo(name = "creation_time")
+    //    @ColumnInfo(name = "creation_time")
         override var creationTime: Long = 0,
-        @ColumnInfo(name = "is_group")
+    //    @ColumnInfo(name = "is_group")
         override var isGroup: Boolean = false
 
-) : Entity(id), IChat, Parcelable, Comparable<Chat> {
+) : EntityCollection(id, setOf(Message::class.java)), IChat, Parcelable {
 
     constructor(di: Chat) :this(
             id = di.id,
@@ -69,10 +70,13 @@ class Chat(
         return 0
     }
 
-    override fun compareTo(other: Chat): Int {
-        if (lastMessageTime != 0L && other.lastMessageTime != 0L)
-            return lastMessageTime.compareTo(other.lastMessageTime)
-        return other.creationTime.compareTo(other.creationTime)
+    override fun compareTo(other: IEntity): Int {
+        if (other is Chat) {
+            if (lastMessageTime != 0L && other.lastMessageTime != 0L)
+                return lastMessageTime.compareTo(other.lastMessageTime)
+            return other.creationTime.compareTo(other.creationTime)
+        }
+        return 0
     }
 
     companion object CREATOR : Parcelable.Creator<Chat> {

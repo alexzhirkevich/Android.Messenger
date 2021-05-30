@@ -10,19 +10,16 @@ import com.alexz.firerecadapter.firestore.FirestoreMapRecyclerAdapter
 import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
 import com.alexz.messenger.app.data.entities.imp.Channel
 import com.alexz.messenger.app.data.entities.imp.User
-import com.alexz.messenger.app.data.providers.imp.FirestoreChannelsProvider
-import com.alexz.messenger.app.data.providers.imp.FirestoreChatsProvider
 import com.alexz.messenger.app.data.providers.imp.FirestorePostsProvider
 import com.alexz.messenger.app.data.providers.imp.FirestoreUserListProvider
 import com.alexz.messenger.app.data.providers.interfaces.PostsProvider
-import com.alexz.messenger.app.data.repo.PostsRepository
-import com.alexz.messenger.app.data.repo.UserListRepository
 import com.alexz.messenger.app.ui.views.AvatarImageView
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.alexz.messenger.app.util.getTime
 import com.messenger.app.R
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<Channel, ChannelRecyclerAdapter.ChannelViewHolder>(
         Channel::class.java,
@@ -70,12 +67,13 @@ class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<Channel, ChannelRecyc
             }
 
             if (entity.lastPostId.isNotEmpty()) {
-                dispose = postsProvider.lastPost(entity.id)
+                dispose = postsProvider.last(entity.id)
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 {
                                     lastPostView.text = it.text
-                                    dateView.text = getTime(it.time)
+                                    dateView.text = getTime(it.time )
                                 },
                                 {
                                     Log.w(TAG, "Failed to observe last post")
@@ -91,13 +89,10 @@ class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<Channel, ChannelRecyc
     companion object {
 
         val userListProvider by lazy {
-            UserListRepository(
-                    FirestoreUserListProvider(),
-                    FirestoreChannelsProvider(),
-                    FirestoreChatsProvider())
+           FirestoreUserListProvider()
         }
         val postsProvider: PostsProvider by lazy {
-            PostsRepository(FirestorePostsProvider())
+            FirestorePostsProvider()
         }
         val TAG = ChannelRecyclerAdapter::class.java.simpleName
     }

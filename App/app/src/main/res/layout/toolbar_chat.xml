@@ -5,36 +5,36 @@
     android:id="@+id/layout_appbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/chat_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:menu="@menu/menu_chat"
-        style="@style/Toolbar">
-        <com.alexz.messenger.app.ui.views.AvatarImageView
-            android:transitionName="util_transition_toolbar_image"
-            android:id="@+id/chat_avatar"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:scaleType="centerInside"
-            android:padding="1dp"
-            android:src="@drawable/logo256"
-            android:layout_gravity="center_vertical"/>
-        <TextView
-            android:id="@+id/chat_name"
-            android:transitionName="@string/util_transition_toolbar_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="5dp"
-            android:paddingEnd="10dp"
-            android:text="Chat Name"
-            android:textColor="@color/white"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
-            android:textSize="@dimen/chat_name_text_size"
-            tools:ignore="HardcodedText" />
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/chat_toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        app:menu="@menu/menu_chat"-->
+<!--        style="@style/Toolbar">-->
+<!--        <com.alexz.messenger.app.ui.views.AvatarImageView-->
+<!--            android:transitionName="util_transition_toolbar_image"-->
+<!--            android:id="@+id/chat_avatar"-->
+<!--            android:layout_width="45dp"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:scaleType="centerInside"-->
+<!--            android:padding="1dp"-->
+<!--            android:src="@drawable/logo256"-->
+<!--            android:layout_gravity="center_vertical"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/chat_name"-->
+<!--            android:transitionName="@string/util_transition_toolbar_text"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:paddingStart="5dp"-->
+<!--            android:paddingEnd="10dp"-->
+<!--            android:text="Chat Name"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:textSize="@dimen/chat_name_text_size"-->
+<!--            tools:ignore="HardcodedText" />-->
 
-    </androidx.appcompat.widget.Toolbar>
+<!--    </androidx.appcompat.widget.Toolbar>-->
 
 </com.google.android.material.appbar.AppBarLayout>

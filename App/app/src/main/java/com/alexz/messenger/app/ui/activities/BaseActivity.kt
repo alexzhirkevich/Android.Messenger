@@ -1,7 +1,7 @@
 package com.alexz.messenger.app.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
-import com.alexz.messenger.app.ChatApplication
+import com.alexz.messenger.app.data.ChatApplication
 
 open class BaseActivity : AppCompatActivity() {
     override fun onResume() {

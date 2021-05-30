@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/fragment_calls"
+        android:title="@string/calls"
+        android:icon="@drawable/ic_channel"/>
+
+    <item android:id="@+id/fragment_chats_channels"
+        android:title="@string/messages"
+        android:icon="@drawable/logo"/>
+
+    <item android:id="@+id/fragment_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_account"/>
+</menu>

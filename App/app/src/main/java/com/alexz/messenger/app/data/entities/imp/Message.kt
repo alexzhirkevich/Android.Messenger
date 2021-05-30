@@ -2,30 +2,32 @@ package com.alexz.messenger.app.data.entities.imp
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.ForeignKey
 import com.alexz.firerecadapter.Entity
+import com.alexz.firerecadapter.IEntity
 import com.alexz.messenger.app.data.entities.interfaces.IMessage
 import com.alexz.messenger.app.util.FirebaseUtil
 
-@androidx.room.Entity(
-        tableName = Message.TABLE_NAME,
-        foreignKeys = [
-            ForeignKey(entity = User::class, parentColumns = ["id"],childColumns = ["sender_id"],onDelete = ForeignKey.CASCADE),
-            ForeignKey(entity = Chat::class, parentColumns = ["id"],childColumns = ["chat_id"],onDelete = ForeignKey.SET_DEFAULT)
-        ]
-)
+//@androidx.room.Entity(
+//        tableName = Message.TABLE_NAME,
+//        foreignKeys = [
+//            ForeignKey(entity = User::class, parentColumns = ["id"],childColumns = ["sender_id"],onDelete = ForeignKey.CASCADE),
+//            ForeignKey(entity = Chat::class, parentColumns = ["id"],childColumns = ["chat_id"],onDelete = ForeignKey.SET_DEFAULT)
+//        ],
+//        inheritSuperIndices = true,
+//        indices = [Index(value = ["sender_id"]), Index(value = ["chat_id"])]
+//
+//)
 open class Message(
         id : String = "",
-        @ColumnInfo(name = "chat_id")
+      //  @ColumnInfo(name = "chat_id")
         override var chatId: String = "",
-        @ColumnInfo(name = "text")
+       // @ColumnInfo(name = "text")
         override var text: String = "",
-        @ColumnInfo(name = "sender_id")
+      //  @ColumnInfo(name = "sender_id")
         override var senderId: String = User().id,
-        @ColumnInfo(name = "time")
+      //  @ColumnInfo(name = "time")
         override var time: Long = System.currentTimeMillis(),
-        @ColumnInfo(name = "is_private")
+      //  @ColumnInfo(name = "is_private")
         override var isPrivate: Boolean = false) : Entity(id), IMessage,Parcelable {
 
     constructor(m: Message) : this(
@@ -52,6 +54,10 @@ open class Message(
         dest.writeLong(time)
         dest.writeByte((if (isPrivate) 1 else 0).toByte())
     }
+
+    override fun compareTo(other: IEntity): Int =
+        if (other is Message) time.compareTo(other.time) else 0
+
 
     override fun describeContents(): Int {
         return 0
@@ -89,7 +95,7 @@ open class Message(
 
     companion object CREATOR : Parcelable.Creator<Message> {
 
-        const val TABLE_NAME = FirebaseUtil.CHATS
+        const val TABLE_NAME = FirebaseUtil.MESSAGES
 
         override fun createFromParcel(parcel: Parcel): Message {
             return Message(parcel)

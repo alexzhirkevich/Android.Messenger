@@ -2,27 +2,26 @@ package com.alexz.messenger.app.data.entities.imp
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
 import com.alexz.messenger.app.data.entities.interfaces.IVoiceMessage
 import com.alexz.messenger.app.util.FirebaseUtil
-
-@Entity(tableName = VoiceMessage.TABLE_NAME)
+//
+//@Entity(
+//        tableName = VoiceMessage.TABLE_NAME,
+//        inheritSuperIndices = true)
 class VoiceMessage : Message, IVoiceMessage, Parcelable {
 
-    @ColumnInfo(name = "voice_uri")
+   // @ColumnInfo(name = "voice_uri")
     override var voiceUri: String = ""
 
-    @ColumnInfo(name = "voice_len")
+    //@ColumnInfo(name = "voice_len")
     override var voiceLen: Int = 0
 
-    protected constructor() :super("")
-
-    constructor(chatId : String,voiceUri : String = "", voiceLen : Int = 0) :super(chatId){
-        this.voiceUri = voiceUri;
-        this.voiceLen = voiceLen;
+    constructor(chatId : String="",voiceUri : String = "", voiceLen : Int = 0) :super(chatId){
+        this.voiceUri = voiceUri
+        this.voiceLen = voiceLen
     }
 
+   // @Ignore
     private constructor(parcel: Parcel) : super(parcel){
         voiceUri = parcel.readString().orEmpty()
         voiceLen = parcel.readInt()

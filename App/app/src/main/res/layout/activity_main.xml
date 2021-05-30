@@ -10,72 +10,72 @@
     tools:openDrawer="start">
 
 
-    <!--    CONTENT      -->
-    <RelativeLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.alexz.messenger.app.ui.activities.MainActivity">
+<!--    &lt;!&ndash;    CONTENT      &ndash;&gt;-->
+<!--    <RelativeLayout-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        tools:context="com.alexz.messenger.app.ui.activities.MainActivity">-->
 
-        <!--    APPBAR      -->
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/layout_appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/dialogs_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                style="@style/Toolbar">
-                <EditText
-                android:id="@+id/edit_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/title_chat_name"
-                android:visibility="gone"
-                android:inputType="textCapSentences"/>
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="horizontal"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:tabIndicatorColor="@color/white"/>
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+<!--        &lt;!&ndash;    APPBAR      &ndash;&gt;-->
+<!--        <com.google.android.material.appbar.AppBarLayout-->
+<!--            android:id="@+id/layout_appbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/dialogs_toolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                android:background="?attr/colorPrimary"-->
+<!--                style="@style/Toolbar">-->
+<!--                <EditText-->
+<!--                android:id="@+id/edit_search"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="@string/title_chat_name"-->
+<!--                android:visibility="gone"-->
+<!--                android:inputType="textCapSentences"/>-->
+<!--                <com.google.android.material.tabs.TabLayout-->
+<!--                    android:id="@+id/tab_layout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:scrollbars="horizontal"-->
+<!--                    app:layout_scrollFlags="scroll|enterAlways"-->
+<!--                    app:tabIndicatorColor="@color/white"/>-->
+<!--            </androidx.appcompat.widget.Toolbar>-->
+<!--        </com.google.android.material.appbar.AppBarLayout>-->
 
-        <androidx.viewpager.widget.ViewPager
-            android:layout_below="@id/layout_appbar"
-            android:id="@+id/main_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+<!--        <androidx.viewpager.widget.ViewPager-->
+<!--            android:layout_below="@id/layout_appbar"-->
+<!--            android:id="@+id/main_viewpager"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
 
-        <com.alexz.messenger.app.ui.views.DialogFloatingButton
-            android:id="@+id/fab_dialogs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom|end"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="15dp"
-            android:src="@drawable/ic_plus"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+<!--        <com.alexz.messenger.app.ui.views.DialogFloatingButton-->
+<!--            android:id="@+id/fab_dialogs"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_gravity="bottom|end"-->
+<!--            android:layout_marginStart="@dimen/fab_margin"-->
+<!--            android:layout_marginTop="@dimen/fab_margin"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_marginBottom="15dp"-->
+<!--            android:src="@drawable/ic_plus"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent" />-->
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
-    <!--    DRAWER      -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:background="@color/color_background_dark"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/menu_drawer" />
+<!--    &lt;!&ndash;    DRAWER      &ndash;&gt;-->
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--        android:id="@+id/nav_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        android:background="@color/color_background_dark"-->
+<!--        app:headerLayout="@layout/nav_header_main"-->
+<!--        app:menu="@menu/menu_drawer" />-->
 </androidx.drawerlayout.widget.DrawerLayout>

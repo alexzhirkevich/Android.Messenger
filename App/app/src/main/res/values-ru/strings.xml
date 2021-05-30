@@ -1,105 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<resources>-->
+<!--    <string name="app_name">Firebase Messenger</string>-->
+<!--    <string name="navigation_drawer_open">Открыть панель навигации</string>-->
+<!--    <string name="navigation_drawer_close">Закрыть панель навигации</string>-->
+<!--    <string name="nav_header_title">Android Studio</string>-->
+<!--    <string name="nav_header_subtitle">android.studio@android.com</string>-->
+<!--    <string name="nav_header_desc">Navigation header</string>-->
+<!--    <string name="action_search">Искать</string>-->
+
+<!--    <string name="menu_account">Аккуант</string>-->
+<!--    <string name="menu_settings">Настройки</string>-->
+<!--    <string name="menu_about">О проекте</string>-->
+<!--    <string name="menu_delete">Удалить</string>-->
+<!--    <string name="menu_copy">Копировать</string>-->
+<!--    <string name="menu_chat_invite">Пригласить друзей</string>-->
+<!--    <string name="menu_chat_users">Список участников</string>-->
+
+<!--    <string name="action_message_copied">Сообщение скопировано в буфер обмена</string>-->
+<!--    <string name="action_link_copied">Ссылка скопирована в буфер обмена</string>-->
+
+<!--    <string name="title_new_chat">Создать чат</string>-->
+<!--    <string name="title_find_chat">Найти чат</string>-->
+<!--    <string name="title_find">Найти</string>-->
+<!--    <string name="title_chat_id">Код приглашения</string>-->
+<!--    <string name="title_chat_name">Название чата</string>-->
+<!--    <string name="title_upload_photo">Аватар (необязательно)</string>-->
+<!--    <string name="title_create">Создать</string>-->
+<!--    <string name="title_online">Онлайн</string>-->
+<!--    <string name="title_you">Вы</string>-->
+<!--    <string name="title_account">Аккаунт</string>-->
+<!--    <string name="title_message">Сообщение</string>-->
+<!--    <string name="title_photo">Фото</string>-->
+<!--    <string name="title_properties">Настройки</string>-->
+<!--    <string name="title_remove_photo">Удалить фото</string>-->
+<!--    <string name="title_chats">Чаты</string>-->
+<!--    <string name="title_channels">Каналы</string>-->
+<!--    <string name="title_activity_settings">SettingsActivity</string>-->
+<!--    <string name="title_signature">Your signature</string>-->
+<!--    <string name="title_reply">Default reply action</string>-->
+<!--    <string name="title_file">Файл</string>-->
+
+<!--    <string name="open">open</string>-->
+<!--    <string name="close">close</string>-->
+
+<!--    <string name="error_notfound">Чаты с таким именем не найдены</string>-->
+<!--    <string name="error_load_dialogs">Не удалось загрузить чаты. Проверьте ваше соединение с интернетом.</string>-->
+<!--    <string name="error_chat_load">Не удалось загрузить чат. Проверьте ваше соединение с интернетом.</string>-->
+<!--    <string name="error_send_message">Не удалось отправить сообщение. Проверьте ваше соединение с интернетом.</string>-->
+<!--    <string name="error_google_connecting">Не удалось подключиться к гугл-сервисам</string>-->
+<!--    <string name="error_server">Не удалось подключиться к серверу</string>-->
+<!--    <string name="error_google_login">Ошибка авторизации</string>-->
+<!--    <string name="error_gservices_ver">Ваша версия гугл-сервисов устарела. Требуется 12451000, найдена </string>-->
+<!--    <string name="error_empty_message">Сообщение не может быть пустым</string>-->
+<!--    <string name="error_empty_input">Ввод пуст</string>-->
+<!--    <string name="error_chat_not_found">Чат не найден</string>-->
+<!--    <string name="error_upload_file">Не удалось загрузить файл</string>-->
+<!--    <string name="error_post_creation">Не удалось опубликовать пост</string>-->
+
+
+<!--    <string name="easter_1">I don\'t have any function.</string>-->
+<!--    <string name="easter_2">I\'m not joking bro. Stop this</string>-->
+<!--    <string name="easter_3">I\'m just a logo with a ripple effect…</string>-->
+<!--    <string name="easter_4">OK. You can click as much as you want</string>-->
+<!--    <string name="easter_5">Oops.</string>-->
+<!--    <string name="easter_6">Oh, you\'re stubborn</string>-->
+<!--    <string name="easter_7">Here we go!</string>-->
+<!--    <string name="easter_8">What an accurate finger…</string>-->
+<!--    <string name="easter_9">BOO!!!</string>-->
+<!--    <string name="easter_10">Congrats with your 100 click!</string>-->
+<!--    <string name="easter_11">May be it\'s time to stop?</string>-->
+<!--    <string name="easter_12">OK. Do you like kitties?</string>-->
+<!--    <string name="easter_kitties">OK. Do you like kitties?</string>-->
+<!--    <string name="yes">Yes!</string>-->
+<!--    <string name="easter_yes">Yes, but red</string>-->
+<!--    <string name="easter_13">I knew it. This is for you</string>-->
+<!--    <string name="easter_14">150 click! You won a prize. Login to get it</string>-->
+<!--    <string name="easter_15">The game is really over =) All other clicks will redirect you to login procedure. Bye!</string>-->
+
+<!--    &lt;!&ndash; Preference Titles &ndash;&gt;-->
+<!--    <string name="header_theme">Theme</string>-->
+<!--    <string name="header_messages">Messages</string>-->
+<!--    <string name="header_sync">Sync</string>-->
+
+<!--    &lt;!&ndash; Messages Preferences &ndash;&gt;-->
+
+<!--    &lt;!&ndash; Sync Preferences &ndash;&gt;-->
+<!--    <string name="sync_title">Sync email periodically</string>-->
+<!--    <string name="attachment_title">Download incoming attachments</string>-->
+<!--    <string name="attachment_summary_on">Automatically download attachments for incoming emails-->
+<!--    </string>-->
+<!--    <string name="attachment_summary_off">Only download attachments when manually requested</string>-->
+<!--    <string name="title_voice">Голосовое сообщение</string>-->
+<!--    <string name="error_voice_send">Ошибка отправки</string>-->
+<!--    <string name="hint_text">Текст…</string>-->
+<!--    <string name="msg_cant_post_no_more">Вы больше не можете создавать посты в этом канале</string>-->
+<!--    <string name="button_add_content">Добавить медиа</string>-->
+<!--    <string name="menu_edit">Редактировать</string>-->
+<!--    <string name="error_channel_create">Не удалось создать чат</string>-->
+<!--    <string name="error_channel_join">Не удалось присоединиться к каналу</string>-->
+<!--    <string name="error_chat_join">Не удалось присоединиться к чату</string>-->
+<!--    <string name="error_image_load">Не удалось загрузить изображение</string>-->
+
+
+<!--</resources>-->
 <resources>
-    <string name="app_name">Firebase Messenger</string>
-    <string name="navigation_drawer_open">Открыть панель навигации</string>
-    <string name="navigation_drawer_close">Закрыть панель навигации</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_search">Искать</string>
-
-    <string name="menu_account">Аккуант</string>
-    <string name="menu_settings">Настройки</string>
-    <string name="menu_about">О проекте</string>
-    <string name="menu_delete">Удалить</string>
-    <string name="menu_copy">Копировать</string>
-    <string name="menu_chat_invite">Пригласить друзей</string>
-    <string name="menu_chat_users">Список участников</string>
-
-    <string name="action_message_copied">Сообщение скопировано в буфер обмена</string>
-    <string name="action_link_copied">Ссылка скопирована в буфер обмена</string>
-
-    <string name="title_new_chat">Создать чат</string>
-    <string name="title_find_chat">Найти чат</string>
-    <string name="title_find">Найти</string>
-    <string name="title_chat_id">Код приглашения</string>
-    <string name="title_chat_name">Название чата</string>
-    <string name="title_upload_photo">Аватар (необязательно)</string>
-    <string name="title_create">Создать</string>
-    <string name="title_online">Онлайн</string>
-    <string name="title_you">Вы</string>
-    <string name="title_account">Аккаунт</string>
-    <string name="title_message">Сообщение</string>
-    <string name="title_photo">Фото</string>
-    <string name="title_properties">Настройки</string>
-    <string name="title_remove_photo">Удалить фото</string>
-    <string name="title_chats">Чаты</string>
-    <string name="title_channels">Каналы</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-    <string name="title_signature">Your signature</string>
-    <string name="title_reply">Default reply action</string>
-    <string name="title_file">Файл</string>
-
-    <string name="open">open</string>
-    <string name="close">close</string>
-
-    <string name="error_notfound">Чаты с таким именем не найдены</string>
-    <string name="error_load_dialogs">Не удалось загрузить чаты. Проверьте ваше соединение с интернетом.</string>
-    <string name="error_chat_load">Не удалось загрузить чат. Проверьте ваше соединение с интернетом.</string>
-    <string name="error_send_message">Не удалось отправить сообщение. Проверьте ваше соединение с интернетом.</string>
-    <string name="error_google_connecting">Не удалось подключиться к гугл-сервисам</string>
-    <string name="error_server">Не удалось подключиться к серверу</string>
-    <string name="error_google_login">Ошибка авторизации</string>
-    <string name="error_gservices_ver">Ваша версия гугл-сервисов устарела. Требуется 12451000, найдена </string>
-    <string name="error_empty_message">Сообщение не может быть пустым</string>
-    <string name="error_empty_input">Ввод пуст</string>
-    <string name="error_chat_not_found">Чат не найден</string>
-    <string name="error_upload_file">Не удалось загрузить файл</string>
-    <string name="error_post_creation">Не удалось опубликовать пост</string>
-
-
-    <string name="easter_1">I don\'t have any function.</string>
-    <string name="easter_2">I\'m not joking bro. Stop this</string>
-    <string name="easter_3">I\'m just a logo with a ripple effect…</string>
-    <string name="easter_4">OK. You can click as much as you want</string>
-    <string name="easter_5">Oops.</string>
-    <string name="easter_6">Oh, you\'re stubborn</string>
-    <string name="easter_7">Here we go!</string>
-    <string name="easter_8">What an accurate finger…</string>
-    <string name="easter_9">BOO!!!</string>
-    <string name="easter_10">Congrats with your 100 click!</string>
-    <string name="easter_11">May be it\'s time to stop?</string>
-    <string name="easter_12">OK. Do you like kitties?</string>
-    <string name="easter_kitties">OK. Do you like kitties?</string>
-    <string name="yes">Yes!</string>
-    <string name="easter_yes">Yes, but red</string>
-    <string name="easter_13">I knew it. This is for you</string>
-    <string name="easter_14">150 click! You won a prize. Login to get it</string>
-    <string name="easter_15">The game is really over =) All other clicks will redirect you to login procedure. Bye!</string>
-
-    <!-- Preference Titles -->
-    <string name="header_theme">Theme</string>
-    <string name="header_messages">Messages</string>
-    <string name="header_sync">Sync</string>
-
-    <!-- Messages Preferences -->
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="title_voice">Голосовое сообщение</string>
-    <string name="error_voice_send">Ошибка отправки</string>
-    <string name="hint_text">Текст…</string>
-    <string name="msg_cant_post_no_more">Вы больше не можете создавать посты в этом канале</string>
-    <string name="button_add_content">Добавить медиа</string>
-    <string name="menu_channel_edit">Редактировать</string>
-    <string name="error_channel_create">Не удалось создать чат</string>
-    <string name="error_channel_join">Не удалось присоединиться к каналу</string>
-    <string name="error_chat_join">Не удалось присоединиться к чату</string>
-    <string name="error_image_load">Не удалось загрузить изображение</string>
-
-
+    <string name="login">Войти</string>
+    <string name="passwd">Пароль…</string>
+    <string name="register">Регистрация</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="your_name">Ваше имя…</string>
+    <string name="accept_rules_1">Я принимаю</string>
+    <string name="accept_rules_2">Польз. соглашение</string>
+    <string name="try_new">Попробуй новый\nмессенджер </string>
+    <string name="accept">Принять</string>
+    <string name="decline">Отклонить</string>
+    <string name="profile">Профиль</string>
+    <string name="report_issue">Сообщить об ошибке</string>
+    <string name="settings">Настройки</string>
+    <string name="about_yourself">О себе</string>
+    <string name="name">Имя</string>
+    <string name="edit">Редактировать</string>
+    <string name="messages">Сообщения</string>
+    <string name="channels">Каналы</string>
+    <string name="signout">Выйти</string>
+    <string name="calls">Звонки</string>
+    <string name="chats">Чаты</string>
 </resources>
-

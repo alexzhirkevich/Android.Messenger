@@ -6,25 +6,25 @@
     android:padding="5dp"
     android:background="?attr/colorPrimary">
 
-    <EditText
-        android:id="@+id/edit_find_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/title_chat_id"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:inputType="text"
-        android:maxLines="1"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"/>
+<!--    <EditText-->
+<!--        android:id="@+id/edit_find_chat"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="@string/title_chat_id"-->
+<!--        android:gravity="center"-->
+<!--        android:textSize="20sp"-->
+<!--        android:inputType="text"-->
+<!--        android:maxLines="1"-->
+<!--        android:layout_marginStart="5dp"-->
+<!--        android:layout_marginEnd="5dp"/>-->
 
-    <Button
-        android:id="@+id/btn_find_chat_ok"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_find"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_find_chat_ok"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/title_find"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:layout_marginStart="0dp"-->
+<!--        android:layout_marginEnd="0dp"/>-->
 </LinearLayout>

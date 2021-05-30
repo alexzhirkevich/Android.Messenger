@@ -1,3 +1,3 @@
 package com.alexz.messenger.app.util
 
-object InterruptingThrowable : Throwable("Must be ignored")
+object InterruptingThrowable : Throwable("IGNORE")

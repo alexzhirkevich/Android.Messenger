@@ -7,47 +7,47 @@
     android:padding="5dp"
     android:background="?attr/colorPrimary">
 
-    <EditText
-        android:id="@+id/edit_create_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/title_chat_name"
-        android:textSize="20sp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:textColor="@color/white"
-        android:inputType="textCapSentences"
-        android:maxLines="1"/>
+<!--    <EditText-->
+<!--        android:id="@+id/edit_create_name"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="@string/title_chat_name"-->
+<!--        android:textSize="20sp"-->
+<!--        android:layout_marginStart="5dp"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:inputType="textCapSentences"-->
+<!--        android:maxLines="1"/>-->
 
-    <Button
-        android:id="@+id/btn_create_photo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
-        android:text="@string/title_upload_photo"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:textColor="@color/white"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_create_photo"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="5dp"-->
+<!--        android:text="@string/title_upload_photo"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/white"/>-->
 
-    <ProgressBar
-        android:id="@+id/progress_photo_upload"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:progressDrawable="@drawable/progressbar_solid"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginHorizontal="10dp"
-        android:indeterminate="false"
-        android:paddingHorizontal="5dp"
-        android:progress="0"
-        android:visibility="invisible" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progress_photo_upload"-->
+<!--        style="@android:style/Widget.ProgressBar.Horizontal"-->
+<!--        android:progressDrawable="@drawable/progressbar_solid"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="2dp"-->
+<!--        android:layout_marginHorizontal="10dp"-->
+<!--        android:indeterminate="false"-->
+<!--        android:paddingHorizontal="5dp"-->
+<!--        android:progress="0"-->
+<!--        android:visibility="invisible" />-->
 
-    <Button
-        android:id="@+id/btn_create_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_create"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:layout_marginHorizontal="5dp"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_create_chat"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/title_create"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:layout_marginHorizontal="5dp"/>-->
 
 </LinearLayout>

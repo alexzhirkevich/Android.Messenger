@@ -6,68 +6,68 @@
     android:layout_height="wrap_content"
     android:background="@drawable/drawable_dialogs_bg">
 
-    <TextView
-        android:id="@+id/post_mutable_name"
-        android:layout_toStartOf="@id/post_mutable_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/post_mutable_avatar"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="5dp"
-        android:textColor="@color/gray"
-        android:textStyle="bold"
-        android:textSize="17sp"
-        android:text="Channel name"
-        tools:ignore="HardcodedText" />
+<!--    <TextView-->
+<!--        android:id="@+id/post_mutable_name"-->
+<!--        android:layout_toStartOf="@id/post_mutable_date"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_toEndOf="@id/post_mutable_avatar"-->
+<!--        android:layout_marginHorizontal="10dp"-->
+<!--        android:layout_marginVertical="5dp"-->
+<!--        android:textColor="@color/gray"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textSize="17sp"-->
+<!--        android:text="Channel name"-->
+<!--        tools:ignore="HardcodedText" />-->
 
-    <com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout
-        android:id="@+id/post_mutable_grid_content"
-        android:background="@android:color/transparent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/post_mutable_name"
-        android:rowCount="3"
-        android:columnCount="2" />
+<!--    <com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout-->
+<!--        android:id="@+id/post_mutable_grid_content"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/post_mutable_name"-->
+<!--        android:rowCount="3"-->
+<!--        android:columnCount="2" />-->
 
-    <EditText
-        android:id="@+id/post_mutable_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="50dp"
-        android:paddingVertical="10dp"
-        android:layout_below="@id/post_mutable_grid_content"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:inputType="textMultiLine|textCapSentences"
-        android:autoLink="all"
-        android:background="@android:color/transparent"
-        android:hint="@string/hint_text"
-        tools:ignore="HardcodedText" />
+<!--    <EditText-->
+<!--        android:id="@+id/post_mutable_text"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:paddingHorizontal="50dp"-->
+<!--        android:paddingVertical="10dp"-->
+<!--        android:layout_below="@id/post_mutable_grid_content"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="15sp"-->
+<!--        android:inputType="textMultiLine|textCapSentences"-->
+<!--        android:autoLink="all"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:hint="@string/hint_text"-->
+<!--        tools:ignore="HardcodedText" />-->
 
-    <TextView
-        android:id="@+id/post_mutable_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/post_mutable_text"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="10dp"
-        android:text="2:28"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        tools:ignore="HardcodedText" />
+<!--    <TextView-->
+<!--        android:id="@+id/post_mutable_date"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/post_mutable_text"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginVertical="10dp"-->
+<!--        android:layout_marginHorizontal="10dp"-->
+<!--        android:text="2:28"-->
+<!--        android:textColor="@color/gray"-->
+<!--        android:textSize="12sp"-->
+<!--        tools:ignore="HardcodedText" />-->
 
-    <com.alexz.messenger.app.ui.views.AvatarImageView
-        android:id="@+id/post_mutable_avatar"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/logo256"
-        android:layout_width="40dp"
-        android:padding="1dp"
-        android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"/>
+<!--    <com.alexz.messenger.app.ui.views.AvatarImageView-->
+<!--        android:id="@+id/post_mutable_avatar"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:src="@drawable/logo256"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:padding="1dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginStart="5dp"/>-->
 
 </RelativeLayout>

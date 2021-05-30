@@ -1,85 +1,94 @@
 package com.alexz.messenger.app.data.providers.imp
 
+import com.alexz.messenger.app.data.entities.IEntityCollection
 import com.alexz.messenger.app.data.entities.imp.Channel
 import com.alexz.messenger.app.data.entities.imp.ChannelAdmin
-import com.alexz.messenger.app.data.entities.imp.Post
 import com.alexz.messenger.app.data.entities.imp.User
 import com.alexz.messenger.app.data.providers.interfaces.ChannelsProvider
 import com.alexz.messenger.app.data.providers.interfaces.UserListProvider
+import com.alexz.messenger.app.data.repo.LinkProvider
 import com.alexz.messenger.app.util.*
 import com.alexz.messenger.app.util.FirebaseUtil.ADMINS
 import com.alexz.messenger.app.util.FirebaseUtil.CHANNELS
-import com.alexz.messenger.app.util.FirebaseUtil.POSTS
 import com.alexz.messenger.app.util.FirebaseUtil.REFERENCE
+import com.alexz.messenger.app.util.FirebaseUtil.TIME
 import com.alexz.messenger.app.util.FirebaseUtil.USERS
 import com.alexz.messenger.app.util.FirebaseUtil.channelsCollection
 import com.alexz.messenger.app.util.FirebaseUtil.usersCollection
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Single
 
 class FirestoreChannelsProvider(
-        private val userListProvider: UserListProvider = FirestoreUserListProvider()) : ChannelsProvider {
+        private val userListProvider: UserListProvider = FirestoreUserListProvider()
+) : ChannelsProvider, LinkProvider {
 
-    override fun getChannel(channelId: String): Observable<Channel> =
-        firestoreObservable(channelsCollection.document(channelId), Channel::class.java)
+    override fun getAdmins(channelId: String): Observable<List<ChannelAdmin>> =
+        channelsCollection.document(channelId).collection(ADMINS).toObservable(ChannelAdmin::class.java)
 
-    override fun getChannels(userId: String): Observable<List<String>> = Observable.create {
-        usersCollection.document(userId).collection(CHANNELS).get()
-                .addOnSuccessListener { qs ->
-                    it.onNext(qs.documents.mapNotNull { doc -> doc.id })
-                }.addOnFailureListener { ex -> it.onError(ex) }
+    override fun get(id: String, collectionID: String?): Observable<Channel> =
+        channelsCollection.document(id).toObservable(Channel::class.java)
+
+    override fun getAll(collection: IEntityCollection, limit:Int): Observable<List<Channel>> = Observable.create {
+
+        val col = usersCollection.document(collection.id).collection(CHANNELS)
+        val task = if (limit > -1) col.orderBy(TIME).limitToLast(limit.toLong()).get() else col.get()
+
+        task.addOnSuccessListener { qs ->
+            it.onNext(
+                    qs.documents.mapNotNull { doc -> doc.toObject(Channel::class.java) }
+            )
+        }.addOnFailureListener { ex -> it.onError(ex) }
     }
 
-    override fun getUsers(channelId: String): Observable<List<String>> = Observable.create {
-        channelsCollection.document(channelId).collection(USERS).get()
-                .addOnSuccessListener { qs ->
-                    it.onNext(qs.documents.mapNotNull { doc -> doc.id })
-                }.addOnFailureListener { ex -> it.onError(ex) }
+    override fun getUsers(channelId: String, limit: Int): Observable<List<User>> = Observable.create {
+        userListProvider.getAll(Channel(id = channelId),limit)
     }
 
-    override fun createChannel(channel: Channel): Completable {
+    override fun create(entity: Channel): Completable {
 
         val doc = channelsCollection.document()
         val uId = User().id
 
-        channel.id = doc.id
+        entity.id = doc.id
 
-        val creationCompletable = Completable.create { it.complete(doc.set(channel)) }
+        return doc.set(entity).toCompletable()
 
-        val userCompletable = taskCompletable(doc.collection(USERS).document(uId)
-                    .set(mapOf(Pair(REFERENCE,usersCollection.document(uId)))))
-
-        val adminCompletable = taskCompletable(doc.collection(ADMINS).document(uId).set(
-                    ChannelAdmin(canPost = true, canDelete = true, canBan = true, canEdit = true)))
-
-        val profileCompletable = taskCompletable(usersCollection.document(uId).collection(CHANNELS).document(channel.id)
-                    .set(mapOf(Pair(REFERENCE, channelsCollection.document(channel.id)))))
-
-        return Completable.concatArray(creationCompletable, userCompletable, adminCompletable, profileCompletable)
+//        val userCompletable = (doc.collection(USERS).document(uId)
+//                    .set(mapOf(Pair(REFERENCE,usersCollection.document(uId))))).toCompletable()
+//
+//        val adminCompletable = doc.collection(ADMINS).document(uId).set(
+//                    ChannelAdmin(canPost = true, canDelete = true, canBan = true, canEdit = true)).toCompletable()
+//
+//        val profileCompletable = usersCollection.document(uId).collection(CHANNELS).document(entity.id)
+//                    .set(mapOf(Pair(REFERENCE, channelsCollection.document(entity.id)))).toCompletable()
+//
+//        return Completable.concatArray(creationCompletable, userCompletable, adminCompletable, profileCompletable)
     }
 
-    override fun removeChannel(channel: Channel): Completable {
+    override fun delete(entity: Channel): Completable {
 
-        val completable = Completable.create {
-            if (channel.creatorId == User().id) {
-                it.complete(channelsCollection.document(channel.id).delete())
-            } else it.onComplete()
+        if (entity.creatorId == User().id){
+            return channelsCollection.document(entity.id).delete().toCompletable()
         }
-
-        return Completable.concatArray(completable, userListProvider.onChannelLeft(channel.id))
+        return remove(entity.id)
     }
 
-    override fun joinChannel(channelId: String): Single<Channel> {
+    override fun remove(id: String,collection: IEntityCollection?): Completable = userListProvider.onChannelLeft(id)
+
+    override fun join(channelId: String): Single<Channel> {
 
         val uid = User().id
         val doc = channelsCollection.document(channelId).collection(USERS).document(uid)
 
         val check1 = Completable.create {
-            getUsers(uid).singleOrError().doOnSuccess { list ->
-                list.find { id -> id == channelId }?.let { _ -> it.onComplete() }
-                        ?: it.tryOnError(InterruptingThrowable)
-            }.subscribe()
+            getUsers(uid).singleOrError()
+                    .subscribe(
+                            { list ->
+                                list.find { user -> user.id == channelId }?.let { _ -> it.onComplete() }
+                                        ?: it.tryOnError(InterruptingThrowable)
+                            },
+                            {})
         }
 
         var channel: Channel? = null
@@ -98,47 +107,38 @@ class FirestoreChannelsProvider(
         }
 
         val joinCompletable = Completable.concatArray(
-                taskCompletable(doc.set(mapOf(Pair(REFERENCE, usersCollection.document(uid))))),
-                userListProvider.onChannelJoined(channelId))
+                doc.set(mapOf(Pair(REFERENCE, usersCollection.document(uid)))).toCompletable(),
+                userListProvider.onChannelJoin(channelId))
 
         return Single.create<Channel> {
             Completable.concatArray(check1, check2)
-                    .doOnError { ex ->
-                        if (ex is InterruptingThrowable) {
-                            joinCompletable.subscribe(
-                                    { channel?.let { c -> it.onSuccess(c) } ?: it.tryOnError(NullPointerException())},
-                                    { t -> it.tryOnError(t) })
-                        } else {
-                            it.tryOnError(ex)
-                        }
-                    }.subscribe()
+                    .subscribe(
+                            {
+                                channel?.let { it1 -> it.onSuccess(it1) }
+                            },
+                            { ex ->
+                                if (ex is InterruptingThrowable) {
+                                    joinCompletable.subscribe(
+                                            { channel?.let { c -> it.onSuccess(c) } ?: it.tryOnError(NullPointerException())},
+                                            { t -> it.tryOnError(t) })
+                                } else {
+                                    it.tryOnError(ex)
+                                }
+                            }
+                    )
         }
     }
 
-    override fun addPost(post: Post): Completable = Completable.create {
-        val doc = channelsCollection.document(post.channelId)
-                .collection(POSTS)
-                .document()
-        post.id = doc.id
-        doc.set(post).addOnSuccessListener {_ ->
-            it.onComplete()
-        }.addOnFailureListener { t -> it.tryOnError(t) }
-    }
+    override fun find(namePart: String): Single<List<Channel>> =
+            channelsCollection.whereGreaterThanOrEqualTo(FirebaseUtil.SEARCH_NAME, namePart).get()
+                    .toSingle().map { snap -> snap.toObjects(Channel::class.java) }
 
-    override fun lastPost(channelId: String): Observable<Post> = Observable.create {
-        channelsCollection.document(channelId).collection(POSTS).limitToLast(1).get()
-                .addOnSuccessListener { qs ->
-                    try {
-                        it.onNext(qs.documents[0].toObjectNonNull(Post::class.java))
-                    } catch (t: Throwable) {
-                        it.tryOnError(t)
-                    }
-                }
-    }
-
-    override fun findChannels(namePart: String): Single<List<Channel>> = Single.create {
-        it.parseListNonNull(
-                channelsCollection.whereGreaterThanOrEqualTo(FirebaseUtil.SEARCH_NAME, namePart).get(),
-                Channel::class.java)
+    override fun createInviteLink(id: String): String {
+        return buildString {
+            append(FirebaseUtil.URL_BASE)
+            append(FirebaseUtil.LINK_CHANNEL)
+            append('/')
+            append(id)
+        }
     }
 }

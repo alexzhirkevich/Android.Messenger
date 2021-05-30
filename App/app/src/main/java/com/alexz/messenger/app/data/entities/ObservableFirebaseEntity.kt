@@ -5,8 +5,8 @@
 //import com.google.firebase.database.DatabaseError
 //import com.google.firebase.database.Query
 //import com.google.firebase.database.ValueEventListener
-//import io.reactivex.rxjava3.core.Observable
-//import io.reactivex.rxjava3.core.Observer
+//import io.reactivex.Observable
+//import io.reactivex.Observer
 //
 //class ObservableFirebaseEntity<Entity : IEntity>(
 //        var clazz: Class<Entity>) :

@@ -26,8 +26,6 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
     override var adapterCallback: AdapterCallback<Entity>? = null
     override var loadingCallback: LoadingCallback? = null
 
-    override var localProvider: ILocalProvider<Entity>? = null
-
     var isListen  = false
         protected set
     var isLoading = false
@@ -134,7 +132,6 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
                     notifyItemChanged(idx)
                 }
                 adapterCallback?.onItemChanged(model)
-                localProvider?.adapterCallback?.onItemChanged(model)
             }
             idx
         } else {
@@ -146,7 +143,6 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
             }
             if (!isLoading || forceCallback) {
                 adapterCallback?.onItemAdded(model)
-                localProvider?.adapterCallback?.onItemAdded(model)
             }
             _models.size
         }
@@ -162,7 +158,6 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
                     notifyItemChanged(idx)
                 }
                 adapterCallback?.onItemChanged(model)
-                localProvider?.adapterCallback?.onItemChanged(model)
             }
             findIdx
         } else {
@@ -173,7 +168,6 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
                 }
                 if (!isLoading || forceCallback) {
                     adapterCallback?.onItemAdded(model)
-                    localProvider?.adapterCallback?.onItemAdded(model)
                 }
             }
             idx
@@ -185,11 +179,10 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
     override fun remove(id: String, byUser : Boolean): Boolean = synchronized(_models) {
         val idx = _models.indexOfFirst { it.id == id }
         if (idx != -1) {
-            val model = _models.removeAt(idx);
+            val model = _models.removeAt(idx)
             uiHandler.post {
                 notifyItemRemoved(idx)
                 adapterCallback?.onItemRemoved(model)
-                localProvider?.adapterCallback?.onItemRemoved(model)
             }
             true
         } else false

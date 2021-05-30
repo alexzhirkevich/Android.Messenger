@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_bottom"
+    app:startDestination="@id/fragment_profile">
+
+    <fragment
+        android:id="@+id/fragment_calls"
+        android:name="com.alexz.test.CallsFragment"
+        tools:layout="@layout/fragment_calls"/>
+
+    <fragment
+        android:id="@+id/fragment_chats_channels"
+        android:name="com.alexz.test.ChatsAndChannelsRootFragment"
+        tools:layout="@layout/fragment_root_chats_channels"/>
+
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="com.alexz.test.ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
+</navigation>
