@@ -108,7 +108,7 @@
     <string name="login">Войти</string>
     <string name="passwd">Пароль…</string>
     <string name="register">Регистрация</string>
-    <string name="create_account">Создать аккаунт</string>
+    <string name="send_code">Получить код</string>
     <string name="your_name">Ваше имя…</string>
     <string name="accept_rules_1">Я принимаю</string>
     <string name="accept_rules_2">Польз. соглашение</string>
@@ -126,4 +126,13 @@
     <string name="signout">Выйти</string>
     <string name="calls">Звонки</string>
     <string name="chats">Чаты</string>
+    <string name="phone">Номер телефона...</string>
+    <string name="you">Вы</string>
+    <string name="short_year">г</string>
+    <string name="short_month">м</string>
+    <string name="short_week">н</string>
+    <string name="short_day">д</string>
+    <string name="short_hour">ч</string>
+    <string name="code">Код...</string>
+    <string name="verify">Подтвердить</string>
 </resources>

@@ -3,17 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_main"
-    app:startDestination="@id/fragment_login">
+    app:startDestination="@id/fragment_auth">
+
 
     <fragment
-        android:id="@+id/fragment_login"
-        android:name="com.alexz.test.LoginFragment"
-        tools:layout="@layout/fragment_login">
+        android:id="@+id/fragment_auth"
+        android:name="com.alexz.messenger.app.ui.fragments.AuthFragment"
+        tools:layout="@layout/fragment_auth">
         <action
-            android:id="@+id/action_login_to_register"
-            app:destination="@id/fragment_register" />
-        <action
-            android:id="@+id/action_login_to_bottom_navigation"
+            android:id="@+id/action_auth_to_bottom_navigation"
             app:destination="@id/fragment_bottom_navigation"
             app:launchSingleTop="true"
             app:popUpTo="@id/navigation_main"
@@ -21,14 +19,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_register"
-        android:name="com.alexz.test.RegisterFragment"
-        tools:layout="@layout/fragment_register">
-    </fragment>
-
-    <fragment
         android:id="@+id/fragment_bottom_navigation"
-        android:name="com.alexz.test.BottomNavigationFragment"
+        android:name="com.alexz.messenger.app.ui.fragments.BottomNavigationFragment"
         tools:layout="@layout/fragment_bottom_navigation">
     </fragment>
 

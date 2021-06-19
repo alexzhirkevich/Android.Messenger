@@ -8,15 +8,27 @@
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:titleTextColor="@color/white"
+        app:subtitleTextColor="@color/white"
+        android:outlineProvider="none"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:background="@android:color/transparent"
-        android:layout_alignParentTop="true"
-        android:elevation="5dp">
+        android:layout_alignParentTop="true">
 
-    </androidx.appcompat.widget.Toolbar>
+        <androidx.appcompat.widget.SearchView
+            android:visibility="gone"
+            style="@style/Widget.AppCompat.SearchView.ActionBar"
+            android:id="@+id/search"
+            app:queryBackground="@android:color/transparent"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_host_bottom_navigation"
@@ -24,16 +36,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation_bottom"
+        android:layout_below="@id/toolbar"
         android:layout_above="@id/bottom_navigation" />
 
     <View
+        style="@style/Widget.AppCompat.TextView"
         android:id="@+id/bottom_navigation_shadow"
         android:layout_above="@id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@drawable/drawable_shadow"/>
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -43,6 +55,7 @@
         app:itemIconTint="@color/color_bottom_navigation"
         app:itemTextColor="@color/color_bottom_navigation"
         app:menu="@menu/menu_bottom_navigation"
+        app:elevation="0dp"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

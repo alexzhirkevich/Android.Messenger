@@ -2,15 +2,15 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const {CHATS,USERS} = require("../constants");
 
-exports.joinChat = async function(userId,chatId){
+exports.joinChat = async function(userId, chatId){
 
     if (userId && chatId) {
         return await admin.firestore().collection(CHATS).doc(chatId).collection(USERS).doc(userId)
             .set({
                 "allowNotifications": true
-            })
+            }).then(() => admin.firestore().collection(USERS).doc(userId).collection(CHATS).doc(chatId).set({"":""}))
     }
-    return null
+    return null 
 }
 
 exports.leaveChat =async function(userId,chatId){

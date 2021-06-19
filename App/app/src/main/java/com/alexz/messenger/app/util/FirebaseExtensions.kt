@@ -15,9 +15,30 @@ import java.util.concurrent.CancellationException
 fun <T> DocumentSnapshot.toObjectNonNull(clazz : Class<T>) : T =
         toObject(clazz) ?: throw ClassCastException("Parsing error")
 
+fun <T> DocumentReference.toObservable(clazz : Class<T>) : Observable<T> = Observable.create<T> {
+    var reg: ListenerRegistration? = null
+    reg = addSnapshotListener { ds, error ->
+        if (error != null) {
+            it.tryOnError(error)
+            reg?.remove()
+        } else {
+            if (ds != null) {
+                try {
+                    it.onNext(ds.toObjectNonNull(clazz))
+                } catch (t: Throwable) {
+                    it.tryOnError(t)
+                    reg?.remove()
+                }
+            } else {
+                it.tryOnError(NullPointerException("Failed to observe entity. DocumentSnapshot is null"))
+                reg?.remove()
+            }
+        }
+    }
+}
+
 fun <T> DocumentReference.toObservable(
-        clazz : Class<T>,
-        parser : (DocumentSnapshot) -> T = {ds -> ds.toObjectNonNull(clazz)}
+        parser : (DocumentSnapshot) -> T
 ) : Observable<T> = Observable.create<T> {
     var reg: ListenerRegistration? = null
     reg = addSnapshotListener { ds, error ->
@@ -54,6 +75,23 @@ fun <T> Query.toObservable(clazz : Class<T>) : Observable<List<T>> = Observable.
             if (qs != null) {
                 try {
                     it.onNext(qs.toObjects(clazz))
+                } catch (t: Throwable) {
+                    it.tryOnError(t)
+                }
+            } else
+                it.onNext(emptyList())
+        }
+    }
+}
+
+fun <T> Query.toObservable(parser: (DocumentSnapshot) -> T) : Observable<List<T>> = Observable.create {
+    addSnapshotListener { qs, error ->
+        if (error != null) {
+            it.tryOnError(error)
+        } else {
+            if (qs != null) {
+                try {
+                    it.onNext(qs.map { doc -> parser(doc) })
                 } catch (t: Throwable) {
                     it.tryOnError(t)
                 }

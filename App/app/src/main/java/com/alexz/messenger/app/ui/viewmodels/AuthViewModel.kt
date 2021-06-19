@@ -1,50 +1,57 @@
 package com.alexz.messenger.app.ui.viewmodels
 
 import android.app.Activity
-import android.content.Intent
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.alexz.messenger.app.data.providers.imp.GoogleAuthProvider
-import com.alexz.messenger.app.data.providers.interfaces.AuthProvider
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.messenger.app.R
-import io.reactivex.Single
+import com.alexz.messenger.app.data.Data
+import com.alexz.messenger.app.data.entities.imp.User
+import com.alexz.messenger.app.data.providers.imp.PhoneAuthProviderImpl
+import com.alexz.messenger.app.data.providers.interfaces.PhoneAuthCallback
+import com.alexz.messenger.app.data.providers.interfaces.PhoneAuthProvider
 
-class AuthViewModel : ViewModel(){
+class AuthViewModel : ViewModel(),PhoneAuthProvider{
 
-    val provider : AuthProvider = GoogleAuthProvider()
+    val loginStatus : LiveData<Data<User>>
+    get() = mutableLoginStatus
 
-    fun getGoogleSignInClient(activity: Activity): GoogleSignInClient {
-        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(activity.getString(R.string.default_web_client_id))
-                .requestProfile()
-                .requestEmail()
-                .build()
+    val codeSendStatus : LiveData<Boolean>
+    get() = mutableCodeSendStatus
 
-        return GoogleSignIn.getClient(activity, options)
-    }
+    override val isAuthenticated
+        get() = provider.isAuthenticated
 
-    fun getGoogleSignInAccount(intent: Intent) : Single<GoogleSignInAccount> =
-            Single.create {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
-                task.addOnSuccessListener { acc ->
-                    it.onSuccess(acc)
-                }.addOnFailureListener { ex ->
-                    it.onError(ex)
-                }
-            }
+    override val isCodeSend: Boolean
+        get() = provider.isCodeSend
 
-    fun login(account: GoogleSignInAccount) = provider.login(account)
+    override fun sendCode(activity: Activity, phone: String) = provider.sendCode(activity,phone)
 
-    companion object {
-        const val G_PLUS_SCOPE =
-                "oauth2:https://www.googleapis.com/auth/plus.me"
-        const val USERINFO_SCOPE =
-                "https://www.googleapis.com/auth/userinfo.profile"
-        const val EMAIL_SCOPE = "https://www.googleapis.com/auth/userinfo.email"
-        const val SCOPES = G_PLUS_SCOPE + " " + USERINFO_SCOPE + " " + EMAIL_SCOPE
-        const val REQ_SIGN_IN = 123
+
+    override fun verifyCode(code: String) =
+            provider.verifyCode(code)
+
+
+    private val mutableLoginStatus =  MutableLiveData<Data<User>>()
+    private val mutableCodeSendStatus  =  MutableLiveData<Boolean>()
+
+    private val provider : PhoneAuthProvider = PhoneAuthProviderImpl(object : PhoneAuthCallback {
+        override fun onCodeSend() {
+            mutableCodeSendStatus.postValue(true)
+        }
+
+        override fun onSuccess(u: User) {
+            mutableLoginStatus.postValue(Data(value = u))
+        }
+
+        override fun onError(t: Throwable) {
+            mutableLoginStatus.postValue(Data(error = t))
+        }
+    })
+
+    init {
+        if (isAuthenticated) {
+            mutableLoginStatus.postValue(Data(value = User()))
+        }
+        mutableCodeSendStatus.postValue(false)
     }
 }

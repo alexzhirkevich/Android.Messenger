@@ -3,37 +3,29 @@ package com.alexz.messenger.app.data.entities.imp
 import android.os.Parcel
 import android.os.Parcelable
 import com.alexz.firerecadapter.IEntity
-import com.alexz.messenger.app.data.entities.EntityCollection
 import com.alexz.messenger.app.data.entities.interfaces.IChat
 import com.alexz.messenger.app.util.FirebaseUtil
 
-//@androidx.room.Entity(
-//        tableName = Chat.TABLE_NAME,
-//        foreignKeys = [
-//            ForeignKey(entity = User::class, parentColumns = ["id"],childColumns = ["creator_id"],onDelete = ForeignKey.CASCADE),
-//            ForeignKey(entity = Message::class, parentColumns = ["id"],childColumns = ["last_message_id"],onDelete = ForeignKey.SET_DEFAULT)
-//        ],
-//        inheritSuperIndices = true,
-//        indices = [Index(value = ["creator_id"]),Index(value = ["last_message_id"])]
-//)
 class Chat(
         id : String = "",
-  //      @ColumnInfo(name = "name")
         override var name: String = "",
-   //     @ColumnInfo(name = "image_uri")
         override var imageUri: String = "",
-   //     @ColumnInfo(name = "last_message_id")
-        override val lastMessageId : String = "",
-    //    @ColumnInfo(name = "last_message_time")
-        override val lastMessageTime: Long = Long.MAX_VALUE,
-    //    @ColumnInfo(name = "creator_id")
         override var creatorId: String = "",
-    //    @ColumnInfo(name = "creation_time")
         override var creationTime: Long = 0,
-    //    @ColumnInfo(name = "is_group")
-        override var isGroup: Boolean = false
+        lastMessageId : String = "",
+        lastMessageTime: Long = Long.MAX_VALUE
+) : Messageable(id = id,lastMessageId = lastMessageId, lastMessageTime = lastMessageTime), IChat, Parcelable {
 
-) : EntityCollection(id, setOf(Message::class.java)), IChat, Parcelable {
+    constructor(messageable: Messageable, name: String,imageUri: String,creatorId: String,creationTime: Long) :
+        this(
+                id = messageable.id,
+                name =  name,
+                imageUri = imageUri,
+                creatorId = creatorId,
+                creationTime = creationTime,
+                lastMessageId = messageable.lastMessageId,
+                lastMessageTime = messageable.lastMessageTime)
+
 
     constructor(di: Chat) :this(
             id = di.id,
@@ -42,28 +34,22 @@ class Chat(
             lastMessageId = di.lastMessageId,
             lastMessageTime = di.lastMessageTime,
             creatorId = di.creatorId,
-            creationTime = di.creationTime,
-            isGroup =  di.isGroup)
+            creationTime = di.creationTime)
 
-    private constructor(parcel: Parcel) : this(
-            id = parcel.readString().orEmpty(),
-            imageUri = parcel.readString().orEmpty(),
-            name = parcel.readString().orEmpty(),
-            lastMessageId = parcel.readString().orEmpty(),
-            lastMessageTime = parcel.readLong(),
-            creatorId = parcel.readString().orEmpty(),
-            creationTime = parcel.readLong(),
-            isGroup = parcel.readByte().toInt() != 0)
+    private constructor(parcel: Parcel) :this(
+        Messageable.createFromParcel(parcel),
+        name = parcel.readString().orEmpty(),
+        imageUri = parcel.readString().orEmpty(),
+        creatorId = parcel.readString().orEmpty(),
+        creationTime = parcel.readLong()
+    )
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(id)
-        dest.writeString(imageUri)
+        super.writeToParcel(dest,flags)
         dest.writeString(name)
-        dest.writeString(lastMessageId)
-        dest.writeLong(lastMessageTime)
+        dest.writeString(imageUri)
         dest.writeString(creatorId)
         dest.writeLong(creationTime)
-        dest.writeByte((if (isGroup) 1 else 0).toByte())
     }
 
     override fun describeContents(): Int {

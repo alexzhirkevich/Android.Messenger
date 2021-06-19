@@ -1,88 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="@dimen/dialog_cardview_elevation">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        tools:context="com.alexz.messenger.app.data.entities.imp.Chat">
+    android:foreground="?selectableItemBackground"
+    android:background="@android:color/transparent"
+    tools:context="com.alexz.messenger.app.data.entities.imp.Chat">
 
-        <com.alexz.messenger.app.ui.views.AvatarImageView
-            android:id="@+id/channel_avatar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
-            android:padding="5dp"
-            android:src="@drawable/logo256"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+    <com.alexz.messenger.app.ui.views.AvatarImageView
+        android:id="@+id/channel_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="@dimen/tab_chats_channels_hor_margin"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:src="@drawable/logo"
+        android:layout_centerVertical="true"
+        android:layout_marginVertical="7dp"
+        android:layout_alignParentStart="true"/>
+
+    <RelativeLayout
+        android:id="@+id/_layout_channel_name_and_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/channel_avatar"
+        android:layout_toStartOf="@id/_layout_channel_date_and_unread">
 
         <TextView
             android:id="@+id/channel_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="2dp"
-            android:text="Name"
+            android:maxWidth="250dp"
+            android:scrollHorizontally="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/dialog_name_size"
+            android:textSize="@dimen/font_size_medium"
             android:maxLines="1"
-            app:layout_constraintEnd_toStartOf="@id/channel_last_post_date"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/channel_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:ellipsize="end"
+            android:fontFamily="@font/gotham_pro_bold"
+            android:layout_alignParentTop="true"/>
         <TextView
-            android:id="@+id/chat_last_post"
+            android:id="@+id/channel_last_post_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sender:"
             android:maxLines="2"
+            android:lineSpacingMultiplier="1.1"
+            android:ellipsize="end"
+            android:layout_marginTop="3dp"
             android:textColor="@color/gray"
-            android:textSize="@dimen/dialog_sender_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/channel_name"
-            app:layout_constraintTop_toBottomOf="@id/channel_name"
-            app:layout_constraintVertical_bias="0.0" />
+            android:fontFamily="@font/gotham_pro_light"
+            android:textSize="@dimen/font_size_small"
+            android:layout_below="@id/channel_name"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/_layout_channel_date_and_unread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="@dimen/tab_chats_channels_hor_margin"
+        android:layout_alignParentEnd="true"
+        android:paddingStart="15dp"
+        android:layout_centerVertical="true">
 
         <TextView
-            android:id="@id/channel_last_post_date"
+            android:id="@+id/channel_last_post_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="04:20"
+            android:fontFamily="@font/gotham_pro"
             android:textColor="@color/gray"
-            android:textSize="@dimen/dialog_date_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/channel_name" />
+            android:textSize="@dimen/font_size_small"/>
 
         <TextView
             android:id="@+id/channel_unread_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp"
-            android:text="1"
+            android:padding="3dp"
             android:gravity="center"
-            android:textColor="@color/color_background_dark"
+            android:textColor="@color/white"
             android:background="@drawable/drawable_oval"
-            android:textSize="@dimen/dialog_unread_size"
-            app:layout_constraintEnd_toEndOf="@+id/channel_last_post_date"
-            app:layout_constraintTop_toBottomOf="@+id/channel_last_post_date" />
+            android:backgroundTint="@color/green"
+            android:fontFamily="@font/gotham_pro_bold"
+            android:textSize="@dimen/font_size_small"
+            android:visibility="invisible"
+            android:layout_marginBottom="5dp"/>
+    </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

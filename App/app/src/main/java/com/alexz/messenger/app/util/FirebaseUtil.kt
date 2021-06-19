@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 object FirebaseUtil {
+    val CREATOR_ID = "creatorId"
     const val TIME= "time"
     const val MEDIA_MESSAGES = "media_messages"
     const val VOICE_MESSAGES = "voice_messages"

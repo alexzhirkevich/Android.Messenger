@@ -8,14 +8,28 @@ import com.alexz.messenger.app.util.FirebaseUtil
 
 //@Entity(tableName = MediaMessage.TABLE_NAME,
 //        inheritSuperIndices = true)
-class MediaMessage: Message, IMediaMessage<MediaContent>, Parcelable {
+class MediaMessage(
+        id : String="",
+        chatId: String="",
+        text:String="",
+        senderId: String="",
+        time: Long=System.currentTimeMillis(),
+        isPrivate: Boolean = false,
+        override var mediaContent: List<MediaContent> = listOf())
+    : Message(id = id,chatId = chatId,text = text,senderId = senderId,time = time,isPrivate = isPrivate),
+        IMediaMessage<MediaContent>, Parcelable {
 
-    //@ColumnInfo(name = "media_content",defaultValue = "")
-    override var mediaContent: List<MediaContent> = listOf()
+    constructor(message: Message,mediaContent: List<MediaContent> = listOf()) : this(
+            id = message.id,
+            chatId = message.chatId,
+            text = message.text,
+            senderId = message.senderId,
+            time = message.time,
+            isPrivate = message.isPrivate,
+            mediaContent = mediaContent
+    )
 
-    constructor(chatId : String = "") :super(chatId)
-
-    private constructor(parcel: Parcel) : super(parcel) {
+    private constructor(parcel: Parcel) : this(Message.createFromParcel(parcel)) {
         parcel.readList(mediaContent, MediaContent::class.java.classLoader)
     }
 

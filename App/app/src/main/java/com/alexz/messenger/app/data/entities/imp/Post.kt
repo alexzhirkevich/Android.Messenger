@@ -7,26 +7,12 @@ import com.alexz.firerecadapter.IEntity
 import com.alexz.messenger.app.data.entities.interfaces.IPost
 import com.alexz.messenger.app.util.FirebaseUtil
 
-//@androidx.room.Entity(
-//        tableName = Post.TABLE_NAME,
-//        foreignKeys = [
-//            ForeignKey(entity = Channel::class, parentColumns = ["id"],childColumns = ["channel_id"],onDelete = ForeignKey.CASCADE)
-//        ],
-//        inheritSuperIndices = true,
-//        indices = [Index(value = ["channel_id"])]
-//
-//)
 class Post(
         id : String = "",
-        //@ColumnInfo(name = "creator_id")
         override var creatorId: String = "",
-       // @ColumnInfo(name = "channel_id")
         override var channelId: String = "",
-       // @ColumnInfo(name = "text")
         override var text: String = "",
-      //  @ColumnInfo(name = "time")
         override var time: Long = System.currentTimeMillis(),
-       // @ColumnInfo(name = "content")
         override var content: MutableList<MediaContent> = mutableListOf()
         ) : Entity(id), IPost, Parcelable {
 

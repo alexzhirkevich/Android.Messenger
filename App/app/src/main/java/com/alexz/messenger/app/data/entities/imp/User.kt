@@ -2,27 +2,19 @@ package com.alexz.messenger.app.data.entities.imp
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.ColumnInfo
 import com.alexz.firerecadapter.Entity
 import com.alexz.firerecadapter.IEntity
 import com.alexz.messenger.app.data.entities.interfaces.IUser
 import com.alexz.messenger.app.util.FirebaseUtil
 import com.google.firebase.auth.FirebaseUser
 
-@androidx.room.Entity(
-        tableName = User.TABLE_NAME,
-        inheritSuperIndices = true
-)
+
 class User(
         id : String = FirebaseUtil.currentFireUser?.uid.orEmpty(),
-        @ColumnInfo(name = "name")
-            override var name: String = FirebaseUtil.currentFireUser?.displayName.orEmpty(),
-        @ColumnInfo(name = "image_uri")
+        override var name: String = FirebaseUtil.currentFireUser?.displayName.orEmpty(),
         override var imageUri: String = FirebaseUtil.currentFireUser?.photoUrl.toString(),
-        @ColumnInfo(name = "last_online")
-           override var lastOnline: Long = System.currentTimeMillis(),
-        @ColumnInfo(name = "is_online")
-           override var isOnline: Boolean = true) :
+        override var lastOnline: Long = System.currentTimeMillis(),
+        override var isOnline: Boolean = true) :
         Entity(id), IUser, Parcelable {
 
     private constructor(parcel: Parcel) : this(

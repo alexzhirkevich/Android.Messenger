@@ -3,8 +3,8 @@ package com.alexz.firerecadapter
 import androidx.annotation.CallSuper
 import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
 
-abstract class FirebaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>>(clazz : Class<Entity>)
-    : BaseRecyclerAdapter<Entity,VH>(clazz) {
+abstract class FirebaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>>(val modelClass: Class<Entity>)
+    : BaseRecyclerAdapter<Entity,VH>() {
 
     private val databaseModels = mutableSetOf<String>()
 
@@ -36,20 +36,20 @@ abstract class FirebaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder
     }
 
     @CallSuper
-    override fun add(model: Entity, forceCallback: Boolean, byUser: Boolean): Int {
+    override fun add(entity: Entity, forceCallback: Boolean, byUser: Boolean): Int {
         if (!byUser) {
-            databaseModels.add(model.id)
+            databaseModels.add(entity.id)
         }
-        return super.add(model, forceCallback, byUser)
+        return super.add(entity, forceCallback, byUser)
     }
 
-    @CallSuper
-    override fun insert(idx: Int, model: Entity, forceCallback: Boolean, byUser: Boolean): Int {
-        if (!byUser) {
-            databaseModels.add(model.id)
-        }
-        return super.insert(idx, model, forceCallback, byUser)
-    }
+//    @CallSuper
+//    override fun insert(idx: Int, model: Entity, forceCallback: Boolean, byUser: Boolean): Int {
+//        if (!byUser) {
+//            databaseModels.add(model.id)
+//        }
+//        return super.insert(idx, model, forceCallback, byUser)
+//    }
 
     @CallSuper
     override fun remove(id: String, byUser: Boolean): Boolean {

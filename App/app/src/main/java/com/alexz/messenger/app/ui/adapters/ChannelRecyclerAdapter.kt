@@ -10,19 +10,20 @@ import com.alexz.firerecadapter.firestore.FirestoreMapRecyclerAdapter
 import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
 import com.alexz.messenger.app.data.entities.imp.Channel
 import com.alexz.messenger.app.data.entities.imp.User
-import com.alexz.messenger.app.data.providers.imp.FirestorePostsProvider
-import com.alexz.messenger.app.data.providers.imp.FirestoreUserListProvider
+import com.alexz.messenger.app.data.entities.interfaces.IChannel
 import com.alexz.messenger.app.data.providers.interfaces.PostsProvider
+import com.alexz.messenger.app.data.providers.test.TestPostProvider
 import com.alexz.messenger.app.ui.views.AvatarImageView
 import com.alexz.messenger.app.util.FirebaseUtil
-import com.alexz.messenger.app.util.getTime
+import com.alexz.messenger.app.util.timeVisualizer
+import com.google.firebase.firestore.DocumentSnapshot
 import com.messenger.app.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<Channel, ChannelRecyclerAdapter.ChannelViewHolder>(
-        Channel::class.java,
+class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<IChannel, ChannelRecyclerAdapter.ChannelViewHolder>(
+        Channel::class.java as Class<IChannel>,
         FirebaseUtil.usersCollection.document(User().id).collection(FirebaseUtil.CHANNELS)) {
 
     override fun onCreateEntityReference(id: String) =
@@ -33,47 +34,44 @@ class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<Channel, ChannelRecyc
                 .document(id).delete()
     }
 
-    override fun onSelect(key: String, model: Channel) = model.name.contains(key,true)
+//    override fun onSelect(key: String, model: IChannel) = model.name.contains(key,true)
 
     override fun onCreateClickableViewHolder(parent: ViewGroup, viewType: Int): ChannelViewHolder {
         val root = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_channel, parent, false)
+                .inflate(R.layout.item_chat, parent, false)
         return ChannelViewHolder(root)
     }
 
-    class ChannelViewHolder(itemView: View) : FirebaseViewHolder<Channel>(itemView) {
+    class ChannelViewHolder(itemView: View) : FirebaseViewHolder<IChannel>(itemView) {
 
-        var dispose : Disposable? = null
+        private var lastPostDisposable : Disposable? = null
 
-        val imgView: AvatarImageView = itemView.findViewById(R.id.channel_avatar)
-        val nameView: TextView = itemView.findViewById(R.id.channel_name)
-        val lastPostView: TextView = itemView.findViewById(R.id.chat_last_post)
-        val dateView: TextView = itemView.findViewById(R.id.channel_last_post_date)
-        val unreadView: TextView = itemView.findViewById(R.id.channel_unread_count)
-        init {
-            unreadView.visibility = View.INVISIBLE
-        }
-
-        override fun bind(entity: Channel) {
+        private val imgView: AvatarImageView = itemView.findViewById(R.id.channel_avatar)
+        private val nameView: TextView = itemView.findViewById(R.id.channel_name)
+        private val lastPostView: TextView = itemView.findViewById(R.id.channel_last_post_text)
+        private val dateView: TextView = itemView.findViewById(R.id.channel_last_post_date)
+        private val unreadView: TextView = itemView.findViewById(R.id.channel_unread_count)
+        
+        override fun bind(entity: IChannel) {
             super.bind(entity)
-            dispose?.dispose()
+            lastPostDisposable?.dispose()
 
             nameView.text = entity.name
 
             if (entity.imageUri.isNotEmpty()) {
                 imgView.setImageURI(Uri.parse(entity.imageUri))
             } else {
-                imgView.setImageResource(R.drawable.logo256)
+                imgView.setImageResource(R.drawable.logo)
             }
 
             if (entity.lastPostId.isNotEmpty()) {
-                dispose = postsProvider.last(entity.id)
+                lastPostDisposable = postsProvider.last(entity.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 {
                                     lastPostView.text = it.text
-                                    dateView.text = getTime(it.time )
+                                    dateView.text = it.time.timeVisualizer().time
                                 },
                                 {
                                     Log.w(TAG, "Failed to observe last post")
@@ -88,12 +86,13 @@ class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<Channel, ChannelRecyc
 
     companion object {
 
-        val userListProvider by lazy {
-           FirestoreUserListProvider()
-        }
         val postsProvider: PostsProvider by lazy {
-            FirestorePostsProvider()
+            TestPostProvider()
         }
         val TAG = ChannelRecyclerAdapter::class.java.simpleName
+    }
+
+    override fun parse(snapshot: DocumentSnapshot): IChannel? {
+        TODO("Not yet implemented")
     }
 }

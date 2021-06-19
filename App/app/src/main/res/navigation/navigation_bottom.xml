@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/fragment_calls"
-        android:name="com.alexz.test.CallsFragment"
+        android:name="com.alexz.messenger.app.ui.fragments.CallsFragment"
         tools:layout="@layout/fragment_calls"/>
 
     <fragment
         android:id="@+id/fragment_chats_channels"
-        android:name="com.alexz.test.ChatsAndChannelsRootFragment"
+        android:name="com.alexz.messenger.app.ui.fragments.ChatsAndChannelsRootFragment"
         tools:layout="@layout/fragment_root_chats_channels"/>
 
     <fragment
         android:id="@+id/fragment_profile"
-        android:name="com.alexz.test.ProfileFragment"
+        android:name="com.alexz.messenger.app.ui.fragments.ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
 
 </navigation>

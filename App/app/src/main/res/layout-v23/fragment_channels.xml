@@ -6,7 +6,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_channels"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbarSize="1dp"
+        android:scrollbarThumbVertical="@color/gray"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_channel"/>
 
 </FrameLayout>

@@ -41,14 +41,17 @@ exports.deleteChannel = async function(channelId){
     return null
 }
 
-exports.joinChannel = async  function (userId,channelId) {
+exports.joinChannel = async function (userId,channelId) {
     if (userId && channelId) {
-        return await admin.firestore().collection(CHANNELS).doc(channelId).collection(USERS).doc(userId)
+        let success = true;
+        await admin.firestore().collection(CHANNELS).doc(channelId).collection(USERS).doc(userId)
             .set({
                 "allowNotifications": true
-            })
+            }).catch(() => success = false)
+
+        return success
     }
-    return null
+    return false
 }
 
 exports.leaveChannel = async function(userId,channelId) {

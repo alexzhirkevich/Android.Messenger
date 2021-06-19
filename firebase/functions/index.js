@@ -1,5 +1,6 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
+const express = require("express");
 
 const {MESSAGES,POSTS,CHANNELS,USERS,CHATS} = require("./constants");
 const {joinChannel,leaveChannel,createChannel,deleteChannel} = require("./util/channels");
@@ -9,6 +10,24 @@ const {addUserToDatabase,deleteUser} = require("./util/users");
 const {deleteChat,leaveChat,joinChat} = require("./util/chats");
 
 admin.initializeApp()
+
+
+exports._joinChannel = functions.https.onRequest(async (req,res)=> {
+
+    const token = req.params.token
+    const userId = req.params.userId
+    const channelId = req.params.chatId
+    if (token && userId && channelId)
+
+    admin.auth().verifyIdToken(token).then((async decodedToken => {
+        if (decodedToken.uid === userId) {
+
+            if (await joinChannel(userId, channelId)){
+                res.status(200).send(true)
+            }
+        }
+    })).catch((reason => res.status(404).send(false)))
+})
 
 //***********************CHATS***********************
 
@@ -95,9 +114,39 @@ exports.onPostDeleted = functions.firestore
 
 //**********************MESSAGES**********************
 
+
+exports.onMessageChanged = functions.firestore
+    .document(`${CHATS}/{chatId}/${MESSAGES}/{msgId}`)
+    .onWrite((snapshot,context) => {
+        if (context.authType === "USER") {
+            const beforeData = snapshot.before.exists ? snapshot.before.data() : null
+            const afterData = snapshot.after.exists ? snapshot.after.data() : null
+            if (!beforeData) {
+                updateLastMessage(afterData, context.params.chatId, context.auth, true)
+            } else if (!afterData) {
+                replaceDeletedMessage(beforeData, context.params.chatId,context.auth)
+            } else {
+                const data = {}
+                if (beforeData.time !== afterData.time) {
+                    data["time"] = beforeData.time.toLong(true)
+                }
+                if (beforeData.senderId !== afterData.senderId) {
+                    data["senderId"] = beforeData.senderId
+                }
+                if (beforeData.chatId !== afterData.chatId) {
+                    data["chatId"] = afterData.chatId
+                }
+                if (beforeData.isPrivate !== afterData.isPrivate) {
+                    data["isPrivate"] = Boolean(afterData.isPrivate)
+                }
+            }
+        }
+    })
+
+
 exports.onMessageCreated = functions.firestore
     .document(`${CHATS}/{chatId}/${MESSAGES}/{msgId}`)
-    .onCreate((snapshot) => updateLastMessage(snapshot.data()))
+    .onCreate((snapshot) => updateLastMessage(snapshot.data(),true,true))
 
 exports.onMessageDeleted = functions.firestore
     .document(`${CHATS}/{chatId}/${MESSAGES}/{msgId}`)

@@ -1,35 +1,36 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.App" parent="Theme.AppCompat">
+    <style name="Theme.App" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/gray</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/gray</item>
-        <item name="colorSecondaryVariant">@color/color_background</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <item name="colorOnBackground">@color/color_background_dark</item>
-        <item name="colorBackgroundFloating">@color/black</item>
-        <!-- Status bar color. -->
+        <item name="colorSecondary">@color/blue</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnBackground">@color/black</item>
+<!--        <item name="colorBackgroundFloating">@color/black</item>-->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-    </style>
-    <style name="Theme.App.NoActionBar" parent="Theme.App">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
-    </style>
-    <style name="Theme.Fullscreen" parent="Theme.App">
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="colorPrimary">@android:color/black</item>
-        <item name="colorSecondary">@android:color/black</item>
-        <item name="windowActionBarOverlay">true</item>
-        <item name="android:statusBarColor">@android:color/black</item>
-
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/gray</item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+<!--    <style name="Theme.App.NoActionBar" parent="Theme.App">-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--    </style>-->
+
+<!--    <style name="Theme.Fullscreen" parent="Theme.App">-->
+<!--        <item name="android:textColorPrimary">@color/white</item>-->
+<!--        <item name="colorPrimary">@android:color/black</item>-->
+<!--        <item name="colorSecondary">@android:color/black</item>-->
+<!--        <item name="windowActionBarOverlay">true</item>-->
+<!--        <item name="android:statusBarColor">@android:color/black</item>-->
+<!--    </style>-->
+
+    <style name="Theme.App.FullScreen" parent="Theme.App">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -38,38 +39,19 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:textColorSecondary">@color/white</item>
-
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/black</item>
         <item name="android:textColor">@color/white</item>
-
     </style>
 
-    <style name="Theme.Test.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.AppBar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
     <style name="Theme.Test.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MenuButton">
-
-        <item name="android:background">@drawable/ripple_transparent</item>
-        <item name="android:drawableTint">@color/white</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:gravity">start|center</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:drawablePadding">15dp</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:fontFamily">@font/gotham_pro_light</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="ChatsChannelsTab">
-        <item name="android:textSize">20sp</item>
-        <item name="android:fontFamily">@font/gotham_pro_bold</item>
-        <item name="textAllCaps">false</item>
-
-
-    </style>
 
 
 </resources>

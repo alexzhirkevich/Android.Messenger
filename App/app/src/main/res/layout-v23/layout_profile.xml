@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent">
 
-        <ImageView
+        <com.alexz.messenger.app.ui.views.AvatarImageView
             android:id="@+id/avatar"
             android:layout_width="150dp"
             android:layout_height="150dp"
@@ -14,7 +14,7 @@
             android:src="@drawable/logo"
             android:layout_alignParentTop="true"/>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -33,9 +33,9 @@
                     android:src="@drawable/ic_photo"
                     android:clickable="true"
                     android:focusable="true" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/you"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:text="@string/name"
             android:layout_centerHorizontal="true" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:layout_below="@id/you"
             android:layout_centerHorizontal="true"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/about"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             android:layout_below="@id/username"
             android:layout_marginTop="17dp"/>
 
-        <TextView
+        <com.alexz.messenger.app.ui.views.AutoLinkTextView
             android:id="@+id/about_text"
             android:layout_width="match_parent"
             android:layout_marginHorizontal="@dimen/main_horizontal_margin"
@@ -85,7 +85,7 @@
             android:maxLines="4"
             android:autoLink="all"
             android:background="@android:color/transparent"
-            android:text="https://vk.com/alexzhirkevich"
+            android:text="https://vk.com/alexzhirkevich @qweqwe"
             android:textColor="@color/white"
             android:fontFamily="@font/gotham_pro_light"
             android:lineSpacingMultiplier="1.3"

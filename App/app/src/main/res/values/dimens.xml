@@ -9,7 +9,9 @@
     <dimen name="login_logo_size">200dp</dimen>
     <dimen name="reg_logo_size">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="tab_chats_channels_height">35dp</dimen>
+    <dimen name="tab_chats_channels_height">30dp</dimen>
+    <dimen name="tab_chats_channels_hor_margin">20dp</dimen>
+
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
@@ -20,11 +22,16 @@
     <dimen name="avatar_padding">5dp</dimen>
 
 
-    <dimen name="dialog_name_size">20sp</dimen>
-    <dimen name="dialog_sender_size">15sp</dimen>
-    <dimen name="dialog_message_size">15sp</dimen>
+    <dimen name="font_size_small">12sp</dimen>
+    <dimen name="font_size_medium">15sp</dimen>
+    <dimen name="font_size_big">17sp</dimen>
+
+
+    <dimen name="dialog_name_size">15sp</dimen>
+    <dimen name="dialog_last_message_size">12sp</dimen>
     <dimen name="dialog_date_size">12sp</dimen>
     <dimen name="dialog_unread_size">12sp</dimen>
+    <dimen name="dialog_online_indicator_size">12sp</dimen>
     <dimen name="dialog_cardview_elevation">3dp</dimen>
 
     <dimen name="chat_name_text_size">20sp</dimen>
@@ -36,4 +43,8 @@
     <dimen name="message_text_vertical_margin">5dp</dimen>
     <dimen name="message_input_height">50dp</dimen>
     <dimen name="message_input_text_size">20sp</dimen>
+    <dimen name="register_btn_bottom_margin">70dp</dimen>
+    <dimen name="register_logo_top_margin">70dp</dimen>
+    <dimen name="auth_edits_translation">400dp</dimen>
+
 </resources>

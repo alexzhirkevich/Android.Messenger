@@ -14,9 +14,9 @@ interface IRealtimeDatabaseRecyclerAdapter<Entity : IEntity,VH : IFirebaseViewHo
      * @param snapshot [DataSnapshot]
      * @return parsed object or null
      */
-    fun parse(snapshot: DataSnapshot): Entity? = try {
-        snapshot.getValue(modelClass)
-    }catch (e : Throwable){
-        null
-    }
+    fun parse(snapshot: DataSnapshot): Entity? //= try {
+//        snapshot.getValue(modelClass)
+//    }catch (e : Throwable){
+//        null
+//    }
 }

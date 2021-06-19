@@ -7,22 +7,19 @@ const {USERS,CHATS,CHANNELS} = require("../constants");
 exports.notifyUsers=async function(ids,payload) {
     if (ids && payload) {
         try {
-            const tokenSnapshots = await Promise.all(ids.map((id) => {
+            return await Promise.all(ids.map((id) => {
                 try {
-                    if (id)
-                        return admin.firestore().collection(USERS).doc(id).get()
-                }catch (e) {}
-                return Promise.resolve()
+                    return id ? admin.firestore().collection(USERS).doc(id).get()
+                        .then((snap) => {
+                            try {
+                                let data = snap.data()
+                                if (data != null) {
+                                    return admin.messaging().sendToDevice(data.notificationToken, payload)
+                                }
+                            } catch (ignore) {}
+                        }) : Promise.resolve()
+                } catch (e) { return Promise.resolve() }
             }))
-
-            await Promise.all(tokenSnapshots.map((ts) => {
-                    try {
-                        return admin.messaging().sendToDevice(ts.data().notificationToken, payload)
-                    } catch (e) {
-                        return Promise.resolve()
-                    }
-                }
-            ))
         } catch (e) {
             return functions.logger.error(e.message)
         }
@@ -33,8 +30,8 @@ exports.notifyUsers=async function(ids,payload) {
 exports.addUserToDatabase=async function(user){
     if (user){
         let userName = user.displayName
-        if (userName == null){
-            userName = "User" + user.uid
+        if (userName == null) {
+            userName = "User" + Date.now()
         }
 
         return await admin.firestore().collection(USERS).doc(user.uid).set({

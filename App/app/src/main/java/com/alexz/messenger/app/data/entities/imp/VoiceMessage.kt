@@ -4,28 +4,32 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.alexz.messenger.app.data.entities.interfaces.IVoiceMessage
 import com.alexz.messenger.app.util.FirebaseUtil
-//
-//@Entity(
-//        tableName = VoiceMessage.TABLE_NAME,
-//        inheritSuperIndices = true)
-class VoiceMessage : Message, IVoiceMessage, Parcelable {
 
-   // @ColumnInfo(name = "voice_uri")
-    override var voiceUri: String = ""
+class VoiceMessage(
+        id : String,
+        chatId: String,
+        senderId: String,
+        time: Long,
+        isPrivate: Boolean,
+        override var voiceUri: String = "",
+        override var voiceLen: Int = 0)
+    : Message(id = id,chatId = chatId,senderId = senderId,time = time,isPrivate = isPrivate),
+        IVoiceMessage, Parcelable {
 
-    //@ColumnInfo(name = "voice_len")
-    override var voiceLen: Int = 0
+    constructor(message: Message,voiceUri: String,voiceLen: Int) : this(
+            id = message.id,
+            chatId = message.chatId,
+            senderId = message.senderId,
+            time = message.time,
+            isPrivate = message.isPrivate,
+            voiceUri = voiceUri,
+            voiceLen =  voiceLen
+    )
 
-    constructor(chatId : String="",voiceUri : String = "", voiceLen : Int = 0) :super(chatId){
-        this.voiceUri = voiceUri
-        this.voiceLen = voiceLen
-    }
-
-   // @Ignore
-    private constructor(parcel: Parcel) : super(parcel){
-        voiceUri = parcel.readString().orEmpty()
-        voiceLen = parcel.readInt()
-    }
+    private constructor(parcel: Parcel) : this(
+            Message.createFromParcel(parcel),
+            voiceUri = parcel.readString().orEmpty(),
+            voiceLen = parcel.readInt())
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)

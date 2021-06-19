@@ -1,72 +1,55 @@
 package com.alexz.messenger.app.data.providers.imp
 
-import com.alexz.messenger.app.data.entities.IEntityCollection
 import com.alexz.messenger.app.data.entities.imp.Chat
+import com.alexz.messenger.app.data.entities.imp.Dialog
 import com.alexz.messenger.app.data.entities.imp.User
+import com.alexz.messenger.app.data.entities.interfaces.IMessageable
+import com.alexz.messenger.app.data.entities.interfaces.IUser
 import com.alexz.messenger.app.data.providers.interfaces.ChatsProvider
-import com.alexz.messenger.app.data.providers.interfaces.UserListProvider
-import com.alexz.messenger.app.util.FirebaseUtil.CHANNELS
+import com.alexz.messenger.app.data.providers.interfaces.UsersProvider
+import com.alexz.messenger.app.util.FirebaseUtil
 import com.alexz.messenger.app.util.FirebaseUtil.CHATS
 import com.alexz.messenger.app.util.FirebaseUtil.REFERENCE
 import com.alexz.messenger.app.util.FirebaseUtil.USERS
-import com.alexz.messenger.app.util.FirebaseUtil.channelsCollection
 import com.alexz.messenger.app.util.FirebaseUtil.chatsCollection
 import com.alexz.messenger.app.util.FirebaseUtil.usersCollection
 import com.alexz.messenger.app.util.toCompletable
 import com.alexz.messenger.app.util.toObservable
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.SetOptions
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 
 class FirestoreChatsProvider(
-        private val userListProvider: UserListProvider = FirestoreUserListProvider()) : ChatsProvider {
+        private val userListProvider: UsersProvider = FirestoreUsersProvider()) : ChatsProvider {
 
-    override fun getAll(collection: IEntityCollection, limit: Int): Observable<List<Chat>> = Observable.create {
+    override fun getAll(collection: IUser, limit: Int): Observable<List<IMessageable>> {
         val col = usersCollection.document(collection.id).collection(CHATS)
-        val task = if (limit > -1) col.limitToLast(limit.toLong()).get() else col.get()
-
-        task.addOnSuccessListener { qs ->
-            it.onNext(qs.documents.mapNotNull { doc -> doc.toObject(Chat::class.java) })
-        }.addOnFailureListener { ex -> it.onError(ex) }
+        val task = if (limit > -1) col.limitToLast(limit.toLong()) else col
+        return task.toObservable { parse(it) }
     }
 
-    override fun getUsers(chatId: String, limit: Int): Observable<List<User>> =
+    override fun getUsers(chatId: String, limit: Int): Observable<List<IUser>> =
             userListProvider.getAll(Chat(id = chatId), limit)
 
-    override fun get(id: String, collectionID: String?): Observable<Chat> =
-            chatsCollection.document(id).toObservable(Chat::class.java)
+    override fun get(id: String): Observable<IMessageable> =
+            chatsCollection.document(id).toObservable { parse(it) }
 
-    override fun create(entity: Chat): Completable {
 
+    override fun create(entity: IMessageable): Completable {
         val doc = chatsCollection.document()
-        val uId = User().id
-
         entity.id = doc.id
-
-        val creationCompletable = doc.set(entity).toCompletable()
-
-        val userCompletable = doc.collection(USERS).document(uId)
-                .set(mapOf(Pair(REFERENCE, usersCollection.document(uId)))).toCompletable()
-
-        val profileCompletable = usersCollection.document(uId).collection(CHANNELS).document(entity.id)
-                .set(mapOf(Pair(REFERENCE, channelsCollection.document(entity.id)))).toCompletable()
-
-        return Completable.concatArray(creationCompletable, userCompletable, profileCompletable)
+        return doc.set(entity).toCompletable()
     }
 
-    override fun delete(entity: Chat): Completable {
+    override fun delete(entity: IMessageable) =
+            chatsCollection.document(entity.id).delete().toCompletable()
 
-        val deleteCompletable = chatsCollection.document(entity.id).delete().toCompletable()
+    override fun remove(id: String, collection: IUser): Completable =
+            Completable.complete()
 
-        return if (entity.creatorId == User().id)
-            Completable.concatArray(deleteCompletable, remove(entity.id))
-        else remove(entity.id)
-    }
-
-    override fun remove(id: String, collection: IEntityCollection?): Completable = userListProvider.onChatLeft(id)
-
-    override fun join(chatId: String): Maybe<Chat> {
+    override fun join(chatId: String): Maybe<IMessageable> {
 
         val uid = User().id
         val addUserCompletable = chatsCollection.document(chatId).collection(USERS).document(uid)
@@ -74,8 +57,16 @@ class FirestoreChatsProvider(
                 .toCompletable()
 
 
-        return userListProvider.onChatJoin(chatId)
+        return userListProvider.joinChat(chatId)
                 .andThen(addUserCompletable)
                 .andThen(get(chatId).singleElement())
     }
+
+    private fun parse(ds : DocumentSnapshot) =
+            if (ds.contains(FirebaseUtil.CREATOR_ID))
+                ds.toObject(Chat::class.java) as IMessageable
+            else
+                ds.toObject(Dialog::class.java) as IMessageable
+
+
 }

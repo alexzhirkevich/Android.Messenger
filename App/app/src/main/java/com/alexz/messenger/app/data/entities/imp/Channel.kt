@@ -2,42 +2,28 @@ package com.alexz.messenger.app.data.entities.imp
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.alexz.firerecadapter.Entity
 import com.alexz.firerecadapter.IEntity
-import com.alexz.messenger.app.data.entities.EntityCollection
 import com.alexz.messenger.app.data.entities.interfaces.IChannel
 import com.alexz.messenger.app.util.FirebaseUtil
 import java.util.*
 
-//@androidx.room.Entity(
-//        tableName = Channel.TABLE_NAME,
-//        foreignKeys = [
-//            ForeignKey(entity = User::class, parentColumns = ["id"],childColumns = ["creator_id"],onDelete = CASCADE),
-//            ForeignKey(entity = Post::class, parentColumns = ["id"],childColumns = ["last_post_id"],onDelete = SET_DEFAULT)
-//        ],
-//        inheritSuperIndices = true,
-//        indices = [Index(value = ["creator_id"]), Index(value = ["last_post_id"])]
-//)
+
 class Channel(
         id : String = "",
         name : String= "",
-        //@ColumnInfo(name = "image_uri")
         override var imageUri: String = "",
-      //  @ColumnInfo(name = "last_post_id")
         override var lastPostId: String = "",
-       // @ColumnInfo(name = "last_post_time")
         override var lastPostTime: Long = Long.MAX_VALUE,
-       // @ColumnInfo(name = "creator_id")
         override var creatorId: String = FirebaseUtil.currentFireUser?.uid.orEmpty(),
-       // @ColumnInfo(name = "creation_time")
         override var creationTime: Long = System.currentTimeMillis())
-    : EntityCollection(id, listOf(Post::class.java)), IChannel, Parcelable {
+    : Entity(id), IChannel, Parcelable {
 
     override var name: String = name.trim()
         set(value) {
             field = value.trim()
             searchName = field.toLowerCase(Locale.getDefault())
         }
-  //  @ColumnInfo(name = "search_name")
     var searchName: String = name.filter { !it.isWhitespace() }.toLowerCase(Locale.getDefault())
 
     constructor(parcel: Parcel) : this(

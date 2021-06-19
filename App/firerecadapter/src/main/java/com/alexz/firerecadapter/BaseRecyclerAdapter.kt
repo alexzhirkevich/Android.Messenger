@@ -18,8 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @see IEntity
  * @see IBaseRecyclerAdapter
  */
-abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>>
-(override val modelClass: Class<Entity>) : RecyclerView.Adapter<VH>(),
+abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>> : RecyclerView.Adapter<VH>(),
         IBaseRecyclerAdapter<Entity, VH> {
 
     override var itemClickListener: ItemClickListener<Entity>? = null
@@ -35,7 +34,7 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
 
     protected val uiHandler = Handler(Looper.getMainLooper())
 
-    private val _models: MutableList<Entity> = CopyOnWriteArrayList()
+    private val _models: MutableList<Entity> = CopyOnWriteArrayList<Entity>()
 
     val models : List<Entity>
         get() = _models
@@ -91,18 +90,30 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
         }
     }
 
+
+    override fun set(entities: Collection<Entity>) {
+        val ids = entities.map { it.id }
+
+        _models.forEachIndexed { index, entity ->
+            if (entity.id !in ids) {
+                _models.remove(entity)
+                uiHandler.post {
+                    notifyItemRemoved(index)
+                }
+            }
+        }
+
+        addAll(entities)
+    }
+
     /**
      * @see IBaseRecyclerAdapter.select
      */
-    final override fun select(key: String?): Int {
-        if (key == null) {
-            selectAll()
-        } else {
-            isSearching = true
-            selected = _models.filter { onSelect(key, it) }
-            uiHandler.post {
-                notifyDataSetChanged()
-            }
+    final override fun select(predicate: (Entity) -> Boolean) : Int {
+        isSearching = true
+        selected = _models.filter { predicate(it) }
+        uiHandler.post {
+            notifyDataSetChanged()
         }
         return selected.size
     }
@@ -111,6 +122,7 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
      * @see IBaseRecyclerAdapter.selectAll
      */
     final override fun selectAll() {
+
         if (selected !== _models) {
             selected = _models
             uiHandler.post {
@@ -123,57 +135,72 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
     protected fun realItemCount(): Int = _models.size
 
     @CallSuper
-    override fun add(model: Entity, forceCallback:Boolean, byUser : Boolean): Int = synchronized(_models) {
-        val idx = _models.indexOfFirst { it.id == model.id }
+    override fun add(entity: Entity, forceCallback:Boolean, byUser : Boolean): Int = synchronized(_models) {
+        val idx = _models.indexOfFirst { it.id == entity.id }
         return if (idx != -1) {
-            _models[idx] = model
-            uiHandler.post {
-                if (!isSearching) {
-                    notifyItemChanged(idx)
+            try {
+                if (_models[idx] != entity) {
+                    _models[idx] = entity
+                    uiHandler.post {
+                        if (!isSearching) {
+                            notifyItemChanged(idx)
+                        }
+                        adapterCallback?.onItemChanged(entity)
+                    }
                 }
-                adapterCallback?.onItemChanged(model)
+            } catch (ignore: Throwable) {
             }
             idx
         } else {
-            _models.add(model)
-            uiHandler.post {
-                if (!isSearching) {
-                    notifyItemInserted(_models.size)
+            try {
+                _models.add(entity)
+                _models.sort()
+                val newIdx = _models.indexOf(entity)
+                uiHandler.post {
+                    if (!isSearching) {
+                        notifyItemInserted(newIdx)
+                    }
                 }
-            }
-            if (!isLoading || forceCallback) {
-                adapterCallback?.onItemAdded(model)
-            }
+                if (!isLoading || forceCallback) {
+                    adapterCallback?.onItemAdded(entity)
+                }
+            } catch (ignore: Throwable) { }
             _models.size
         }
     }
 
-    @CallSuper
-    override fun insert(idx: Int, model: Entity,forceCallback: Boolean, byUser : Boolean) : Int = synchronized(_models) {
-        val findIdx = _models.indexOfFirst { it.id == model.id }
-        return if (findIdx != -1) {
-            _models[idx] = model
-            uiHandler.post {
-                if (!isSearching) {
-                    notifyItemChanged(idx)
-                }
-                adapterCallback?.onItemChanged(model)
-            }
-            findIdx
-        } else {
-            _models.add(idx,model)
-            uiHandler.post {
-                if (!isSearching) {
-                    notifyItemInserted(idx)
-                }
-                if (!isLoading || forceCallback) {
-                    adapterCallback?.onItemAdded(model)
-                }
-            }
-            idx
-        }
+    override fun addAll(entities: Collection<Entity>, forceCallback: Boolean, byUser: Boolean) =
+        entities.forEach { add(it, forceCallback, byUser) }
 
-    }
+
+//    @CallSuper
+//    override fun insert(idx: Int, model: Entity,forceCallback: Boolean, byUser : Boolean) : Int = synchronized(_models) {
+//        val findIdx = _models.indexOfFirst { it.id == model.id }
+//        return if (findIdx != -1) {
+//            if (_models[idx] != model) {
+//                _models[idx] = model
+//                uiHandler.post {
+//                    if (!isSearching) {
+//                        notifyItemChanged(idx)
+//                    }
+//                    adapterCallback?.onItemChanged(model)
+//                }
+//            }
+//            findIdx
+//        } else {
+//            _models.add(idx,model)
+//            uiHandler.post {
+//                if (!isSearching) {
+//                    notifyItemInserted(idx)
+//                }
+//                if (!isLoading || forceCallback) {
+//                    adapterCallback?.onItemAdded(model)
+//                }
+//            }
+//            idx
+//        }
+//
+//    }
 
     @CallSuper
     override fun remove(id: String, byUser : Boolean): Boolean = synchronized(_models) {

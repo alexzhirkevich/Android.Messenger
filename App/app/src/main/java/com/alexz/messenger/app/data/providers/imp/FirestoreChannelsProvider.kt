@@ -1,11 +1,12 @@
 package com.alexz.messenger.app.data.providers.imp
 
-import com.alexz.messenger.app.data.entities.IEntityCollection
 import com.alexz.messenger.app.data.entities.imp.Channel
 import com.alexz.messenger.app.data.entities.imp.ChannelAdmin
 import com.alexz.messenger.app.data.entities.imp.User
+import com.alexz.messenger.app.data.entities.interfaces.IChannel
+import com.alexz.messenger.app.data.entities.interfaces.IUser
 import com.alexz.messenger.app.data.providers.interfaces.ChannelsProvider
-import com.alexz.messenger.app.data.providers.interfaces.UserListProvider
+import com.alexz.messenger.app.data.providers.interfaces.UsersProvider
 import com.alexz.messenger.app.data.repo.LinkProvider
 import com.alexz.messenger.app.util.*
 import com.alexz.messenger.app.util.FirebaseUtil.ADMINS
@@ -20,16 +21,16 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 class FirestoreChannelsProvider(
-        private val userListProvider: UserListProvider = FirestoreUserListProvider()
+        private val userListProvider: UsersProvider = FirestoreUsersProvider()
 ) : ChannelsProvider, LinkProvider {
 
     override fun getAdmins(channelId: String): Observable<List<ChannelAdmin>> =
         channelsCollection.document(channelId).collection(ADMINS).toObservable(ChannelAdmin::class.java)
 
-    override fun get(id: String, collectionID: String?): Observable<Channel> =
-        channelsCollection.document(id).toObservable(Channel::class.java)
+    override fun get(id: String): Observable<IChannel> =
+            channelsCollection.document(id).toObservable(Channel::class.java).map { it as IChannel }
 
-    override fun getAll(collection: IEntityCollection, limit:Int): Observable<List<Channel>> = Observable.create {
+    override fun getAll(collection: IUser, limit: Int): Observable<List<IChannel>> = Observable.create {
 
         val col = usersCollection.document(collection.id).collection(CHANNELS)
         val task = if (limit > -1) col.orderBy(TIME).limitToLast(limit.toLong()).get() else col.get()
@@ -41,11 +42,11 @@ class FirestoreChannelsProvider(
         }.addOnFailureListener { ex -> it.onError(ex) }
     }
 
-    override fun getUsers(channelId: String, limit: Int): Observable<List<User>> = Observable.create {
+    override fun getUsers(channelId: String, limit: Int): Observable<List<IUser>> = Observable.create {
         userListProvider.getAll(Channel(id = channelId),limit)
     }
 
-    override fun create(entity: Channel): Completable {
+    override fun create(entity: IChannel): Completable {
 
         val doc = channelsCollection.document()
         val uId = User().id
@@ -66,17 +67,17 @@ class FirestoreChannelsProvider(
 //        return Completable.concatArray(creationCompletable, userCompletable, adminCompletable, profileCompletable)
     }
 
-    override fun delete(entity: Channel): Completable {
+    override fun delete(entity: IChannel): Completable {
 
         if (entity.creatorId == User().id){
             return channelsCollection.document(entity.id).delete().toCompletable()
         }
-        return remove(entity.id)
+        return remove(entity.id,User())
     }
 
-    override fun remove(id: String,collection: IEntityCollection?): Completable = userListProvider.onChannelLeft(id)
+    override fun remove(id: String,collection: IUser): Completable = Completable.complete()
 
-    override fun join(channelId: String): Single<Channel> {
+    override fun join(channelId: String): Single<IChannel> {
 
         val uid = User().id
         val doc = channelsCollection.document(channelId).collection(USERS).document(uid)
@@ -110,7 +111,7 @@ class FirestoreChannelsProvider(
                 doc.set(mapOf(Pair(REFERENCE, usersCollection.document(uid)))).toCompletable(),
                 userListProvider.onChannelJoin(channelId))
 
-        return Single.create<Channel> {
+        return Single.create<IChannel> {
             Completable.concatArray(check1, check2)
                     .subscribe(
                             {
@@ -129,7 +130,7 @@ class FirestoreChannelsProvider(
         }
     }
 
-    override fun find(namePart: String): Single<List<Channel>> =
+    override fun find(namePart: String): Single<List<IChannel>> =
             channelsCollection.whereGreaterThanOrEqualTo(FirebaseUtil.SEARCH_NAME, namePart).get()
                     .toSingle().map { snap -> snap.toObjects(Channel::class.java) }
 

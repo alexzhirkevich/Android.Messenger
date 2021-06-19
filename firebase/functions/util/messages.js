@@ -1,31 +1,40 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const {notifyUsers} = require("./users");
-const {CHATS,MESSAGES,USERS,TIME} = require("../constants");
+const {CHATS,MESSAGES,USERS,TIME,CREATOR_ID,CHAT_ID,ID} = require("../constants");
 
-exports.updateLastMessage=async function(msgData,notify = true){
-    if (msgData){
+exports.updateLastMessage=async function(msgData, chatId, auth,isNew = false){
+    if (msgData && chatId){
         try{
+            const doc = admin.firestore().collection(CHATS).doc(chatId)
+            let msgTime = TIME in msgData ? msgData.time : Date.now()
+            try {
+                const chatInfo = ((await doc.get()).data())
+                if (chatInfo) {
+                    if (isNew) {
+                        msgTime = Date.now()
+                        await doc.collection(MESSAGES).doc(msgData.id).update({
+                            'time': msgTime,
+                            'isPrivate': CREATOR_ID in chatInfo,
+                            'senderId' : auth.uid,
+                            'chatId' : chatId
+                        })
+                    }
+                }
+            }catch (e) {functions.logger.error(e)}
 
-            const doc = admin.firestore().collection(CHATS).doc(msgData.chatId)
-            const serverTime = Date.now()
-
-            await doc.collection(MESSAGES).doc(msgData.id).update({
-                'time' : serverTime
-            })
-
-            await doc.update({
-                'lastMessageId': msgData.id,
-                'lastMessageTime': serverTime
-            })
-
-            if (notify) {
+            if (!isNew)
+                return await doc.update(
+                    {
+                        'lastMessageId': msgData.id,
+                        'lastMessageTime': msgTime
+                    })
+            else {
 
                 const snapshots = await Promise.all([
                     admin.firestore().collection(CHATS).doc(msgData.chatId).get(),
                     admin.firestore().collection(USERS).doc(msgData.senderId).get(),
-                    admin.firestore().collection(CHATS).doc(msgData.chatId).collection(USERS).get()]
-                )
+                    admin.firestore().collection(CHATS).doc(msgData.chatId).collection(USERS).get()])
 
                 const chatData = snapshots[0].data()
                 const senderData = snapshots[1].data()
@@ -47,7 +56,7 @@ exports.updateLastMessage=async function(msgData,notify = true){
                             return null
                     })
 
-                    await notifyUsers(ids, payload)
+                    return await notifyUsers(ids, payload)
                 }
             }
         }catch(e){
@@ -57,12 +66,12 @@ exports.updateLastMessage=async function(msgData,notify = true){
     return null
 }
 
-exports.replaceDeletedMessage=async function (msgData){
+exports.replaceDeletedMessage=async function (msgData,chatId,auth){
     if (msgData) {
         try {
             const snapshot = await admin.firestore().collection(CHATS).doc(msgData.chatId).collection(MESSAGES)
                 .orderBy(TIME).limitToLast(1).get()
-            return await exports.updateLastMessage(snapshot.docs[0].data(),false)
+            return await exports.updateLastMessage(snapshot.docs[0].data(),chatId,auth,false)
         }catch (e){
             return functions.logger.error(e.message)
         }

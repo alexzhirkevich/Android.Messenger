@@ -79,8 +79,9 @@
         <activity
             android:name="com.alexz.messenger.app.ui.activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            android:windowSoftInputMode="adjustPan">
+            android:configChanges="uiMode"
+            android:theme="@style/Theme.App"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
