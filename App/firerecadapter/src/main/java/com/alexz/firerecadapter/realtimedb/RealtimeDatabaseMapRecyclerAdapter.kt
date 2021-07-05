@@ -4,7 +4,7 @@ import android.util.Log
 import com.alexz.firerecadapter.FirebaseRecyclerAdapter
 import com.alexz.firerecadapter.IEntity
 import com.alexz.firerecadapter.Listenable
-import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.BaseViewHolder
 import com.google.firebase.database.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @see IEntity
  * @see IRealtimeDatabaseMapRecyclerAdapter
  */
-abstract class RealtimeDatabaseMapRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>>(clazz: Class<Entity>) :
+abstract class RealtimeDatabaseMapRecyclerAdapter<Entity : IEntity, VH : BaseViewHolder<Entity>>(clazz: Class<Entity>) :
         FirebaseRecyclerAdapter<Entity, VH>(clazz),
         IRealtimeDatabaseMapRecyclerAdapter<Entity, VH>, Listenable {
 

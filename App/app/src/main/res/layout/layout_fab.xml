@@ -1,0 +1,102 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentBottom="true"
+    android:background="@android:color/transparent"
+    android:elevation="10dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_write_message"
+        style="@style/SmallFab_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv_create_group"
+        android:layout_alignTop="@id/btn_write_message"
+        android:layout_alignBottom="@id/btn_write_message"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@id/btn_write_message"
+        android:gravity="center_vertical"
+        android:text="@string/write_message"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_write_message"
+        app:layout_constraintEnd_toStartOf="@+id/btn_write_message"
+        app:layout_constraintTop_toTopOf="@+id/btn_write_message"
+        app:layout_constraintVertical_bias="0.5"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_write_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_create_group"
+        android:layout_alignStart="@id/btn_create_group"
+        android:layout_alignEnd="@id/btn_create_group"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/soft_red"
+        android:src="@drawable/ic_person"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_group"
+        app:layout_constraintEnd_toEndOf="@+id/btn_create_group"
+        app:layout_constraintStart_toStartOf="@+id/btn_create_group"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_create_group"
+        style="@style/SmallFab_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/btn_create_group"
+        android:layout_alignBottom="@id/btn_create_group"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@id/btn_create_group"
+        android:gravity="center_vertical"
+        android:text="@string/create_group"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_create_group"
+        app:layout_constraintEnd_toStartOf="@+id/btn_create_group"
+        app:layout_constraintTop_toTopOf="@+id/btn_create_group" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_create_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/soft_orange"
+        android:src="@drawable/ic_people"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_channel"
+        app:layout_constraintEnd_toEndOf="@+id/btn_create_channel"
+        app:layout_constraintStart_toStartOf="@+id/btn_create_channel" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_create_channel"
+        style="@style/SmallFab_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/btn_create_group"
+        android:layout_alignBottom="@id/btn_create_group"
+        android:layout_toStartOf="@id/btn_create_group"
+        android:gravity="center_vertical"
+        android:text="@string/create_channel"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_create_channel"
+        app:layout_constraintEnd_toStartOf="@+id/btn_create_channel"
+        app:layout_constraintTop_toTopOf="@+id/btn_create_channel"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_create_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/soft_green"
+        android:src="@drawable/ic_shout"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

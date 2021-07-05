@@ -135,7 +135,7 @@
 //                    .observeOn(AndroidSchedulers.mainThread())
 //                    .subscribe(
 //                            { admList ->
-//                                val userId = User().id
+//                                val userId = currentUser.value!!.id
 //                                channelAdmin = admList.find { admin -> admin.id == userId }
 //                                if (channelAdmin?.canPost == true)
 //                                    creationFab?.show()

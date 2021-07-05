@@ -1,12 +1,23 @@
 package com.alexz.messenger.app.data.services
 
-import com.alexz.messenger.app.data.entities.imp.User
-import com.alexz.messenger.app.util.FirebaseUtil
-import com.google.firebase.database.FirebaseDatabase
+import android.annotation.SuppressLint
+import com.alexz.messenger.app.data.providers.imp.DaggerPhoneAuthProviderComponent
+import com.alexz.messenger.app.data.providers.imp.DaggerProfileProviderComponent
+import com.alexz.messenger.app.data.providers.interfaces.AuthProvider
+import com.alexz.messenger.app.data.providers.interfaces.PhoneAuthCallback
+import com.alexz.messenger.app.data.providers.interfaces.ProfileProvider
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 class CloudMessagingService : FirebaseMessagingService(){
+
+    private val profileProvider : ProfileProvider by lazy {
+        DaggerProfileProviderComponent.create().getProfileProvider()
+    }
+    private val authProvider : AuthProvider by lazy {
+        DaggerPhoneAuthProviderComponent.builder().setCallback(object  : PhoneAuthCallback{})
+                .build().getPhoneAuthProvider()
+    }
 
     override fun onMessageReceived(msg: RemoteMessage) {
         super.onMessageReceived(msg)
@@ -16,15 +27,16 @@ class CloudMessagingService : FirebaseMessagingService(){
         }
 
     }
+    @SuppressLint("CheckResult")
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-
-        FirebaseDatabase.getInstance().reference
-                .child(FirebaseUtil.USERS)
-                .child(User().id)
-                .child("token")
-                .setValue(token)
-
+        if (authProvider.isAuthenticated) {
+            profileProvider.setNotificationToken(token)
+        } else {
+            authProvider.doOnAuthenticated(Runnable {
+                profileProvider.setNotificationToken(token).subscribe({}, {})
+            })
+        }
     }
 
     private fun sendNotification(messageBody: String) {

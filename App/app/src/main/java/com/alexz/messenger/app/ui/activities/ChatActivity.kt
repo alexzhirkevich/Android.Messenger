@@ -191,7 +191,7 @@
 //                val pm = PopupMenu(this@ChatActivity, viewHolder.itemView)
 //                pm.gravity = Gravity.RIGHT
 //                viewHolder.entity?.let {
-//                    if (it.senderId == User().id) {
+//                    if (it.senderId == currentUser.value!!.id) {
 //                        pm.inflate(R.menu.menu_message_out)
 //                    } else {
 //                        pm.inflate(R.menu.menu_message_in)

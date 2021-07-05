@@ -3,14 +3,20 @@
 
     <color name="green">#2d8648</color>
     <color name="red">#e04006</color>
-    <color name="app_back">#101010</color>
+    <color name="gold">#FFD700</color>
+    <color name="soft_red">#ff5961</color>
+    <color name="soft_orange">#FFA500</color>
+    <color name="soft_green">#8fff93</color>
+    <color name="app_back">@color/black</color>
+    <color name="selected">@color/dark_gray</color>
+    <color name="chats">@color/blue</color>
+    <color name="channels">@color/red</color>
     <color name="avatar_border">@color/white</color>
 
     <color name="color_background_dark">#151515</color>
-    <color name="color_background">#252525</color>
     <color name="rippelColor">@color/color_primary_variant</color>
 
-    <color name="message_incoming">@color/color_background</color>
+    <color name="message_incoming">@color/black</color>
     <color name="message_outcoming">@color/color_primary_variant</color>
 
     <color name="color_primary">#8B012C</color>
@@ -19,7 +25,9 @@
 
     <color name="link">@color/blue</color>
     <color name="black">#272727</color>
+    <color name="dark_gray">#353535</color>
     <color name="shadow">#202020</color>
+    <color name="dark_dark_gray">#303030</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#548ec4</color>
     <color name="gray">#919191</color>

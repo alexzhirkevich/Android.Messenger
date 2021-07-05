@@ -1,6 +1,8 @@
 package com.alexz.messenger.app.util
 
+import android.annotation.SuppressLint
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.*
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
@@ -35,6 +37,44 @@ fun <T> DocumentReference.toObservable(clazz : Class<T>) : Observable<T> = Obser
             }
         }
     }
+}
+
+fun <T> DatabaseReference.toObservable(clazz : Class<T>) : Observable<T> = Observable.create {
+    addValueEventListener(object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            it.tryOnError(error.toException())
+        }
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            snapshot.getValue(clazz)?.let { v->it.onNext(v) }
+        }
+    })
+}
+
+fun <T> DatabaseReference.toObservable(parser : (DataSnapshot) -> T) : Observable<T> = Observable.create {
+    addValueEventListener(object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            it.tryOnError(error.toException())
+        }
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            it.onNext(parser(snapshot))
+            snapshot.getValue(List::class.java)
+        }
+    })
+}
+fun <T> DatabaseReference.toSingle(clazz : Class<T>) : Single<T> = Single.create {
+    addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            it.tryOnError(error.toException())
+        }
+
+        @SuppressLint("RestrictedApi")
+        override fun onDataChange(snapshot: DataSnapshot) {
+            snapshot.getValue(clazz)?.let { v -> it.onSuccess(v) } ?:
+                    it.tryOnError(DatabaseException("Not found"))
+        }
+    })
 }
 
 fun <T> DocumentReference.toObservable(
@@ -90,18 +130,14 @@ fun <T> Query.toObservable(parser: (DocumentSnapshot) -> T) : Observable<List<T>
             it.tryOnError(error)
         } else {
             if (qs != null) {
-                try {
-                    it.onNext(qs.map { doc -> parser(doc) })
-                } catch (t: Throwable) {
-                    it.tryOnError(t)
-                }
+                it.onNext(qs.map { doc -> parser(doc) })
             } else
                 it.onNext(emptyList())
         }
     }
 }
 
-fun Task<Void>.toCompletable() : Completable = Completable.create {
+fun Task<*>.toCompletable() : Completable = Completable.create {
     addOnSuccessListener {_ ->
         it.onComplete()
     }.addOnFailureListener { t -> it.tryOnError(t) }

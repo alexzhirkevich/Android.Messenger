@@ -6,11 +6,15 @@
         android:title="@string/calls"
         android:icon="@drawable/ic_channel"/>
 
+    <item android:id="@+id/fragment_events"
+        android:title="@string/events"
+        android:icon="@drawable/ic_events"/>
+
     <item android:id="@+id/fragment_chats_channels"
         android:title="@string/messages"
         android:icon="@drawable/logo"/>
 
     <item android:id="@+id/fragment_profile"
         android:title="@string/profile"
-        android:icon="@drawable/ic_account"/>
+        android:icon="@drawable/ic_person"/>
 </menu>

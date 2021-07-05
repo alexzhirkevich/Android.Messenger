@@ -5,44 +5,32 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
-import com.alexz.firerecadapter.firestore.FirestoreMapRecyclerAdapter
-import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
-import com.alexz.messenger.app.data.entities.imp.Channel
-import com.alexz.messenger.app.data.entities.imp.User
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import com.alexz.firerecadapter.BaseRecyclerAdapter
+import com.alexz.firerecadapter.viewholder.BaseViewHolder
 import com.alexz.messenger.app.data.entities.interfaces.IChannel
 import com.alexz.messenger.app.data.providers.interfaces.PostsProvider
 import com.alexz.messenger.app.data.providers.test.TestPostProvider
 import com.alexz.messenger.app.ui.views.AvatarImageView
-import com.alexz.messenger.app.util.FirebaseUtil
 import com.alexz.messenger.app.util.timeVisualizer
-import com.google.firebase.firestore.DocumentSnapshot
 import com.messenger.app.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<IChannel, ChannelRecyclerAdapter.ChannelViewHolder>(
-        Channel::class.java as Class<IChannel>,
-        FirebaseUtil.usersCollection.document(User().id).collection(FirebaseUtil.CHANNELS)) {
+class ChannelRecyclerAdapter : BaseRecyclerAdapter<IChannel, ChannelRecyclerAdapter.ChannelViewHolder>(){
 
-    override fun onCreateEntityReference(id: String) =
-            FirebaseUtil.channelsCollection.document(id)
-
-    override fun onEntityNotFound(id: String) {
-        FirebaseUtil.usersCollection.document(User().id).collection(FirebaseUtil.CHANNELS)
-                .document(id).delete()
-    }
-
-//    override fun onSelect(key: String, model: IChannel) = model.name.contains(key,true)
 
     override fun onCreateClickableViewHolder(parent: ViewGroup, viewType: Int): ChannelViewHolder {
         val root = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_chat, parent, false)
+                .inflate(R.layout.item_channel_constraint, parent, false)
         return ChannelViewHolder(root)
     }
 
-    class ChannelViewHolder(itemView: View) : FirebaseViewHolder<IChannel>(itemView) {
+    inner class ChannelViewHolder(itemView: View) : BaseViewHolder<IChannel>(itemView) {
 
         private var lastPostDisposable : Disposable? = null
 
@@ -51,17 +39,26 @@ class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<IChannel, ChannelRecy
         private val lastPostView: TextView = itemView.findViewById(R.id.channel_last_post_text)
         private val dateView: TextView = itemView.findViewById(R.id.channel_last_post_date)
         private val unreadView: TextView = itemView.findViewById(R.id.channel_unread_count)
-        
+        private val selector: CheckBox = itemView.findViewById(R.id.channel_selector)
+
         override fun bind(entity: IChannel) {
             super.bind(entity)
             lastPostDisposable?.dispose()
+
+            val isSelected = isSelected(entity.id)
+
+            selector.isVisible = inSelectingMode
+            selector.isChecked = isSelected
+            itemView.setBackgroundColor(ContextCompat.getColor(imgView.context,
+                    if (isSelected) R.color.selected else R.color.app_back
+            ))
 
             nameView.text = entity.name
 
             if (entity.imageUri.isNotEmpty()) {
                 imgView.setImageURI(Uri.parse(entity.imageUri))
             } else {
-                imgView.setImageResource(R.drawable.logo)
+                imgView.setupWithText(entity.name,R.dimen.font_size_min,R.color.channels)
             }
 
             if (entity.lastPostId.isNotEmpty()) {
@@ -71,7 +68,7 @@ class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<IChannel, ChannelRecy
                         .subscribe(
                                 {
                                     lastPostView.text = it.text
-                                    dateView.text = it.time.timeVisualizer().time
+                                    dateView.text = it.time.timeVisualizer().timeNearly
                                 },
                                 {
                                     Log.w(TAG, "Failed to observe last post")
@@ -90,9 +87,5 @@ class ChannelRecyclerAdapter : FirestoreMapRecyclerAdapter<IChannel, ChannelRecy
             TestPostProvider()
         }
         val TAG = ChannelRecyclerAdapter::class.java.simpleName
-    }
-
-    override fun parse(snapshot: DocumentSnapshot): IChannel? {
-        TODO("Not yet implemented")
     }
 }

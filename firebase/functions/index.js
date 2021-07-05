@@ -2,7 +2,7 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const express = require("express");
 
-const {MESSAGES,POSTS,CHANNELS,USERS,CHATS} = require("./constants");
+const {MESSAGES,POSTS,CHANNELS,USERS,CHATS,ONLINE,ID} = require("./constants");
 const {joinChannel,leaveChannel,createChannel,deleteChannel} = require("./util/channels");
 const {createPost,replaceDeletedPost} = require("./util/posts");
 const {updateLastMessage,replaceDeletedMessage} = require("./util/messages");
@@ -12,22 +12,46 @@ const {deleteChat,leaveChat,joinChat} = require("./util/chats");
 admin.initializeApp()
 
 
-exports._joinChannel = functions.https.onRequest(async (req,res)=> {
+// exports._joinChannel = functions.https.onRequest(async (req,res)=> {
+//
+//     const token = req.params.token
+//     const userId = req.params.userId
+//     const channelId = req.params.chatId
+//     if (token && userId && channelId)
+//
+//     admin.auth().verifyIdToken(token).then((async decodedToken => {
+//         if (decodedToken.uid === userId) {
+//
+//             if (await joinChannel(userId, channelId)){
+//                 res.status(200).send(true)
+//             }
+//         }
+//     })).catch((reason => res.status(404).send(false)))
+// })
 
-    const token = req.params.token
-    const userId = req.params.userId
-    const channelId = req.params.chatId
-    if (token && userId && channelId)
+exports.onUserOnlineChanged = functions.database.ref('/users/{id}/online')
 
-    admin.auth().verifyIdToken(token).then((async decodedToken => {
-        if (decodedToken.uid === userId) {
+    .onWrite((snapshot,context) => {
 
-            if (await joinChannel(userId, channelId)){
-                res.status(200).send(true)
+        functions.logger.debug(snapshot.after.val())
+
+        const val = snapshot.after.val()
+
+        const online = val ? val : false
+
+        functions.logger.debug({'USER' : context.params.id,'ONLINE' : online})
+
+        return admin.firestore().collection(USERS).doc(context.params.id).set(
+            {
+                'online' : online,
+                'lastOnline' : Date.now()
+            },
+            {
+                merge : true
             }
-        }
-    })).catch((reason => res.status(404).send(false)))
-})
+        )
+        
+    })
 
 //***********************CHATS***********************
 

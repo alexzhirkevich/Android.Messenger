@@ -1,183 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    android:isScrollContainer="true" >
-
-    <ImageView
-        android:id="@+id/logo"
-        android:transitionName="@string/transition_logo"
-        android:layout_width="@dimen/reg_logo_size"
-        android:layout_height="@dimen/reg_logo_size"
-        android:layout_marginTop="@dimen/register_logo_top_margin"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/_info_layout"
-        android:src="@drawable/logo"/>
-
-    <LinearLayout
-        android:gravity="center"
-        android:id="@+id/_info_layout"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/_layout_phone"
-        android:layout_marginVertical="25dp">
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/register_view_pager"
-        android:layout_width="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"/>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/register_tab_layout"
-        android:layout_width="80dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="10dp"
-        android:background="@android:color/transparent"
-        app:tabIndicatorColor="@color/white"
-        app:tabIndicatorHeight="20dp"
-        app:tabBackground="@drawable/tab_background"
-        app:tabMode="fixed"
-        app:tabIndicator="@drawable/tab_indicator_circle"
-        android:layout_gravity="center_horizontal" />
-    </LinearLayout>
-
-
+    android:id="@+id/scrollview_login"
+    android:background="@color/app_back"
+    android:overScrollMode="never">
 
     <RelativeLayout
-        android:id="@+id/_layout_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn_send_code"
-        android:layout_alignStart="@id/btn_send_code"
-        android:layout_alignEnd="@id/btn_send_code">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/logo"
+            android:transitionName="@string/transition_logo"
+            android:layout_width="@dimen/reg_logo_size"
+            android:layout_height="@dimen/reg_logo_size"
+            android:layout_marginTop="@dimen/register_logo_top_margin"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo"/>
 
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/ccp"
-            android:paddingStart="5dp"
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/_info_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo"
+            android:layout_marginVertical="60dp">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/register_view_pager"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/register_tab_layout"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/transparent"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorHeight="20dp"
+            app:tabBackground="@drawable/tab_background"
+            app:tabMode="fixed"
+            app:tabIndicator="@drawable/tab_indicator_circle"
+            android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+
+
+        <RelativeLayout
+            android:id="@+id/_layout_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_ccp"
-            app:ccpDialog_backgroundColor="@color/black"
-            app:ccpDialog_textColor="@color/white"
-            app:ccp_textSize="@dimen/main_text_size"
-            app:ccp_showFullName="false"
-            app:ccpDialog_keyboardAutoPopup="false"
-            app:ccp_contentColor="@color/white"
-            app:ccp_showNameCode="false"
-            app:ccp_showPhoneCode="true"
-            app:ccp_autoDetectCountry="true" />
+            android:layout_below="@id/_info_layout"
+            android:layout_alignStart="@id/btn_send_code"
+            android:layout_alignEnd="@id/btn_send_code">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/ccp"
+                android:paddingStart="5dp"
+                android:paddingVertical="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_ccp"
+                app:ccpDialog_backgroundColor="@color/black"
+                app:ccpDialog_textColor="@color/white"
+                app:ccp_textSize="@dimen/main_text_size"
+                app:ccp_showFullName="false"
+                app:ccpDialog_keyboardAutoPopup="false"
+                app:ccp_contentColor="@color/white"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="true"
+                app:ccp_autoDetectCountry="true" />
+
+            <EditText
+                android:id="@+id/edit_phone"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_toEndOf="@id/ccp"
+                android:layout_alignTop="@id/ccp"
+                android:layout_alignBottom="@id/ccp"
+                android:background="@drawable/background_phone"
+                android:hint="@string/phone"
+                android:paddingHorizontal="1dp"
+                android:autofillHints="phoneNational"
+                android:inputType="phone"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/main_text_size" />
+
+            </RelativeLayout>
 
         <EditText
-            android:id="@+id/edit_phone"
+            android:id="@+id/edit_code"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_above="@+id/btn_send_code"
             android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@id/ccp"
-            android:layout_alignTop="@id/ccp"
-            android:layout_alignBottom="@id/ccp"
-            android:background="@drawable/background_phone"
-            android:fontFamily="@font/gotham_pro_light"
-            android:hint="@string/phone"
-            android:autofillHints="phoneNational"
-            android:inputType="phone"
+            android:layout_alignStart="@id/btn_send_code"
+            android:layout_alignEnd="@id/btn_send_code"
+            android:background="@drawable/background_input"
+            android:hint="@string/code"
+            android:drawableStart="@drawable/ic_pass"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/gray"
+            android:paddingHorizontal="10dp"
+            android:maxLength="@integer/verification_code_size"
+            android:importantForAutofill="no"
+            android:layout_alignTop="@id/_layout_phone"
+            android:inputType="number"
+            android:visibility="visible"
+            android:translationX="@dimen/auth_edits_translation"
             android:textColor="@color/white"
             android:textColorHint="@color/gray"
             android:textSize="@dimen/main_text_size" />
 
-        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/pb_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btn_send_code"
+            android:layout_alignEnd="@id/btn_send_code"
+            android:layout_alignTop="@id/_layout_phone"
+            android:translationX="4dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="invisible"/>
 
-    <EditText
-        android:id="@+id/edit_code"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_above="@+id/btn_send_code"
-        android:layout_centerHorizontal="true"
-        android:layout_alignStart="@id/btn_send_code"
-        android:layout_alignEnd="@id/btn_send_code"
-        android:background="@drawable/background_input"
-        android:fontFamily="@font/gotham_pro_light"
-        android:hint="@string/code"
-        android:drawableStart="@drawable/ic_pass"
-        android:drawablePadding="10dp"
-        android:drawableTint="@color/gray"
-        android:paddingHorizontal="10dp"
-        android:maxLength="6"
-        android:importantForAutofill="no"
-        android:layout_alignTop="@id/_layout_phone"
-        android:inputType="number"
-        android:visibility="visible"
-        android:translationX="@dimen/auth_edits_translation"
-        android:textColor="@color/white"
-        android:textColorHint="@color/gray"
-        android:textSize="@dimen/main_text_size" />
+        <Button
+            android:id="@+id/btn_send_code"
+            android:transitionName="@string/transition_btn_signin"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/_layout_phone"
+            android:layout_centerHorizontal="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/background_login_btn"
+            android:layout_width="@dimen/default_control_width"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:enabled="false"
+            android:fontFamily="@font/gotham_pro_bold"
+            android:textSize="@dimen/font_size_big"
+            android:text="@string/send_code"/>
 
-    <ProgressBar
-        android:id="@+id/pb_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn_send_code"
-        android:layout_alignEnd="@id/btn_send_code"
-        android:layout_alignTop="@id/_layout_phone"
-        android:translationX="4dp"
-        android:indeterminateTint="@color/white"
-        android:visibility="invisible"/>
+        <LinearLayout
+            android:id="@+id/_layout_resend"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_send_code"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/default_bottom_margin"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible">
 
-    <Button
-        android:id="@+id/btn_send_code"
-        android:transitionName="@string/transition_btn_signin"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:background="@drawable/background_login_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray"
-        android:fontFamily="@font/gotham_pro_bold"
-        android:paddingHorizontal="30dp"
-        android:textSize="17sp"
-        android:enabled="false"
-        android:text="@string/send_code"
-        android:layout_marginBottom="@dimen/register_btn_bottom_margin"
-        android:layout_marginHorizontal="@dimen/main_horizontal_margin"/>
+            <TextView
+                android:id="@+id/tv_resend_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray"
+                android:fontFamily="@font/gotham_pro_light"
+                android:textSize="@dimen/font_size_small"
+                android:text="@string/didnt_get_code"/>
+            <TextView
+                android:id="@+id/tv_resend_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/gotham_pro_bold"
+                android:textColor="@color/blue"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:textSize="@dimen/font_size_small"
+                android:text="@string/resend" />
+        </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/_layout_resend"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/_layout_phone"
-        android:layout_marginTop="65dp"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible">
-    <TextView
-        android:id="@+id/tv_resend_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray"
-        android:fontFamily="@font/gotham_pro_light"
-        android:textSize="@dimen/font_size_small"
-        android:text="@string/didnt_get_code"/>
-    <TextView
-        android:id="@+id/tv_resend_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:fontFamily="@font/gotham_pro_bold"
-        android:textColor="@color/blue"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:textSize="@dimen/font_size_small"
-        android:text="@string/resend" />
-    </LinearLayout>
 
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>

@@ -2,10 +2,10 @@ package com.alexz.firerecadapter.firestore
 
 import com.alexz.firerecadapter.IBaseRecyclerAdapter
 import com.alexz.firerecadapter.IEntity
-import com.alexz.firerecadapter.viewholder.IFirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.IBaseViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 
-interface IFirestoreRecyclerAdapter<Entity : IEntity,VH : IFirebaseViewHolder<Entity>>
+interface IFirestoreRecyclerAdapter<Entity : IEntity,VH : IBaseViewHolder<Entity>>
     : IBaseRecyclerAdapter<Entity, VH> {
 
     /**

@@ -1,53 +1,41 @@
 package com.alexz.messenger.app.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import android.view.*
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alexz.firerecadapter.BaseRecyclerAdapter
 import com.alexz.messenger.app.data.entities.interfaces.IChannel
 import com.alexz.messenger.app.ui.adapters.ChannelRecyclerAdapter
-import com.alexz.messenger.app.ui.viewmodels.ChannelViewModel
+import com.alexz.messenger.app.ui.viewmodels.ChannelsViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.messenger.app.R
 
-class ChannelsFragment : Fragment() {
+class ChannelsFragment : ChatsAndChannelsPagerFragment<IChannel,ChannelRecyclerAdapter.ChannelViewHolder>(){
 
-    val viewModel : ChannelViewModel by viewModels()
+    val viewModel : ChannelsViewModel by activityViewModels()
 
-    private val recyclerAdapter : BaseRecyclerAdapter<IChannel, ChannelRecyclerAdapter.ChannelViewHolder> by lazy {
-        object : BaseRecyclerAdapter<IChannel, ChannelRecyclerAdapter.ChannelViewHolder>() {
-            override fun onCreateClickableViewHolder(parent: ViewGroup, viewType: Int): ChannelRecyclerAdapter.ChannelViewHolder {
-                val root = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_channel, parent, false)
-                return ChannelRecyclerAdapter.ChannelViewHolder(root)
-            }
-        }.apply {
+    override val recyclerAdapter : ChannelRecyclerAdapter by lazy {
+        ChannelRecyclerAdapter().apply {
             viewModel.data.observe(viewLifecycleOwner, Observer {
-                if (it.value != null) {
-                   // thread(start = true) {
-                        set(it.value)
-                   // }
-                }
+                it.value?.let { set(it) }
             })
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? =
-         inflater.inflate(R.layout.fragment_channels, container, false)
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_channels, container, false)
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val fab = parentFragment?.view?.findViewById<FloatingActionButton>(R.id.fab_chats_channels)
-        view.findViewById<RecyclerView>(R.id.recyclerview_channels).apply {
+        val fab = parentFragment?.view?.findViewById<FloatingActionButton>(R.id.fab)
+
+        view.findViewById<RecyclerView>(R.id.recycler_view).apply {
             layoutManager = LinearLayoutManager(context)
             addOnScrollListener(object : RecyclerView.OnScrollListener(){
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -59,6 +47,24 @@ class ChannelsFragment : Fragment() {
             })
             adapter = recyclerAdapter
         }
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_chats,menu)
+    }
+
+    override fun onItemClick(viewHolder: ChannelRecyclerAdapter.ChannelViewHolder) {
+        super.onItemClick(viewHolder)
+    }
+
+    override fun onLongItemClick(viewHolder: ChannelRecyclerAdapter.ChannelViewHolder): Boolean {
+        return super.onLongItemClick(viewHolder)
+    }
+
+    override fun onDestroyView() {
+        viewModel.data.removeObservers(viewLifecycleOwner)
+        super.onDestroyView()
     }
 }
 

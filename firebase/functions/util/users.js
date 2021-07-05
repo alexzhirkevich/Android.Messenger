@@ -1,5 +1,6 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
+const {PHONE} = require("../constants");
 const {deleteChannel} = require("./channels");
 const {deleteChat} = require("./chats");
 const {USERS,CHATS,CHANNELS} = require("../constants");
@@ -34,12 +35,16 @@ exports.addUserToDatabase=async function(user){
             userName = "User" + Date.now()
         }
 
+        const serverTime = Date.now()
+
         return await admin.firestore().collection(USERS).doc(user.uid).set({
             'id': user.uid,
             'online': true,
-            'name': userName,
-            'imageUri' : user.imageUri
-        })
+            'phone' : user.phoneNumber,
+            'name': "User" + serverTime,
+            'creationTime' : serverTime,
+            'imageUri' : ""
+        },{merge:true})
     }
     return null
 }

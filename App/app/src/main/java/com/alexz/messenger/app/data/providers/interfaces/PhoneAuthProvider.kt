@@ -1,17 +1,21 @@
 package com.alexz.messenger.app.data.providers.interfaces
 
 import android.app.Activity
-import com.alexz.messenger.app.data.entities.imp.User
 
-interface PhoneAuthProvider {
+interface PhoneAuthProvider : AuthProvider {
     fun sendCode(activity: Activity, phone: String)
     fun verifyCode(code: String)
-    val isAuthenticated :Boolean
-    val isCodeSend : Boolean
 }
 
+interface SignedInUser {
+    val uid : String
+    val isNew : Boolean
+}
+
+data class SignedInUserImp(override val uid: String, override val isNew: Boolean) : SignedInUser
+
 interface PhoneAuthCallback{
-    fun onCodeSend()
-    fun onSuccess(u : User)
-    fun onError(t : Throwable)
+    fun onCodeSend() {}
+    fun onSuccess(signedInUser: SignedInUser) {}
+    fun onError(t : Throwable) {}
 }

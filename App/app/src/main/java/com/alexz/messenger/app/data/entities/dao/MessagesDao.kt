@@ -1,7 +1,7 @@
 package com.alexz.messenger.app.data.entities.dao
 
 import androidx.room.*
-import com.alexz.messenger.app.data.entities.imp.Chat
+import com.alexz.messenger.app.data.entities.imp.Group
 import com.alexz.messenger.app.data.entities.imp.MediaMessage
 import com.alexz.messenger.app.data.entities.imp.Message
 import com.alexz.messenger.app.data.entities.imp.VoiceMessage
@@ -55,7 +55,7 @@ interface MessagesDao  {
 //        }.subscribe()
 //    }
 
-    @Query("SELECT last_message_id FROM ${Chat.TABLE_NAME} WHERE id = :chatId LIMIT 1")
+    @Query("SELECT last_message_id FROM ${Group.TABLE_NAME} WHERE id = :chatId LIMIT 1")
     fun lastMessageId(chatId: String): Single<String>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

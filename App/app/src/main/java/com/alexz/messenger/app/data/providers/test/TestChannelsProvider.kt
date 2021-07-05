@@ -6,17 +6,17 @@ import com.alexz.messenger.app.data.entities.imp.User
 import com.alexz.messenger.app.data.entities.interfaces.IChannel
 import com.alexz.messenger.app.data.entities.interfaces.IUser
 import com.alexz.messenger.app.data.providers.interfaces.ChannelsProvider
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.*
 
 class TestChannelsProvider : ChannelsProvider {
-    override fun getUsers(channelId: String, limit: Int): Observable<List<IUser>> =
-            TestUsersProvider().getAll(Channel(channelId), limit)
+    override fun getUsers(channelId: String, limit: Int): Observable<List<IUser>> = Observable.create {  }
 
     override fun find(namePart: String): Single<List<IChannel>> =
-            getAll(User()).map { list ->
+            getAll(User(id =FirebaseAuth.getInstance().currentUser!!.uid)).map { list ->
                 list.filter { c ->
                     c.name.toLowerCase(Locale.getDefault())
                             .contains(namePart.toLowerCase(Locale.getDefault()))
@@ -37,7 +37,7 @@ class TestChannelsProvider : ChannelsProvider {
     override fun getAll(collection: IUser, limit: Int): Observable<List<IChannel>> {
         val list = mutableListOf<Channel>()
         for (i in 1..limit){
-            list.add(Channel(id = "test$i", name = "Test", lastPostId = "test", lastPostTime = System.currentTimeMillis()))
+            list.add(Channel(id = "test$i", name = "Channel Name", lastPostId = "test", lastPostTime = System.currentTimeMillis()))
         }
         return Observable.just(list)
     }

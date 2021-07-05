@@ -8,7 +8,7 @@ interface SingleEntityProvider<T:IEntity> {
 
     /**
      * Creates observable for entity with given [id].
-     * @return Observable state of requested model
+     * @return Observable state of requested entity
      * */
     fun get(id : String) : Observable<T>
 

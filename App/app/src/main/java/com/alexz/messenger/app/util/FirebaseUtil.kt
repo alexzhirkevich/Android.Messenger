@@ -1,14 +1,15 @@
 package com.alexz.messenger.app.util
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.*
 
 object FirebaseUtil {
-    val CREATOR_ID = "creatorId"
+    const val USERNAME = "username"
+    const val CONTACTS = "contacts"
+    const val PHONE = "phone"
+    const val IMAGE_URI = "imageUri"
+    const val DESCRIPTION = "description"
+    const val CREATOR_ID = "creatorId"
     const val TIME= "time"
     const val MEDIA_MESSAGES = "media_messages"
     const val VOICE_MESSAGES = "voice_messages"
@@ -36,6 +37,7 @@ object FirebaseUtil {
     const val DATA = "data"
     const val REFERENCE = "reference"
     const val NOTIFY_TOKEN = "notificationToken"
+    const val PRIVATE_USERS_INFO = "privateUsersInfo"
 
     const val URL_BASE = "https://firemessenger.com/"
     const val LINK_CHANNEL = "joinchannel/"
@@ -47,24 +49,15 @@ object FirebaseUtil {
     val usersCollection : CollectionReference
         get() = FirebaseFirestore.getInstance().collection(USERS)
 
+    val privateUsersCollection : CollectionReference
+        get() = FirebaseFirestore.getInstance().collection(PRIVATE_USERS_INFO)
+
+    val phonesCollection : CollectionReference
+        get() = FirebaseFirestore.getInstance().collection(PHONE)
+
+
     val chatsCollection : CollectionReference
         get() = FirebaseFirestore.getInstance().collection(CHATS)
-
-    val currentFireUser: FirebaseUser?
-        get() = FirebaseAuth.getInstance().currentUser
-
-    fun setOnline(online: Boolean) {
-        if (FirebaseAuth.getInstance().uid != null) {
-            val userInfoRef = FirebaseDatabase.getInstance().reference
-                    .child(USERS)
-                    .child(currentFireUser!!.uid)
-                    .child(INFO)
-            userInfoRef.child(ONLINE).setValue(online)
-            if (!online) {
-                userInfoRef.child(LAST_ONLINE).setValue(Date().time)
-            }
-        }
-    }
 
     fun createChatInviteLink(id: String): CharSequence =
             buildString {

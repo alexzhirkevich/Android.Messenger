@@ -15,7 +15,7 @@ class Channel(
         override var imageUri: String = "",
         override var lastPostId: String = "",
         override var lastPostTime: Long = Long.MAX_VALUE,
-        override var creatorId: String = FirebaseUtil.currentFireUser?.uid.orEmpty(),
+        override var creatorId: String = "",
         override var creationTime: Long = System.currentTimeMillis())
     : Entity(id), IChannel, Parcelable {
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/app_back"/>
+
+    <item android:drawable="@drawable/logo"
+        android:gravity="center"
+        android:width="@dimen/reg_logo_size"
+        android:height="@dimen/reg_logo_size"/>
+</layer-list>

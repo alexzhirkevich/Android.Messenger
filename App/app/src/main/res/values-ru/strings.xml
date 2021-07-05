@@ -106,7 +106,6 @@
 <!--</resources>-->
 <resources>
     <string name="login">Войти</string>
-    <string name="passwd">Пароль…</string>
     <string name="register">Регистрация</string>
     <string name="send_code">Получить код</string>
     <string name="your_name">Ваше имя…</string>
@@ -118,7 +117,7 @@
     <string name="profile">Профиль</string>
     <string name="report_issue">Сообщить об ошибке</string>
     <string name="settings">Настройки</string>
-    <string name="about_yourself">О себе</string>
+    <string name="description">О себе</string>
     <string name="name">Имя</string>
     <string name="edit">Редактировать</string>
     <string name="messages">Сообщения</string>
@@ -128,11 +127,48 @@
     <string name="chats">Чаты</string>
     <string name="phone">Номер телефона...</string>
     <string name="you">Вы</string>
+
     <string name="short_year">г</string>
     <string name="short_month">м</string>
     <string name="short_week">н</string>
     <string name="short_day">д</string>
     <string name="short_hour">ч</string>
-    <string name="code">Код...</string>
+
+    <string name="code">Код…</string>
     <string name="verify">Подтвердить</string>
+    <string name="perm_message_contacts">Не удаётся получить доступ к контактам. Пожалуйста, разрешите приложению доступ к ним в настройках вашего устройства. Мы никому не передаем ваши персональные данные</string>
+    <string name="last_online_few">был(а) в %s</string>
+    <string name="last_online_many">был(а) %s назад</string>
+    <string name="error">Ошибка</string>
+    <string name="dont_ask_again">Больше не спрашивать</string>
+    <string name="username_optional">Имя пользователя (необязательно)</string>
+    <string name="online">В сети</string>
+    <string name="write_message">Написать сообщение</string>
+    <string name="create_group">Создать группу</string>
+    <string name="create_channel">Создать канал</string>
+    <string name="perm_request">Запрос прав</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="cancel">Отмена</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <string name="resend">Отправить снова</string>
+    <string name="didnt_get_code">Не получили код?</string>
+    <string name="error_login_invalid_code">Неправильный код подтверждения</string>
+    <string name="error_login_invalid_phone">Неправильный номер телефона</string>
+    <string name="error_login_too_many_requests">Слишком много запросов авторизации. Попробуйте позде</string>
+    <string name="error_login">Не удалось войти</string>
+    <string name="save">Сохранить</string>
+    <string name="contacts">Контакты</string>
+    <string name="description_optional">О себе (необязательно)</string>
+    <string name="perm_request_contact">Пожалуйста, разрешите приложению доступ к контактам, чтобы мы могли найти ваших знакомых. Мы никому не передаем Ваши личные данные.</string>
+    <string name="events">События</string>
+    <string name="share">Поделиться</string>
+    <string name="photo">Фото</string>
+    <string name="delete">Удалить</string>
+    <string name="message">Сообщение</string>
+    <string name="error_description_text">Не может содержать переносы строк</string>
+    <string name="error_username_text">Только \'_\' , \'a-Z\' и цифры</string>
+    <string name="error_name_text">Может содержать только буквы и пробелы</string>
+    <string name="error_username_taken">Имя занято</string>
+    <string name="eror_min_len">Минимальная длина - %d</string>
 </resources>

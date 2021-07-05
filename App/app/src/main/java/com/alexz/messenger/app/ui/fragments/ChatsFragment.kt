@@ -1,73 +1,53 @@
 package com.alexz.messenger.app.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import android.view.*
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.alexz.firerecadapter.BaseRecyclerAdapter
-import com.alexz.messenger.app.data.entities.interfaces.IMessageable
+import com.alexz.messenger.app.data.entities.interfaces.IChat
 import com.alexz.messenger.app.ui.adapters.ChatRecyclerAdapter
 import com.alexz.messenger.app.ui.viewmodels.ChatsViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.messenger.app.R
 
-class ChatsFragment : Fragment() {
+class ChatsFragment : ChatsAndChannelsPagerFragment<IChat,ChatRecyclerAdapter.ChatViewHolder>() {
 
-    val viewModel : ChatsViewModel by viewModels()
+    private val viewModel: ChatsViewModel by activityViewModels()
 
-    private val recyclerAdapter : BaseRecyclerAdapter<IMessageable, ChatRecyclerAdapter.ChatViewHolder> by lazy {
-        object : BaseRecyclerAdapter<IMessageable, ChatRecyclerAdapter.ChatViewHolder>() {
-            override fun onCreateClickableViewHolder(parent: ViewGroup, viewType: Int): ChatRecyclerAdapter.ChatViewHolder {
-                val root = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_chat, parent, false)
-                return ChatRecyclerAdapter.ChatViewHolder(root)
-            }
-        }.apply {
+    override val recyclerAdapter: BaseRecyclerAdapter<IChat, ChatRecyclerAdapter.ChatViewHolder> by lazy {
+        ChatRecyclerAdapter().apply {
             viewModel.data.observe(viewLifecycleOwner, Observer {
-                if (it.error != null) {
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-                } else if (it.value != null) {
-                    //thread(start = true) {
-                        set(it.value)
-                    //}
-                }
+                it.value?.let { set(it) }
             })
         }
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-//        (requireParentFragment().requireView()
-//                .findViewById<FragmentContainerView>(R.id.fragment_host_bottom_navigation).
-//                layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.ALIGN_PARENT_TOP)
-
         return inflater.inflate(R.layout.fragment_chats, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val fab = parentFragment?.view?.findViewById<FloatingActionButton>(R.id.fab_chats_channels)
-
-        view.findViewById<RecyclerView>(R.id.recyclerview_chats).apply {
-            adapter = recyclerAdapter
-            layoutManager = LinearLayoutManager(context)
-            addOnScrollListener(object : RecyclerView.OnScrollListener(){
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy>0)
-                        fab?.hide()
-                    else
-                        fab?.show()
-                }
-            })
-        }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_chats,menu)
+    }
+
+    override fun onItemClick(viewHolder: ChatRecyclerAdapter.ChatViewHolder) {
+        super.onItemClick(viewHolder)
+    }
+
+    override fun onLongItemClick(viewHolder: ChatRecyclerAdapter.ChatViewHolder): Boolean {
+        return super.onLongItemClick(viewHolder)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+       viewModel.data.removeObservers(viewLifecycleOwner)
+    }
+
 
 }

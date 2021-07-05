@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_back">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_below="@id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:rotation="180"
+        android:elevation="5dp"
+        android:background="@drawable/drawable_shadow" />
+
+    <com.alexz.messenger.app.ui.views.ProfileView
+        android:id="@+id/layout_profile"
+        android:layout_below="@id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
+
+    <View
+        android:layout_below="@id/layout_profile"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:rotation="180"
+        android:elevation="5dp"
+        android:background="@drawable/drawable_shadow" />
+</RelativeLayout>

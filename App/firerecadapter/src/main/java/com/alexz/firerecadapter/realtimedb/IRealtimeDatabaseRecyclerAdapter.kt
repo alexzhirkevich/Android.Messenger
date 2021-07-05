@@ -2,10 +2,10 @@ package com.alexz.firerecadapter.realtimedb
 
 import com.alexz.firerecadapter.IBaseRecyclerAdapter
 import com.alexz.firerecadapter.IEntity
-import com.alexz.firerecadapter.viewholder.IFirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.IBaseViewHolder
 import com.google.firebase.database.DataSnapshot
 
-interface IRealtimeDatabaseRecyclerAdapter<Entity : IEntity,VH : IFirebaseViewHolder<Entity>>
+interface IRealtimeDatabaseRecyclerAdapter<Entity : IEntity,VH : IBaseViewHolder<Entity>>
     : IBaseRecyclerAdapter<Entity, VH>{
 
     /**

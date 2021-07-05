@@ -3,6 +3,7 @@ package com.alexz.messenger.app.ui.views
 import android.content.Context
 import android.graphics.Color
 import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
 import com.google.android.material.textview.MaterialTextView
@@ -43,6 +44,7 @@ class AutoLinkTextView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     init {
         linksClickable = true
+        autoLinkMask = Linkify.ALL
         setLinkTextColor(linksColor)
         movementMethod = LinkMovementMethod()
     }

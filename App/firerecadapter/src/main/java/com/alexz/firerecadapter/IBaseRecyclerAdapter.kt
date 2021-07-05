@@ -2,23 +2,27 @@ package com.alexz.firerecadapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.alexz.firerecadapter.viewholder.IFirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.IBaseViewHolder
 
 /**
  * Recycler adapter interface for Firebase Realtime Database objects.
  * Basic interface, provides offline access.
  *
  * @param Entity object class implements [IEntity]
- * @param VH ViewHolder implements [IFirebaseViewHolder]
+ * @param VH ViewHolder implements [IBaseViewHolder]
  *
  * @see IEntity
- * @see IFirebaseViewHolder
+ * @see IBaseViewHolder
  */
-interface IBaseRecyclerAdapter<Entity : IEntity, VH : IFirebaseViewHolder<Entity>> {
+typealias OnSelectedStateChangedListener = (Boolean) -> Unit
 
-    var itemClickListener: ItemClickListener<Entity>?
-    var adapterCallback: AdapterCallback<Entity>?
-    var loadingCallback: LoadingCallback?
+interface IBaseRecyclerAdapter<Entity : IEntity, VH : IBaseViewHolder<Entity>> {
+
+    var itemLongClickListener: ItemLongClickListener<VH>
+    var itemClickListener: ItemClickListener<VH>
+    var adapterCallback: AdapterCallback<Entity>
+    var loadingCallback: LoadingCallback
+    var onSelectedStateChangedListener : OnSelectedStateChangedListener
 
 
     /**
@@ -27,7 +31,7 @@ interface IBaseRecyclerAdapter<Entity : IEntity, VH : IFirebaseViewHolder<Entity
      * Used in [RealtimeDatabaseListRecyclerAdapter.onCreateViewHolder]
      *
      * @return [FirebaseViewHolder]
-     * @see IFirebaseViewHolder
+     * @see IBaseViewHolder
      */
     fun onCreateClickableViewHolder(parent: ViewGroup, viewType: Int): VH
 
@@ -50,7 +54,11 @@ interface IBaseRecyclerAdapter<Entity : IEntity, VH : IFirebaseViewHolder<Entity
      * @param key key for selection. Shows all items, if param is null
      * @return selected count
      */
-    fun select(predicate: (Entity) -> Boolean) : Int
+    fun setVisible(predicate: (Entity) -> Boolean) : Int
+
+    fun setSelected(id : String, selected : Boolean)
+
+    fun isSelected(id : String) : Boolean
 
     /**
      * Used for [model] adding. Can be changed after approving in database
@@ -76,8 +84,4 @@ interface IBaseRecyclerAdapter<Entity : IEntity, VH : IFirebaseViewHolder<Entity
      * */
     fun remove(id: String, byUser : Boolean = true): Boolean
 
-    /**
-     * Shows all ViewHolders
-     */
-    fun selectAll()
 }

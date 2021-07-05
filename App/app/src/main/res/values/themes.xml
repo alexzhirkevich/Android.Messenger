@@ -8,42 +8,41 @@
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
         <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorOnBackground">@color/black</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
 <!--        <item name="colorBackgroundFloating">@color/black</item>-->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textColorHint">@color/gray</item>
+        <item name="android:fontFamily">@font/gotham_pro_light</item>
+        <item name="background">@color/app_back</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:itemBackground">@drawable/shadow_ripple</item>
+        <item name="popupMenuBackground">@color/shadow</item>
+        <item name="android:panelFullBackground">@color/app_back</item>
     </style>
 
-<!--    <style name="Theme.App.NoActionBar" parent="Theme.App">-->
-<!--        <item name="windowActionBar">false</item>-->
-<!--        <item name="windowNoTitle">true</item>-->
-<!--    </style>-->
-
-<!--    <style name="Theme.Fullscreen" parent="Theme.App">-->
-<!--        <item name="android:textColorPrimary">@color/white</item>-->
-<!--        <item name="colorPrimary">@android:color/black</item>-->
-<!--        <item name="colorSecondary">@android:color/black</item>-->
-<!--        <item name="windowActionBarOverlay">true</item>-->
-<!--        <item name="android:statusBarColor">@android:color/black</item>-->
-<!--    </style>-->
-
     <style name="Theme.App.FullScreen" parent="Theme.App">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowActionBar">false</item>-->
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:textColorSecondary">@color/white</item>
+        <item name="windowActionBar">false</item>
+        <!--        <item name="android:windowContentOverlay">@null</item>-->
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
+<!--        <item name="android:windowTranslucentNavigation">true</item>-->
+<!--        <item name="android:textColorSecondary">@color/white</item>-->
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/black</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:windowBackground">@drawable/dialog_bg_inset</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:fontFamily">@font/gotham_pro_light</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="Theme.AppBar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
@@ -51,7 +50,5 @@
     </style>
 
     <style name="Theme.Test.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
 
 </resources>

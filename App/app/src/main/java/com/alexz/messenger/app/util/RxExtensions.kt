@@ -4,6 +4,9 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
 import io.reactivex.*
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 
 fun CompletableEmitter.with(completable : Completable) : Disposable =
     completable.subscribe({onComplete()},{tryOnError(it)})
@@ -120,6 +123,35 @@ fun <T : Any> SingleEmitter<List<T>>.parseListNonNull(
 //                }
 //            }
 //        }
+
+fun <T> Collection<Observable<T>>.merge() : Observable<Collection<T>>{
+
+    val disposables = CopyOnWriteArrayList<Disposable>()
+    val items = ConcurrentHashMap<Int, T>()
+
+    return Observable.create<Collection<T>> { mainObservable ->
+
+        this.map { list ->
+            list.subscribeOn(Schedulers.io())
+        }.forEachIndexed { idx, obs ->
+            synchronized(disposables) {
+                disposables.add(obs.subscribe(
+                        { list ->
+                            synchronized(items) {
+                                items[idx] = list
+                            }
+                            mainObservable.onNext(items.values)
+                        },
+                        {
+                            mainObservable.tryOnError(it)
+                        }
+                ))
+            }
+        }
+    }.doOnDispose {
+        disposables.forEach { it.dispose() }
+    }
+}
 
 fun <T> ObservableEmitter<T>.with(observable: Observable<T>): Disposable =
             observable.subscribe(

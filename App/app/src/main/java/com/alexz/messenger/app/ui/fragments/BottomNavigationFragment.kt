@@ -2,95 +2,110 @@ package com.alexz.messenger.app.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.annotation.IdRes
-import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.alexz.test.OnSystemInsetsChangedListener
+import androidx.fragment.app.FragmentTransaction
+import com.alexz.messenger.app.ui.activities.MainActivity
+import com.alexz.messenger.app.ui.views.setBottomMargin
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.messenger.app.R
 
 
-class BottomNavigationFragment : Fragment() {
+class BottomNavigationFragment : MainActivity.EdgeToEdgeFragment(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private val profileFragment = ProfileFragment()
+    private val profileFragment = SelfProfileFragment()
     private val chatsFragment = ChatsAndChannelsRootFragment()
     private val callsFragment = CallsFragment()
-
+    private val eventsFragment = EventsFragment()
     private var currentFragment: Fragment?=null
 
-    @IdRes
-    private val startFragmentId = R.id.fragment_chats_channels
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+    private val bottomNavigationView : BottomNavigationView by lazy{
+        findViewById<BottomNavigationView>(R.id.bottom_navigation) }
+
+
+
+    companion object CREATOR {
+
+        fun newBundle(@IdRes fragment : Int) = bundleOf(EXTRA_START_FRAGMENT_ID to fragment)
+
+        private const val EXTRA_START_FRAGMENT_ID = "EXTRA_START_FRAGMENT_ID"
+        private const val EXTRA_CURRENT_FRAGMENT_ID = "EXTRA_CURRENT_FRAGMENT_ID"
+
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private val startFragmentId : Int by lazy {
+        arguments?.getInt(EXTRA_START_FRAGMENT_ID, R.id.fragment_chats_channels) ?: R.id.fragment_chats_channels }
 
-        val view = inflater.inflate(R.layout.fragment_bottom_navigation, container, false)
 
-        val bottomNavigationView = view.findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        val toolbar = view.findViewById<Toolbar>(R.id.toolbar).apply {
-            title = ""
-        }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_bottom_navigation, container, false)
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         bottomNavigationView.apply {
-            setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+            setOnNavigationItemSelectedListener(this@BottomNavigationFragment)
             selectedItemId = startFragmentId
         }
-
-        setToolbar(toolbar)
-        setEdgeToEdge(object : OnSystemInsetsChangedListener {
-            override fun invoke(statusBarSize: Int, navigationBarSize: Int) {
-                toolbar.apply {
-                    (layoutParams as ViewGroup.MarginLayoutParams).topMargin = statusBarSize
-                    requestLayout()
-                }
-                bottomNavigationView.apply {
-                    (layoutParams as ViewGroup.MarginLayoutParams).bottomMargin = navigationBarSize
-                    requestLayout()
-                }
-            }
-        })
-
-        return view
     }
 
-    private val mOnNavigationItemSelectedListener =
-            BottomNavigationView.OnNavigationItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.fragment_profile -> {
-                        if (currentFragment != profileFragment) {
-                            currentFragment = profileFragment
-                            childFragmentManager.replace(R.id.fragment_host_bottom_navigation, profileFragment,
-                                    currentFragment!!.javaClass.simpleName)
-                        }
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    R.id.fragment_chats_channels -> {
-                        if (currentFragment != chatsFragment) {
-                            currentFragment = chatsFragment
-                            childFragmentManager.replace(R.id.fragment_host_bottom_navigation, chatsFragment,
-                                    currentFragment!!.javaClass.simpleName)
-                        }
-                        //swapFragments(item.itemId, chats)
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    R.id.fragment_calls -> {
-                        if (currentFragment != callsFragment) {
-                            currentFragment = callsFragment
-                            childFragmentManager.replace(R.id.fragment_host_bottom_navigation, callsFragment,
-                                    currentFragment!!.javaClass.simpleName)
-                        }
-                        // swapFragments(item.itemId, calls)
-                        return@OnNavigationItemSelectedListener true
-                    }
-                }
-                false
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(EXTRA_CURRENT_FRAGMENT_ID,when (currentFragment){
+            profileFragment -> R.id.fragment_profile
+            chatsFragment -> R.id.fragment_chats_channels
+            else -> R.id.fragment_calls
+        })
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        val curFragment = savedInstanceState?.getInt(EXTRA_CURRENT_FRAGMENT_ID)
+        curFragment?.let { bottomNavigationView.selectedItemId = it }
+    }
+
+    override fun onApplyWindowInsets(statusBarSize: Int, navigationBarSize: Int) {
+        super.onApplyWindowInsets(statusBarSize, navigationBarSize)
+        bottomNavigationView.setBottomMargin(navigationBarSize)
+    }
+
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.fragment_profile -> {
+                replaceFragment(profileFragment)
             }
+            R.id.fragment_chats_channels -> {
+                replaceFragment(chatsFragment)
+            }
+            R.id.fragment_calls -> {
+                replaceFragment(callsFragment)
+            }
+            R.id.fragment_events -> {
+                replaceFragment(eventsFragment)
+            }
+            else -> false
+        }
+    }
+
+
+    private fun replaceFragment(fragment : Fragment) : Boolean {
+        return if (currentFragment != fragment) {
+            currentFragment = fragment
+            childFragmentManager.replace(R.id.fragment_host_bottom_navigation, fragment) {
+                setTransition(FragmentTransaction.TRANSIT_NONE)
+                disallowAddToBackStack()
+            }
+            true
+        } else false
+    }
 }
 

@@ -1,15 +1,15 @@
 package com.alexz.firerecadapter
 
 import androidx.annotation.CallSuper
-import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.BaseViewHolder
 
-abstract class FirebaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>>(val modelClass: Class<Entity>)
+abstract class FirebaseRecyclerAdapter<Entity : IEntity, VH : BaseViewHolder<Entity>>(val modelClass: Class<Entity>)
     : BaseRecyclerAdapter<Entity,VH>() {
 
     private val databaseModels = mutableSetOf<String>()
 
     fun sync() = Thread {
-        models.forEach {
+        entities.forEach {
             if (it.id !in databaseModels)
                 remove(it.id)
         }

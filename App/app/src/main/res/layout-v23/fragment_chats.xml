@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="@color/app_back">
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_chats"
+        android:id="@+id/recycler_view"
         android:overScrollMode="ifContentScrolls"
         android:scrollbarSize="1dp"
         android:scrollbarThumbVertical="@color/gray"
@@ -15,6 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        tools:listitem="@layout/item_channel" />
+        tools:listitem="@layout/item_channel_relative" />
 
 </FrameLayout>

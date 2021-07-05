@@ -5,7 +5,7 @@ import androidx.annotation.CallSuper
 import com.alexz.firerecadapter.FirebaseRecyclerAdapter
 import com.alexz.firerecadapter.IEntity
 import com.alexz.firerecadapter.Listenable
-import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.BaseViewHolder
 import com.google.firebase.firestore.*
 
 /**
@@ -15,7 +15,7 @@ import com.google.firebase.firestore.*
  * @see IEntity
  * @see IFirestoreListRecyclerAdapter
  */
-abstract class FirestoreListRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>>(
+abstract class FirestoreListRecyclerAdapter<Entity : IEntity, VH : BaseViewHolder<Entity>>(
         clazz: Class<Entity>, override val entityCollectionReference : CollectionReference) :
         FirebaseRecyclerAdapter<Entity, VH>(clazz),
         IFirestoreListRecyclerAdapter<Entity, VH> , Listenable {

@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_main"
     app:startDestination="@id/fragment_auth">
-
-
     <fragment
         android:id="@+id/fragment_auth"
         android:name="com.alexz.messenger.app.ui.fragments.AuthFragment"
@@ -13,6 +11,16 @@
         <action
             android:id="@+id/action_auth_to_bottom_navigation"
             app:destination="@id/fragment_bottom_navigation"
+            app:launchSingleTop="true"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:popUpTo="@id/navigation_main"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_auth_to_edit_profile"
+            app:destination="@id/fragment_profile_edit"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/fragment_open_enter"
             app:launchSingleTop="true"
             app:popUpTo="@id/navigation_main"
             app:popUpToInclusive="true"/>
@@ -22,6 +30,50 @@
         android:id="@+id/fragment_bottom_navigation"
         android:name="com.alexz.messenger.app.ui.fragments.BottomNavigationFragment"
         tools:layout="@layout/fragment_bottom_navigation">
+        <action
+            android:id="@+id/action_bottom_navigation_to_auth"
+            app:destination="@id/fragment_auth"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_main"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_bottom_navigation_to_edit_profile"
+            app:destination="@id/fragment_profile_edit"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/fragment_open_enter"/>
+        <action
+            android:id="@+id/action_bottom_navigation_to_write_message"
+            app:destination="@id/fragment_write_message"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/fragment_open_enter"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_profile_edit"
+        android:name="com.alexz.messenger.app.ui.fragments.EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_edit_profile_to_bottom_navigation"
+            app:destination="@id/fragment_bottom_navigation"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_main"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_write_message"
+        android:name="com.alexz.messenger.app.ui.fragments.WriteMessageFragment"
+        tools:layout="@layout/fragment_write_message"
+        >
+        <action
+            android:id="@+id/action_write_message_to_bottom_navigation"
+            app:destination="@id/fragment_bottom_navigation"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/fragment_open_enter"/>
     </fragment>
 
 </navigation>

@@ -10,9 +10,9 @@ class Dialog(
         override var user2: String="",
         lastMessageId: String="",
         lastMessageTime: Long=System.currentTimeMillis())
-    : Messageable(id=  id,lastMessageId = lastMessageId,lastMessageTime = lastMessageTime), IDialog, Parcelable {
+    : Chat(id=  id,lastMessageId = lastMessageId,lastMessageTime = lastMessageTime), IDialog, Parcelable {
 
-    constructor(messageable: Messageable,user1: String,user2: String) : this(
+    constructor(messageable: Chat, user1: String, user2: String) : this(
             id = messageable.id,
             user1 =  user1,
             user2 = user2,
@@ -28,7 +28,7 @@ class Dialog(
     }
 
     constructor(parcel: Parcel) : this(
-            Messageable.createFromParcel(parcel),
+            Chat.createFromParcel(parcel),
             user1 = parcel.readString().orEmpty(),
             user2 = parcel.readString().orEmpty()
     )

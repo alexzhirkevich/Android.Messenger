@@ -1,124 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:scrollbars="vertical"
+    android:scrollbarSize="1dp"
+    android:scrollbarThumbVertical="@color/gray">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_alignParentTop="true"
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:scrollbarSize="1dp"
-        android:scrollbarThumbVertical="@color/gray">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <com.alexz.messenger.app.ui.views.ProfileView
+            android:id="@+id/layout_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <include layout="@layout/layout_profile" android:id="@+id/layout_profile"/>
+        <View
+            android:id="@+id/separator"
+            android:layout_width="@dimen/default_control_width"
+            android:layout_height="1px"
 
-            <View
-                android:id="@+id/separator"
-                android:layout_width="match_parent"
-                android:layout_marginHorizontal="@dimen/main_horizontal_margin"
-                android:layout_height="1dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/layout_profile"
-                android:layout_marginTop="40dp"
-                android:background="@color/white"
-                android:foreground="@color/white"
-                android:backgroundTint="@color/white"/>
+            android:background="@color/gray"
+            android:backgroundTint="@color/white"
+            android:layout_marginTop="@dimen/profile_spacing_outer" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/contacts"
-                android:layout_centerHorizontal="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
-                android:layout_below="@id/separator"
-                android:layout_marginTop="40dp"
-                android:text="@string/contacts"
-                app:icon="@drawable/ic_contact"
-                style="@style/MenuButton"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_profile_edit"
+            android:layout_marginTop="@dimen/profile_buttons_margin_small"
+            android:text="@string/edit_profile"
+            app:icon="@drawable/ic_edit"
+            style="@style/MenuButton"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settings3"
-                android:layout_centerHorizontal="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
-                android:layout_below="@id/contacts"
-                android:text="@string/settings"
-                app:icon="@drawable/ic_settings"
-                style="@style/MenuButton"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settings3"
+            android:text="@string/settings"
+            app:icon="@drawable/ic_settings"
+            android:layout_marginTop="@dimen/profile_buttons_margin_small"
+            style="@style/MenuButton"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settings2"
-                android:layout_centerHorizontal="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
-                android:layout_below="@id/settings3"
-                android:text="@string/settings"
-                app:icon="@drawable/ic_settings"
-                style="@style/MenuButton"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settings2"
+            android:text="@string/settings"
+            app:icon="@drawable/ic_settings"
+            style="@style/MenuButton"/>
 
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settings"
-                android:layout_marginTop="30dp"
-                android:layout_centerHorizontal="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
-                android:layout_below="@id/settings2"
-                android:text="@string/settings"
-                app:icon="@drawable/ic_settings"
-                style="@style/MenuButton"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settings"
+            android:layout_marginTop="30dp"
+            android:text="@string/settings"
+            app:icon="@drawable/ic_settings"
+            style="@style/MenuButton"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/report_issue"
-                android:layout_centerHorizontal="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
-                android:layout_below="@id/settings"
-                android:text="@string/report_issue"
-                app:icon="@drawable/ic_person"
-                style="@style/MenuButton"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/report_issue"
+            android:text="@string/report_issue"
+            app:icon="@drawable/ic_person"
+            style="@style/MenuButton"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/faq"
-                android:layout_marginBottom="30dp"
-                android:layout_centerHorizontal="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
-                android:layout_below="@id/report_issue"
-                android:text="@string/faq"
-                app:icon="@drawable/ic_person"
-                style="@style/MenuButton" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/faq"
+            android:layout_marginBottom="30dp"
+            android:text="@string/faq"
+            app:icon="@drawable/ic_person"
+            style="@style/MenuButton" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/exit"
-                android:layout_marginBottom="30dp"
-                android:layout_centerHorizontal="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/main_horizontal_margin_with_padding"
-                android:layout_below="@id/faq"
-                android:text="@string/signout"
-                app:icon="@drawable/ic_exit"
-                style="@style/MenuButton"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/exit"
+            android:layout_marginBottom="30dp"
+            android:text="@string/signout"
+            app:icon="@drawable/ic_exit"
+            style="@style/MenuButton"/>
 
-                </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
-
-
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>

@@ -24,7 +24,7 @@ open class Message(
        // @ColumnInfo(name = "text")
         override var text: String = "",
       //  @ColumnInfo(name = "sender_id")
-        override var senderId: String = User().id,
+        override var senderId: String = "",
       //  @ColumnInfo(name = "time")
         override var time: Long = System.currentTimeMillis(),
       //  @ColumnInfo(name = "is_private")

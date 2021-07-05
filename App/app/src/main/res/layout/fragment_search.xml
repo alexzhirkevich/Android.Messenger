@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        android:layout_alignParentTop="true">
+        <androidx.appcompat.widget.SearchView
+            style="@style/Widget.AppCompat.SearchView.ActionBar"
+            android:id="@+id/search"
+            app:queryBackground="@android:color/transparent"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <View
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:rotation="180"
+        android:elevation="5dp"
+        android:background="@drawable/drawable_shadow"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_chat_constraint"
+        android:layout_below="@id/toolbar"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

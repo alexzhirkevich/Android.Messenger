@@ -7,25 +7,35 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.alexz.messenger.app.data.ChatApplication.Companion.AppContext
 import com.alexz.messenger.app.data.entities.imp.Message
 import com.alexz.messenger.app.data.entities.imp.User
-import com.alexz.messenger.app.data.entities.interfaces.IMessageable
-import com.alexz.messenger.app.data.providers.imp.FirebaseStorageProvider
-import com.alexz.messenger.app.data.providers.imp.FirestoreMessagesProvider
+import com.alexz.messenger.app.data.entities.interfaces.IChat
+import com.alexz.messenger.app.data.providers.imp.DaggerMessagesProviderComponent
+import com.alexz.messenger.app.data.providers.imp.DaggerStorageProviderComponent
+import com.alexz.messenger.app.data.providers.imp.DaggerUsersProviderComponent
 import com.alexz.messenger.app.data.providers.interfaces.ChatsProvider
 import com.alexz.messenger.app.data.providers.interfaces.MessagesProvider
 import com.alexz.messenger.app.data.providers.interfaces.StorageProvider
+import com.alexz.messenger.app.data.providers.interfaces.UsersProvider
 import com.alexz.messenger.app.data.providers.test.TestChatsProvider
 import com.alexz.messenger.app.util.FirebaseUtil
 import io.reactivex.schedulers.Schedulers
 
-class ChatsViewModel : DataViewModel<List<IMessageable>>() {
+class ChatsViewModel : DataViewModel<List<IChat>>(), Updatable {
 
-    private val messagesProvider: MessagesProvider by lazy { FirestoreMessagesProvider() }
-    private val storageProvider: StorageProvider by lazy { FirebaseStorageProvider() }
+    private val messagesProvider: MessagesProvider by lazy {
+        DaggerMessagesProviderComponent.create().getMessagesProvider()
+    }
+    private val storageProvider: StorageProvider by lazy {
+        DaggerStorageProviderComponent.create().getStorageProvider()
+    }
+
     private val chatsProvider: ChatsProvider by lazy { TestChatsProvider() }
 
+    private val usersProvider : UsersProvider by lazy {
+        DaggerUsersProviderComponent.create().getUsersProvider()
+    }
 
-    init {
-        observe(chatsProvider.getAll(User())
+    override fun update() {
+        observe(chatsProvider.getAll(User(id =usersProvider.currentUserId),limit = 30)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .sorted())

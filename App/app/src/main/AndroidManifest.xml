@@ -2,86 +2,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.messenger.app">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name="com.alexz.messenger.app.data.ChatApplication"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_logo"
+        android:icon="@mipmap/app_image"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_logo_round"
+        android:roundIcon="@mipmap/app_image"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-<!--        <activity-->
-<!--            android:name="com.alexz.messenger.app.ui.activities.FullscreenVideoActivity"-->
-<!--            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />-->
-<!--        <activity-->
-<!--            android:name="com.alexz.messenger.app.ui.activities.UserListActivity"-->
-<!--            android:theme="@style/Theme.App.NoActionBar" />-->
-<!--        <activity-->
-<!--            android:name="com.alexz.messenger.app.ui.activities.SettingsActivity"-->
-<!--            android:label="@string/menu_settings" />-->
-<!--        <activity-->
-<!--            android:name="com.alexz.messenger.app.ui.activities.FullscreenImageActivity"-->
-<!--            android:label="@string/title_photo"-->
-<!--            android:theme="@style/Theme.Fullscreen"/>-->
-<!--        <activity-->
-<!--            android:name="com.alexz.messenger.app.ui.activities.ChatActivity"-->
-<!--            android:label=""-->
-<!--            android:theme="@style/Theme.App.NoActionBar"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
-<!--        <activity-->
-<!--            android:name="com.alexz.messenger.app.ui.activities.ChannelActivity"-->
-<!--            android:label=""-->
-<!--            android:theme="@style/Theme.App.NoActionBar"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
-<!--        <activity-->
-<!--            android:name="com.alexz.messenger.app.ui.activities.LoginActivity"-->
-<!--            android:noHistory="true"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:theme="@style/Theme.App.NoActionBar">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE"/>-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <data android:scheme="https"-->
-<!--                    android:host="firemessenger.com"-->
-<!--                    android:pathPrefix="/joinchat" />-->
-<!--                <data android:scheme="https"-->
-<!--                    android:host="firemessenger.com"-->
-<!--                    android:pathPrefix="/joinchannel" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-<!--        <activity-->
-<!--            android:name="com.alexz.messenger.app.ui.activities.MainActivity"-->
-<!--            android:label="@string/app_name"-->
-<!--            android:theme="@style/Theme.App.NoActionBar" /> &lt;!&ndash; <service &ndash;&gt;-->
-<!--        &lt;!&ndash; android:name="com.alexz.messenger.app.data.services.NewMessageService" &ndash;&gt;-->
-<!--        &lt;!&ndash; android:enabled="true" &ndash;&gt;-->
-<!--        &lt;!&ndash; android:exported="false" &ndash;&gt;-->
-<!--        &lt;!&ndash; android:stopWithTask="false" /> &ndash;&gt;-->
-<!--        &lt;!&ndash; <service &ndash;&gt;-->
-<!--        &lt;!&ndash; android:name="com.alexz.messenger.app.data.services.NewMessageJobService" &ndash;&gt;-->
-<!--        &lt;!&ndash; android:enabled="true" &ndash;&gt;-->
-<!--        &lt;!&ndash; android:exported="false" &ndash;&gt;-->
-<!--        &lt;!&ndash; android:permission="android.permission.BIND_JOB_SERVICE" &ndash;&gt;-->
-<!--        &lt;!&ndash; android:stopWithTask="false" /> &ndash;&gt;-->
         <activity
             android:name="com.alexz.messenger.app.ui.activities.MainActivity"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
-            android:theme="@style/Theme.App"
-            >
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

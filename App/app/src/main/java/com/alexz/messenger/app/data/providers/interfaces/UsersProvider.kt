@@ -1,23 +1,19 @@
 package com.alexz.messenger.app.data.providers.interfaces
 
 import com.alexz.messenger.app.data.entities.interfaces.IUser
-import com.alexz.messenger.app.data.entities.interfaces.IUserContainer
-import com.alexz.messenger.app.data.providers.base.DependentRangeEntityProvider
 import com.alexz.messenger.app.data.providers.base.SingleEntityProvider
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.Observable
 
 interface UsersProvider
-    : SingleEntityProvider<IUser>,
-        DependentRangeEntityProvider<IUser,IUserContainer> {
+    : SingleEntityProvider<IUser> {
 
-    fun getNotificationToken(userId : String) : Single<String>
+    fun getNotificationToken(userId : String) : Observable<String>
 
-    fun onChannelJoin(channelId : String) : Completable = Completable.complete()
+    fun findByPhone(vararg phones : String) : Observable<List<IUser>>
 
-    fun leaveChannel(userId: String,channelId : String) : Completable = Completable.complete()
+    fun findByUsername(username : String) : Observable<IUser>
 
-    fun joinChat(chatId : String) : Completable = Completable.complete()
+    fun isUsernameAvailable(username: String): Observable<Boolean>
 
-    fun leaveChat(userId: String,chatId : String) : Completable = Completable.complete()
+    val currentUserId : String
 }

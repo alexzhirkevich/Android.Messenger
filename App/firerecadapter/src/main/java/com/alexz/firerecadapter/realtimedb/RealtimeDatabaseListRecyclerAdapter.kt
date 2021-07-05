@@ -4,7 +4,7 @@ import android.util.Log
 import com.alexz.firerecadapter.FirebaseRecyclerAdapter
 import com.alexz.firerecadapter.IEntity
 import com.alexz.firerecadapter.Listenable
-import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.BaseViewHolder
 import com.google.firebase.database.*
 
 /**
@@ -14,7 +14,7 @@ import com.google.firebase.database.*
  * @see IEntity
  * @see IRealtimeDatabaseListRecyclerAdapter
  */
-abstract class RealtimeDatabaseListRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>>(modelClass: Class<Entity>) :
+abstract class RealtimeDatabaseListRecyclerAdapter<Entity : IEntity, VH : BaseViewHolder<Entity>>(modelClass: Class<Entity>) :
         FirebaseRecyclerAdapter<Entity, VH>(modelClass),
         IRealtimeDatabaseListRecyclerAdapter<Entity, VH>, Listenable {
 

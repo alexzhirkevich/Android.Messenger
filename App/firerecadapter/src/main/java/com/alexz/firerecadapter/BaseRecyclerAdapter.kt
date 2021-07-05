@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 import com.alexz.firerecadapter.realtimedb.RealtimeDatabaseListRecyclerAdapter
-import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.BaseViewHolder
 import com.google.firebase.database.DataSnapshot
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -18,63 +18,91 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @see IEntity
  * @see IBaseRecyclerAdapter
  */
-abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>> : RecyclerView.Adapter<VH>(),
+
+
+
+abstract class BaseRecyclerAdapter<Entity : IEntity, VH : BaseViewHolder<Entity>> : RecyclerView.Adapter<VH>(),
         IBaseRecyclerAdapter<Entity, VH> {
 
-    override var itemClickListener: ItemClickListener<Entity>? = null
-    override var adapterCallback: AdapterCallback<Entity>? = null
-    override var loadingCallback: LoadingCallback? = null
+    override var itemClickListener: ItemClickListener<VH> = {}
+    override var itemLongClickListener: ItemLongClickListener<VH> = { true }
+    override var adapterCallback: AdapterCallback<Entity> = object : AdapterCallback<Entity>{}
+    override var loadingCallback: LoadingCallback = object : LoadingCallback {}
+    override var onSelectedStateChangedListener: OnSelectedStateChangedListener = {}
 
-    var isListen  = false
+    var isListen = false
         protected set
     var isLoading = false
         protected set
     var isSearching = false
         private set
 
+    val entities: List<Entity>
+        get() = mEntities
+
+    var inSelectingMode = false
+        set(value) {
+            field = value
+            if (!value) {
+                selectedItems.clear()
+            } else {
+                entities.forEach {
+                    selectedItems[it.id] == false
+                }
+            }
+            notifyDataSetChanged()
+            onSelectedStateChangedListener(value)
+        }
+
+    val selectedEntities : List<Entity>
+    get() {
+        val ids = selectedItems.filterValues { it }.keys
+        return mEntities.filter { it.id in ids }
+    }
+
+
     protected val uiHandler = Handler(Looper.getMainLooper())
 
-    private val _models: MutableList<Entity> = CopyOnWriteArrayList<Entity>()
+    private var mEntities: MutableList<Entity> = CopyOnWriteArrayList<Entity>()
 
-    val models : List<Entity>
-        get() = _models
+    private var visibleItems: List<Entity> = mEntities
 
-    private var selected: List<Entity> = _models
+    private var selectedItems = mutableMapOf<String, Boolean>()
 
     /**
      * Makes view clickable and sets click listener
      * Use [IBaseRecyclerAdapter.onCreateClickableViewHolder] to create ViewHolder
      */
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
-        onCreateClickableViewHolder(parent, viewType).apply {
-            itemView.isClickable = true
-            itemView.isFocusable = true
-            itemView.isLongClickable = true
-            itemView.requestLayout()
-            itemView.setOnClickListener {
-                uiHandler.post {
-                    itemClickListener?.onItemClick(this)
+            onCreateClickableViewHolder(parent, viewType).apply {
+                itemView.isClickable = true
+                itemView.isFocusable = true
+                itemView.isLongClickable = true
+                itemView.setOnClickListener {
+                    uiHandler.post {
+                        itemClickListener.invoke(this)
+                    }
+                }
+                itemView.setOnLongClickListener {
+                    uiHandler.post {
+                        itemLongClickListener.invoke(this)
+                    }
                 }
             }
-            itemView.setOnLongClickListener {
-                uiHandler.post {
-                    itemClickListener?.onLongItemClick(this)
-                }
-            }
-        }
 
     /**
      * [IFirebaseViewHolder.bind] used to bind a ViewHolder
      */
-    final override fun onBindViewHolder(holder: VH, position: Int) = holder.bind(selected[position])
+    final override fun onBindViewHolder(holder: VH, position: Int) = holder.bind(visibleItems[position])
+
 
     /**
      * @return current selected items count
      *
-     * @see IBaseRecyclerAdapter.select
+     * @see IBaseRecyclerAdapter.setVisible
      * @see IBaseRecyclerAdapter.selectAll
      */
-    final override fun getItemCount(): Int = selected.size
+    final override fun getItemCount(): Int = visibleItems.size
 
     /**
      * Clears all elements.
@@ -90,57 +118,72 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
         }
     }
 
-
     override fun set(entities: Collection<Entity>) {
+        mEntities = entities.sorted().toMutableList()
+        visibleItems = mEntities
+        notifyDataSetChanged()
+        return
         val ids = entities.map { it.id }
-
-        _models.forEachIndexed { index, entity ->
+        mEntities.forEachIndexed { index, entity ->
             if (entity.id !in ids) {
-                _models.remove(entity)
+                mEntities.remove(entity)
                 uiHandler.post {
                     notifyItemRemoved(index)
                 }
             }
         }
-
         addAll(entities)
+
     }
 
     /**
-     * @see IBaseRecyclerAdapter.select
+     * @see IBaseRecyclerAdapter.setVisible
      */
-    final override fun select(predicate: (Entity) -> Boolean) : Int {
+    final override fun setVisible(predicate: (Entity) -> Boolean): Int {
         isSearching = true
-        selected = _models.filter { predicate(it) }
+        visibleItems = mEntities.filter { predicate(it) }
         uiHandler.post {
             notifyDataSetChanged()
         }
-        return selected.size
+        return visibleItems.size
     }
 
-    /**
-     * @see IBaseRecyclerAdapter.selectAll
-     */
-    final override fun selectAll() {
+    final override fun setSelected(id: String, selected: Boolean) {
+        if (!inSelectingMode) {
+            inSelectingMode = true
+        }
 
-        if (selected !== _models) {
-            selected = _models
-            uiHandler.post {
-                notifyDataSetChanged()
-            }
-            isSearching = false
+        val idx = mEntities.indexOfFirst { it.id == id }
+        if (idx != -1) {
+            selectedItems[id] = !(selectedItems[id] ?: false)
+            notifyItemChanged(idx)
         }
     }
 
-    protected fun realItemCount(): Int = _models.size
+    override fun isSelected(id: String) : Boolean = selectedItems[id] == true
+
+//    /**
+//     * @see IBaseRecyclerAdapter.selectAll
+//     */
+//    final override fun selectAll() {
+//        if (visibleItems !== mEntities) {
+//            visibleItems = mEntities
+//            uiHandler.post {
+//                notifyDataSetChanged()
+//            }
+//            isSearching = false
+//        }
+//    }
+
+    protected fun realItemCount(): Int = mEntities.size
 
     @CallSuper
-    override fun add(entity: Entity, forceCallback:Boolean, byUser : Boolean): Int = synchronized(_models) {
-        val idx = _models.indexOfFirst { it.id == entity.id }
+    override fun add(entity: Entity, forceCallback:Boolean, byUser : Boolean): Int = synchronized(mEntities) {
+        val idx = mEntities.indexOfFirst { it.id == entity.id }
         return if (idx != -1) {
             try {
-                if (_models[idx] != entity) {
-                    _models[idx] = entity
+                if (mEntities[idx] != entity) {
+                    mEntities[idx] = entity
                     uiHandler.post {
                         if (!isSearching) {
                             notifyItemChanged(idx)
@@ -153,9 +196,9 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
             idx
         } else {
             try {
-                _models.add(entity)
-                _models.sort()
-                val newIdx = _models.indexOf(entity)
+                mEntities.add(entity)
+                mEntities.sort()
+                val newIdx = mEntities.indexOf(entity)
                 uiHandler.post {
                     if (!isSearching) {
                         notifyItemInserted(newIdx)
@@ -165,7 +208,7 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
                     adapterCallback?.onItemAdded(entity)
                 }
             } catch (ignore: Throwable) { }
-            _models.size
+            mEntities.size
         }
     }
 
@@ -203,10 +246,10 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
 //    }
 
     @CallSuper
-    override fun remove(id: String, byUser : Boolean): Boolean = synchronized(_models) {
-        val idx = _models.indexOfFirst { it.id == id }
+    override fun remove(id: String, byUser : Boolean): Boolean = synchronized(mEntities) {
+        val idx = mEntities.indexOfFirst { it.id == id }
         if (idx != -1) {
-            val model = _models.removeAt(idx)
+            val model = mEntities.removeAt(idx)
             uiHandler.post {
                 notifyItemRemoved(idx)
                 adapterCallback?.onItemRemoved(model)
@@ -216,8 +259,8 @@ abstract class BaseRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Ent
     }
 
     @CallSuper
-    protected fun removeAll()  = synchronized(_models) {
-        _models.clear()
+    protected fun removeAll()  = synchronized(mEntities) {
+        mEntities.clear()
     }
 
     companion object {

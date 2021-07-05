@@ -2,19 +2,19 @@ package com.alexz.firestorerecadapter
 
 import com.alexz.firerecadapter.IEntity
 import com.alexz.firerecadapter.firestore.IFirestoreRecyclerAdapter
-import com.alexz.firerecadapter.viewholder.IFirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.IBaseViewHolder
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 
 /**
  * Recycler adapter interface for Firebase Realtime Database objects accessed by key.
  * @param Entity object class implements [IEntity]
- * @param VH ViewHolder implements [IFirebaseViewHolder]
+ * @param VH ViewHolder implements [IBaseViewHolder]
  *
  * @see IEntity
- * @see IFirebaseViewHolder
+ * @see IBaseViewHolder
  */
-interface IFirestoreMapRecyclerAdapter<Entity : IEntity, VH : IFirebaseViewHolder<Entity>>
+interface IFirestoreMapRecyclerAdapter<Entity : IEntity, VH : IBaseViewHolder<Entity>>
     : IFirestoreRecyclerAdapter<Entity,VH>{
     /**
      * @return Firebase [Query] object for Models key set ([IEntity.id] - key)

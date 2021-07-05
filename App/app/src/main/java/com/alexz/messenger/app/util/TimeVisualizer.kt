@@ -11,14 +11,17 @@ private val RUSSIAN = Locale("ru","RU")
 class TimeVisualizer(private var ms : Long) {
 
     companion object {
-        const val hour = 3600
-        const val day = hour * 24
-        const val week = day * 7
-        const val month = 30 * day
-        const val year = day * 365
+        const val hour : Long = 3_600_000
+        const val day : Long = hour * 24
+        const val week : Long = day * 7
+        const val month : Long = 30 * day
+        const val year :Long = day * 365
     }
 
-    val time: String
+    val time: CharSequence
+    get() = SimpleDateFormat("H:mm",Locale.getDefault()).format(ms)
+
+    val timeNearly: CharSequence
         get() = run {
             val diff = abs(System.currentTimeMillis() - ms)
             when {
@@ -44,6 +47,10 @@ class TimeVisualizer(private var ms : Long) {
         val sdf = SimpleDateFormat(pattern, Locale.getDefault())
         return sdf.format(Date(time))
     }
+
+    val dateNoYear: CharSequence
+        get() =  SimpleDateFormat("dd.MM", Locale.getDefault()).format(ms)
+
 }
 
 fun Long.timeVisualizer() = TimeVisualizer(this)

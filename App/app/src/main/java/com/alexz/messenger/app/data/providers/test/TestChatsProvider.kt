@@ -1,7 +1,7 @@
 package com.alexz.messenger.app.data.providers.test
 
-import com.alexz.messenger.app.data.entities.imp.Chat
-import com.alexz.messenger.app.data.entities.interfaces.IMessageable
+import com.alexz.messenger.app.data.entities.imp.Group
+import com.alexz.messenger.app.data.entities.interfaces.IChat
 import com.alexz.messenger.app.data.entities.interfaces.IUser
 import com.alexz.messenger.app.data.providers.interfaces.ChatsProvider
 import io.reactivex.Completable
@@ -11,22 +11,22 @@ import io.reactivex.Observable
 class TestChatsProvider : ChatsProvider {
 
     fun newInstance(id :String) =
-            Chat(id = id,name = "Test",lastMessageId = "test",lastMessageTime = 0)
+            Group(id = id,name = "Test Test",lastMessageId = "test",lastMessageTime = 0)
 
-    override fun getUsers(chatId: String, limit: Int): Observable<List<IUser>> =
-            TestUsersProvider().getAll(Chat(id = chatId))
+    override fun getUsers(chatId: String, limit: Int): Observable<List<IUser>> = Observable.create {
+    }
 
-    override fun join(chatId: String): Maybe<IMessageable> = Maybe.just(
+    override fun join(chatId: String): Maybe<IChat> = Maybe.just(
             newInstance(chatId)
     )
 
-    override fun get(id: String): Observable<IMessageable> = Observable.just(
+    override fun get(id: String): Observable<IChat> = Observable.just(
             newInstance(id)
     )
 
     @ExperimentalStdlibApi
-    override fun getAll(collection: IUser, limit: Int): Observable<List<IMessageable>> {
-        val list = buildList<IMessageable> {
+    override fun getAll(collection: IUser, limit: Int): Observable<List<IChat>> {
+        val list = buildList<IChat> {
             repeat(limit) {
                 add(newInstance("test$it"))
             }
@@ -34,9 +34,9 @@ class TestChatsProvider : ChatsProvider {
         return Observable.just(list)
     }
 
-    override fun create(entity: IMessageable): Completable = Completable.complete()
+    override fun create(entity: IChat): Completable = Completable.complete()
 
-    override fun delete(entity: IMessageable): Completable = Completable.complete()
+    override fun delete(entity: IChat): Completable = Completable.complete()
 
     override fun remove(id: String, collection: IUser): Completable = Completable.complete()
 }

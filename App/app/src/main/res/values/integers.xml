@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="fab_anim_duration">300</integer>
+    <integer name="anim_duration_short">150</integer>
+    <integer name="anim_duration_medium">300</integer>
+    <integer name="anim_duration_long">600</integer>
     <integer name="verification_code_size">6</integer>
+
+    <integer name="profile_name_len_max">30</integer>
+    <integer name="profile_name_len_min">3</integer>
+    <integer name="profile_description_len_max">80</integer>
+    <integer name="profile_username_len_min">5</integer>
+    <integer name="profile_username_len_max">25</integer>
+    <integer name="event_description_max">1000</integer>
+
+
+
+    <integer name="card_flip_duration_full">300</integer>
+    <integer name="card_flip_duration_half">150</integer>
 </resources>

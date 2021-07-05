@@ -5,7 +5,7 @@ import androidx.annotation.CallSuper
 import com.alexz.firerecadapter.FirebaseRecyclerAdapter
 import com.alexz.firerecadapter.IEntity
 import com.alexz.firerecadapter.Listenable
-import com.alexz.firerecadapter.viewholder.FirebaseViewHolder
+import com.alexz.firerecadapter.viewholder.BaseViewHolder
 import com.alexz.firestorerecadapter.IFirestoreMapRecyclerAdapter
 import com.google.firebase.firestore.*
 import java.util.concurrent.ConcurrentHashMap
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @see IEntity
  * @see IFirestoreMapRecyclerAdapter
  */
-abstract class FirestoreMapRecyclerAdapter<Entity : IEntity, VH : FirebaseViewHolder<Entity>>(
+abstract class FirestoreMapRecyclerAdapter<Entity : IEntity, VH : BaseViewHolder<Entity>>(
         clazz: Class<Entity>,
         override val keyCollectionReference: CollectionReference) :
         FirebaseRecyclerAdapter<Entity, VH>(clazz),

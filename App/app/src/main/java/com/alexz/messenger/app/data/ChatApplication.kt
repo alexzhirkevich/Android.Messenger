@@ -2,48 +2,90 @@ package com.alexz.messenger.app.data
 
 import android.app.Application
 import android.content.Context
-import com.alexz.messenger.app.util.FirebaseUtil
-import java.util.*
+import android.util.Log
+import com.alexz.messenger.app.data.providers.imp.DaggerPhoneAuthProviderComponent
+import com.alexz.messenger.app.data.providers.imp.DaggerProfileProviderComponent
+import com.alexz.messenger.app.data.providers.interfaces.AuthProvider
+import com.alexz.messenger.app.data.providers.interfaces.ProfileProvider
+import com.alexz.messenger.app.util.toSingle
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.messaging.FirebaseMessaging
 
 class ChatApplication : Application() {
 
-    var isRunning :Boolean = false
-        set(value) {
-            field = value
-            if (value && !isOnline) {
-                FirebaseUtil.setOnline(true)
-                isOnline = true
-            }}
+    private val authProvider : AuthProvider by lazy {
+        DaggerPhoneAuthProviderComponent.builder().setCallback(null).build().getPhoneAuthProvider()
+    }
+    private val profileProvider : ProfileProvider by lazy {
+        DaggerProfileProviderComponent.create().getProfileProvider()
+    }
 
-    private var isOnline = false
-    private val refreshRate = 500L
-    private val timer = Timer()
+
+    var isListeningForContacts = false
+        private set
 
     override fun onCreate() {
         super.onCreate()
         AppContext = applicationContext
+        setupFirebase()
 
-        isOnline = true
-        FirebaseUtil.setOnline(true)
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                if (!isRunning && isOnline) {
-                    FirebaseUtil.setOnline(false)
-                    isOnline = false
-                }
-            }
-        }, 0, refreshRate)
+//        FirebaseFirestore.getInstance().collection(USERS)
+//                .document(currentUser.value!!.id)
+//                .set(mapOf(ONLINE to true), SetOptions.merge())
+
     }
 
+    private fun setupFirebase(){
+        FirebaseDatabase.getInstance().apply {
+            setPersistenceEnabled(true)
+        }
+
+        FirebaseApp.initializeApp(applicationContext)
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+                SafetyNetAppCheckProviderFactory.getInstance())
+
+        FirebaseFirestore.getInstance().firestoreSettings =
+                FirebaseFirestoreSettings.Builder()
+                        .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+                        .build()
+
+
+        FirebaseAuth.getInstance().addAuthStateListener { it ->
+            if (it.currentUser!=null) {
+                authProvider.setOnline(onlineNow = true, onlineOnExit = false)
+
+                FirebaseMessaging.getInstance().token.toSingle().subscribe(
+                        { token ->
+                            profileProvider.setNotificationToken(token).subscribe({}, {})
+                        },
+                        {
+                            Log.e("TOKEN",it.toString())
+                        }
+                )
+            }
+        }
+    }
+
+
+
     override fun onTerminate() {
-        timer.cancel()
-        FirebaseUtil.setOnline(false)
+
+        authProvider.setOnline(false,false)
         super.onTerminate()
     }
 
 
-    companion object{
+    companion object {
         lateinit var AppContext : Context
-        private set
+            private set
+//
+
     }
 }

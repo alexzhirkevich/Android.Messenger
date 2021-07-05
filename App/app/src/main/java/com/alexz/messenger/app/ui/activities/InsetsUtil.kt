@@ -1,14 +1,13 @@
-package com.alexz.test
+package com.alexz.messenger.app.ui.activities
 
-import android.annotation.TargetApi
 import android.app.Activity
 import android.graphics.Color
 import android.view.View
-import android.view.WindowManager
 import androidx.core.view.ViewCompat
 
-typealias OnSystemInsetsChangedListener = (statusBarSize: Int, navigationBarSize: Int) -> Unit
-
+interface OnSystemInsetsChangedListener{
+    fun onApplyWindowInsets(statusBarSize: Int, navigationBarSize: Int)
+}
 fun removeSystemInsets(view: View, listener: OnSystemInsetsChangedListener) {
     ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
 
@@ -24,6 +23,7 @@ fun removeSystemInsets(view: View, listener: OnSystemInsetsChangedListener) {
                 insets.replaceSystemWindowInsets(0, 0, 0, desiredBottomInset)
         )
     }
+
 }
 
 fun calculateDesiredBottomInset(
@@ -34,16 +34,17 @@ fun calculateDesiredBottomInset(
 ): Int {
     val hasKeyboard = view.isKeyboardAppeared(bottomInset)
     val desiredBottomInset = if (hasKeyboard) bottomInset else 0
-    listener(topInset, if (hasKeyboard) 0 else bottomInset)
+    listener.onApplyWindowInsets(topInset, if (hasKeyboard) 0 else bottomInset)
     return desiredBottomInset
 }
 
 fun View.isKeyboardAppeared(bottomInset: Int) =
         bottomInset / resources.displayMetrics.heightPixels.toDouble() > .25
 
-@TargetApi(21)
-fun Activity.setWindowTransparency(listener: OnSystemInsetsChangedListener = { _, _ -> }) {
+fun Activity.setWindowTransparency(listener: OnSystemInsetsChangedListener) {
     removeSystemInsets(window.decorView, listener)
     window.navigationBarColor = Color.TRANSPARENT
     window.statusBarColor = Color.TRANSPARENT
 }
+
+fun Activity.requestUpdateInsets () =  ViewCompat.requestApplyInsets(window.decorView)

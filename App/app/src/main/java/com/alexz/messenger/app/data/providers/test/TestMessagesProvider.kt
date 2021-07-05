@@ -1,8 +1,8 @@
 package com.alexz.messenger.app.data.providers.test
 
 import com.alexz.messenger.app.data.entities.imp.Message
+import com.alexz.messenger.app.data.entities.interfaces.IChat
 import com.alexz.messenger.app.data.entities.interfaces.IMessage
-import com.alexz.messenger.app.data.entities.interfaces.IMessageable
 import com.alexz.messenger.app.data.providers.interfaces.MessagesProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -21,7 +21,7 @@ class TestMessagesProvider : MessagesProvider {
     override fun get(id: String, collectionID: String): Observable<IMessage> = Observable.just(
             newInstance(id)
     )
-    override fun getAll(collection: IMessageable, limit: Int): Observable<List<IMessage>> =
+    override fun getAll(collection: IChat, limit: Int): Observable<List<IMessage>> =
             Observable.just(
                     listOf(
                             newInstance("test1"),
@@ -34,5 +34,5 @@ class TestMessagesProvider : MessagesProvider {
 
     override fun delete(entity: IMessage): Completable = Completable.complete()
 
-    override fun remove(id: String, collection: IMessageable): Completable = Completable.complete()
+    override fun remove(id: String, collection: IChat): Completable = Completable.complete()
 }

@@ -7,7 +7,7 @@ import com.alexz.firerecadapter.IEntity
 import com.alexz.messenger.app.data.entities.interfaces.IChannelAdmin
 
 class ChannelAdmin(
-        id: String = User().id,
+        id: String = "",
         override var canEdit: Boolean = false,
         override var canPost: Boolean = false,
         override var canDelete: Boolean = false,

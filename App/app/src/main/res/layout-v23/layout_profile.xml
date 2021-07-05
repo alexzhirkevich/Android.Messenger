@@ -1,93 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/transparent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/transparent"
+    tools:background="@color/app_back">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/profile_avatar_top_margin">
 
         <com.alexz.messenger.app.ui.views.AvatarImageView
-            android:id="@+id/avatar"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="40dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/logo"
-            android:layout_alignParentTop="true"/>
+            android:id="@+id/profile_avatar"
+            android:layout_width="@dimen/profile_avatar_size"
+            android:layout_height="@dimen/profile_avatar_size"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:background="@drawable/drawable_ring"
+            android:focusable="true" />
+
+        <ProgressBar
+            android:id="@+id/profile_pb"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progressDrawable="@drawable/progressbar_oval"
+            android:layout_width="185dp"
+            android:layout_height="185dp"
+            android:layout_gravity="center" />
+
+        </FrameLayout>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/profile_avatar_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:cardCornerRadius="15dp"
             android:foreground="?attr/selectableItemBackground"
-            android:layout_marginBottom="-5dp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignBottom="@id/avatar"
+            android:layout_marginTop="-30dp"
+            android:clickable="true"
+            android:focusable="true"
             app:cardBackgroundColor="@color/blue">
                 <ImageView
-                    android:id="@+id/avatar_change"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="@dimen/profile_avatar_change_icon_size"
+                    android:layout_height="@dimen/profile_avatar_change_icon_size"
                     android:layout_margin="5dp"
                     android:backgroundTint="@color/white"
-                    android:src="@drawable/ic_photo"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:src="@drawable/ic_photo" />
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/you"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:fontFamily="@font/gotham_pro_light"
-            android:textColor="@color/gray"
-            android:layout_below="@id/avatar"
-            android:layout_marginTop="30dp"
-            android:text="@string/name"
-            android:layout_centerHorizontal="true" />
+<!--        <com.google.android.material.textview.MaterialTextView-->
+<!--            android:id="@+id/profile_you"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/profile_avatar"-->
+<!--            android:layout_marginTop="@dimen/profile_spacing_outer"-->
+<!--            android:text="@string/name"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            style="@style/ProfileTitleTextView" />-->
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/username"
+            android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User name"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="@dimen/profile_spacing_outer"
             android:fontFamily="@font/gotham_pro_bold"
             android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_below="@id/you"
-            android:layout_centerHorizontal="true"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/about"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:fontFamily="@font/gotham_pro_light"
-            android:textColor="@color/gray"
-            android:text="@string/about_yourself"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/username"
-            android:layout_marginTop="17dp"/>
+            android:maxWidth="@dimen/default_control_width"
+            android:ellipsize="end"
+            android:gravity="center"
+            tools:text="Username"
+            android:textSize="@dimen/font_size_big"
+            android:layout_gravity="center_horizontal"/>
 
         <com.alexz.messenger.app.ui.views.AutoLinkTextView
-            android:id="@+id/about_text"
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="@dimen/main_horizontal_margin"
+            android:id="@+id/profile_username"
+            android:layout_width="@dimen/default_control_width"
             android:layout_height="wrap_content"
-            android:layout_below="@id/about"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="7dp"
-            android:gravity="center"
-            android:linksClickable="true"
-            android:maxLines="4"
-            android:autoLink="all"
-            android:background="@android:color/transparent"
-            android:text="https://vk.com/alexzhirkevich @qweqwe"
-            android:textColor="@color/white"
-            android:fontFamily="@font/gotham_pro_light"
-            android:lineSpacingMultiplier="1.3"
-            android:textSize="13sp"/>
-</RelativeLayout>
+            android:layout_marginTop="@dimen/profile_spacing_inner"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            tools:text="@username"
+            android:textSize="@dimen/font_size_medium"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_profile_edit_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/description"
+            android:layout_marginTop="@dimen/profile_spacing_center"
+            style="@style/ProfileTitleTextView"/>
+
+        <com.alexz.messenger.app.ui.views.AutoLinkTextView
+            android:id="@+id/profile_description_text"
+            android:layout_width="@dimen/default_control_width"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/profile_spacing_inner"
+            tools:text="Profile description qwe zxc ewq das asd asdas asd sadasd asdsad asdasd dsaasd sadas sad asd sad as sad  asddas  sadasd  sad asd asd asd sad asd asd das sda dsadsa asdas sadsad asdsecondlinegogogogogo"
+            style="@style/ProfileDescriptionTextView"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:text="Online"
+            android:textColor="@color/gray"
+            android:layout_marginTop="@dimen/profile_spacing_center"
+            style="@style/ProfileTitleTextView"/>
+</LinearLayout>
