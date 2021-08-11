@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_back">
+
+    <ImageButton
+        android:id="@+id/btn_emoji"
+        android:layout_width="@dimen/message_input_height"
+        android:layout_height="@dimen/message_input_height"
+        android:background="@drawable/transparent_ripple_circle"
+        android:layout_gravity="bottom"
+        android:src="@drawable/ic_emoji"
+        android:padding="10dp"
+        android:scaleType="fitXY"
+        app:tint="@color/gray" />
+
+
+    <com.vanniktech.emoji.EmojiEditText
+        android:id="@+id/edit_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/message"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:inputType="textMultiLine|textCapSentences"
+        android:maxLines="6"
+        android:padding="5dp"
+        style="@style/ScrollView"
+        app:emojiSize="@dimen/font_size_large"
+        android:textSize="@dimen/font_size_big" />
+
+    <ImageButton
+        android:id="@+id/btn_send"
+        android:layout_width="@dimen/message_input_height"
+        android:layout_height="@dimen/message_input_height"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/transparent_ripple_circle"
+        android:backgroundTint="@color/blue"
+        android:src="@drawable/ic_mic"
+        android:scaleType="fitXY"
+        android:padding="10dp"
+        app:tint="@color/gray" />
+
+</LinearLayout>

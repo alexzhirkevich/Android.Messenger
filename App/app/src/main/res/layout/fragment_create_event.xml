@@ -1,0 +1,171 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.community.messenger.app.ui.fragments.EditProfileFragment"
+    android:background="@color/app_back">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        android:layout_alignParentTop="true"
+        app:title="@string/create_event" />
+
+    <View
+        android:layout_below="@id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:rotation="180"
+        android:background="@drawable/drawable_shadow" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_below="@id/toolbar"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:overScrollMode="never"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarSize="1dp"
+        android:scrollbarThumbVertical="@color/gray">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_event_create_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterMaxLength="@integer/event_name_len_max"
+            android:layout_marginBottom="10dp"
+            app:counterEnabled="true"
+            app:counterTextColor="@color/white"
+            app:counterTextAppearance="@style/Theme.App"
+            app:helperTextTextColor="@color/gray"
+            app:helperTextTextAppearance="@style/Theme.App"
+            android:textColorHint="@color/gray"
+            android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:labelFor="@id/edit_username"
+            app:boxBackgroundColor="@color/gray"
+            app:startIconDrawable="@drawable/ic_shout"
+            app:startIconTint="@color/gray">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/event_create_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:layout_marginTop="@dimen/profile_spacing_inner"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLines="1"
+                    android:hint="@string/name_profile"
+                    tools:text="Event name"
+                    android:maxLength="@integer/event_name_len_max"
+                    android:textSize="@dimen/font_size_big" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/_shadow_1"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:rotation="180"
+            android:elevation="5dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/drawable_shadow" />
+
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignTop="@id/_shadow_1"-->
+<!--            android:layout_alignBottom="@id/_shadow_2"-->
+<!--            android:background="@color/gray" />-->
+
+
+
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignTop="@id/_shadow_3"-->
+<!--            android:layout_alignBottom="@id/_shadow_4"-->
+<!--            android:background="@color/gray" />-->
+
+        <View
+            android:id="@+id/_shadow_4"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:elevation="5dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/drawable_shadow" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_event_create_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:counterMaxLength="@integer/event_description_len_max"
+            app:counterEnabled="true"
+            app:counterTextColor="@color/white"
+            app:counterTextAppearance="@style/Theme.App"
+            app:helperTextTextColor="@color/gray"
+            app:helperTextTextAppearance="@style/Theme.App"
+            android:textColorHint="@color/gray"
+            android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:boxBackgroundColor="@color/gray"
+            app:startIconTint="@color/gray"
+            app:startIconDrawable="@drawable/ic_description">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/event_create_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_big"
+                android:hint="@string/description_optional"
+                android:maxLength="@integer/event_description_len_max"
+                android:background="@android:color/transparent"
+                android:inputType="textCapSentences|textMultiLine"
+                style="@style/DescriptionTextView"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:rotation="180"
+            android:elevation="5dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginBottom="@dimen/default_bottom_margin"
+            android:background="@drawable/drawable_shadow" />
+
+        <TextClock
+            android:id="@+id/event_create_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format24Hour="dd.MM hh:mm"
+            />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_event_create"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        android:src="@drawable/ic_done"
+        android:backgroundTint="@color/green"/>
+
+
+
+
+
+</RelativeLayout>

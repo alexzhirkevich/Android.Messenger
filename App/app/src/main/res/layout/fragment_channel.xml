@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/app_back">
+
+    <include
+        layout="@layout/item_toolbar_chat"
+        android:id="@+id/toolbar" />
+
+    <View
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:rotation="180"
+        android:elevation="1dp"
+        android:background="@drawable/drawable_shadow"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/message_input">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/ScrollView"
+            tools:listitem="@layout/item_post"
+            />
+    </FrameLayout>
+
+
+    <View
+        android:id="@+id/message_shadow"
+        android:layout_above="@id/message_input"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@drawable/drawable_shadow"
+        android:visibility="gone"/>
+
+    <com.community.messenger.app.ui.views.MessageInput
+        android:id="@+id/message_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"/>
+</RelativeLayout>

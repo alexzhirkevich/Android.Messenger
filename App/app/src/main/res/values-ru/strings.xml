@@ -117,8 +117,8 @@
     <string name="profile">Профиль</string>
     <string name="report_issue">Сообщить об ошибке</string>
     <string name="settings">Настройки</string>
-    <string name="description">О себе</string>
-    <string name="name">Имя</string>
+    <string name="description_profile">О себе</string>
+    <string name="name_profile">Имя</string>
     <string name="edit">Редактировать</string>
     <string name="messages">Сообщения</string>
     <string name="channels">Каналы</string>
@@ -128,11 +128,6 @@
     <string name="phone">Номер телефона...</string>
     <string name="you">Вы</string>
 
-    <string name="short_year">г</string>
-    <string name="short_month">м</string>
-    <string name="short_week">н</string>
-    <string name="short_day">д</string>
-    <string name="short_hour">ч</string>
 
     <string name="code">Код…</string>
     <string name="verify">Подтвердить</string>
@@ -171,4 +166,13 @@
     <string name="error_name_text">Может содержать только буквы и пробелы</string>
     <string name="error_username_taken">Имя занято</string>
     <string name="eror_min_len">Минимальная длина - %d</string>
+    <string name="cancelled">Отменено</string>
+    <string name="finished">Завершено</string>
+    <string name="favourite">Избранное</string>
+    <string name="my_events">Личные</string>
+    <string name="public_events">Публичные</string>
+    <string name="description">Описание</string>
+    <string name="create_event">Создать событие</string>
+    <string name="create_channel_description_hint">Вы можете указать дополнительное описание Вашего канала</string>
+    <string name="name">Название</string>
 </resources>

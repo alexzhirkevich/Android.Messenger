@@ -14,7 +14,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/profile_avatar_top_margin">
 
-        <com.alexz.messenger.app.ui.views.AvatarImageView
+        <com.community.features.avatarimageview.AvatarImageView
             android:id="@+id/profile_avatar"
             android:layout_width="@dimen/profile_avatar_size"
             android:layout_height="@dimen/profile_avatar_size"
@@ -76,7 +76,7 @@
             android:textSize="@dimen/font_size_big"
             android:layout_gravity="center_horizontal"/>
 
-        <com.alexz.messenger.app.ui.views.AutoLinkTextView
+        <TextView
             android:id="@+id/profile_username"
             android:layout_width="@dimen/default_control_width"
             android:layout_height="wrap_content"
@@ -84,6 +84,7 @@
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
             tools:text="@username"
+            android:textColor="@color/blue"
             android:textSize="@dimen/font_size_medium"/>
 
         <com.google.android.material.textview.MaterialTextView
@@ -92,19 +93,19 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
-            android:text="@string/description"
+            android:text="@string/description_profile"
             android:layout_marginTop="@dimen/profile_spacing_center"
             style="@style/ProfileTitleTextView"/>
 
-        <com.alexz.messenger.app.ui.views.AutoLinkTextView
+        <com.community.messenger.app.ui.views.AutoLinkTextView
             android:id="@+id/profile_description_text"
             android:layout_width="@dimen/default_control_width"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
+            tools:text="@tools:sample/lorem/random"
             android:layout_marginTop="@dimen/profile_spacing_inner"
-            tools:text="Profile description qwe zxc ewq das asd asdas asd sadasd asdsad asdasd dsaasd sadas sad asd sad as sad  asddas  sadasd  sad asd asd asd sad asd asd das sda dsadsa asdas sadsad asdsecondlinegogogogogo"
-            style="@style/ProfileDescriptionTextView"/>
+            style="@style/DescriptionTextView"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/profile_online"
@@ -112,7 +113,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
-            android:text="Online"
+            tools:text="Online"
             android:textColor="@color/gray"
             android:layout_marginTop="@dimen/profile_spacing_center"
             style="@style/ProfileTitleTextView"/>

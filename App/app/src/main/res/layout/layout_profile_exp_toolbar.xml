@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.community.messenger.app.ui.views.CollapsibleToolbar
+    android:layout_width="match_parent"
+    android:layout_height="210dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minHeight="@dimen/toolbar_height"
+    app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:layoutDescription="@xml/ms_toolbar"
+    style="@style/Toolbar"
+    >
+
+        <com.community.features.avatarimageview.AvatarImageView
+            android:id="@+id/profile_avatar"
+            android:layout_width="@dimen/profile_avatar_size"
+            android:layout_height="@dimen/profile_avatar_size"
+            android:background="@drawable/drawable_ring"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/logo"
+         />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/gotham_pro_bold"
+            android:maxWidth="@dimen/default_control_width"
+            android:text="Username"
+            android:textAllCaps="true"
+            android:textSize="@dimen/font_size_big"
+            />
+
+
+</com.community.messenger.app.ui.views.CollapsibleToolbar>

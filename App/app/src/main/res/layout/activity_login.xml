@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:theme="@style/ThemeOverlay.AppCompat"
     android:background="@drawable/background_login"
-    tools:context="com.alexz.messenger.app.ui.activities.LoginActivity">
+    tools:context="com.community.messenger.app.ui.activities.LoginActivity">
 
 
     <androidx.cardview.widget.CardView

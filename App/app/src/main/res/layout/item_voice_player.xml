@@ -1,49 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_width="270dp"
-    android:layout_height="60dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_voice"
+    android:background="@android:color/transparent"
     android:id="@+id/voice_layout"
     android:gravity="center_vertical">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardview_voice_player"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        app:cardCornerRadius="59dp"
-        android:layout_marginStart="5dp">
 
     <ImageButton
-        android:id="@+id/btn_voice_play"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/btn_play"
+        android:layout_width="@dimen/avatar_size_small"
+        android:layout_height="@dimen/avatar_size_small"
         android:src="@drawable/ic_play"
-        android:background="@drawable/background_voice_message_btn"
-        android:tint="@color/black" />
+        android:background="@drawable/drawable_circle_ripple"
+        android:backgroundTint="@color/blue"
+        app:tint="@color/black" />
 
-    </androidx.cardview.widget.CardView>
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"/>
 
-    <rm.com.audiowave.AudioWaveView
-        android:id="@+id/view_voice_visualizer"
-        android:layout_marginHorizontal="5dp"
-        android:layout_width="155dp"
-        android:layout_height="match_parent"
-        app:animateExpansion="false"
-        app:chunkHeight="16dp"
-        app:chunkRadius="1dp"
-        app:touchable="true"
-        app:chunkSpacing="1dp"
-        app:chunkWidth="3dp"
-        app:minChunkHeight="2dp"
-        app:waveColor="@color/white"/>
 
     <TextView
-        android:textSize="13sp"
-        android:id="@+id/text_voice_timer"
+        android:textSize="@dimen/font_size_small"
+        android:id="@+id/text_time"
         android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:textColor="@color/gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
         android:text="0:00"/>
 </LinearLayout>

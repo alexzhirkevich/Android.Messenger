@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true">
         <androidx.appcompat.widget.SearchView
             style="@style/Widget.AppCompat.SearchView.ActionBar"
-            android:id="@+id/search"
+            android:id="@+id/search_view"
             app:queryBackground="@android:color/transparent"
             android:background="@android:color/transparent"
             android:layout_width="match_parent"

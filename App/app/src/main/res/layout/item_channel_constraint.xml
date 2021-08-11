@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?selectableItemBackground"
-    android:background="@android:color/transparent"
-    tools:context="com.alexz.messenger.app.data.entities.imp.Group">
+    tools:context="com.community.messenger.common.entities.imp.Group">
 
     <CheckBox
         android:id="@+id/channel_selector"
@@ -19,16 +18,16 @@
         android:checked="true"
         android:clickable="false"
         android:focusable="false"
-        android:layout_marginStart="@dimen/tab_chats_channels_hor_margin"
+        android:layout_marginStart="@dimen/tab_viewpager_horizontal_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <com.alexz.messenger.app.ui.views.AvatarImageView
+    <com.community.features.avatarimageview.AvatarImageView
         android:id="@+id/channel_avatar"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
-        android:layout_marginStart="@dimen/tab_chats_channels_hor_margin"
+        android:layout_marginStart="@dimen/tab_viewpager_horizontal_margin"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         android:src="@drawable/logo"
@@ -62,7 +61,7 @@
             app:layout_constraintEnd_toStartOf="@id/channel_last_post_date"/>
 
 
-    <TextView
+    <com.vanniktech.emoji.EmojiTextView
         android:id="@+id/channel_last_post_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,6 +74,7 @@
         android:lineSpacingMultiplier="1.1"
         android:textColor="@color/gray"
         android:textSize="@dimen/font_size_medium"
+        app:emojiSize="@dimen/font_size_medium"
         app:layout_constraintBottom_toBottomOf="@id/channel_avatar"
         app:layout_constraintEnd_toStartOf="@id/channel_last_post_date"
         app:layout_constraintHorizontal_bias="0.0"
@@ -93,7 +93,7 @@
             android:fontFamily="@font/gotham_pro"
             android:textColor="@color/gray"
             android:textSize="@dimen/font_size_small"
-            android:layout_marginEnd="@dimen/tab_chats_channels_hor_margin"
+            android:layout_marginEnd="@dimen/tab_viewpager_horizontal_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/channel_name" />
 

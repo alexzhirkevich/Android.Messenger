@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.alexz.messenger.app.ui.activities.UserListActivity">
+    tools:context="com.community.messenger.app.ui.activities.UserListActivity">
 
-    <include layout="@layout/toolbar_chat" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"

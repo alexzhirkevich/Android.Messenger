@@ -3,21 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_bottom"
-    app:startDestination="@id/fragment_profile">
+    app:startDestination="@id/fragment_chats_channels">
 
     <fragment
         android:id="@+id/fragment_calls"
-        android:name="com.alexz.messenger.app.ui.fragments.CallsFragment"
+        android:name="com.community.messenger.app.ui.fragments.CallsFragment"
         tools:layout="@layout/fragment_calls"/>
 
     <fragment
+        android:id="@+id/fragment_events"
+        android:name="com.community.messenger.app.ui.fragments.EventsPagerFragment"
+        tools:layout="@layout/fragment_events"/>
+
+    <fragment
         android:id="@+id/fragment_chats_channels"
-        android:name="com.alexz.messenger.app.ui.fragments.ChatsAndChannelsRootFragment"
+        android:name="com.community.messenger.app.ui.fragments.ChatsAndChannelsRootFragment"
         tools:layout="@layout/fragment_root_chats_channels"/>
 
     <fragment
         android:id="@+id/fragment_profile"
-        android:name="com.alexz.messenger.app.ui.fragments.SelfProfileFragment"
+        android:name="com.community.messenger.app.ui.fragments.SelfProfileFragment"
         tools:layout="@layout/fragment_profile"/>
 
 </navigation>

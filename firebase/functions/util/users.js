@@ -1,9 +1,9 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
-const {PHONE} = require("../constants");
+const {PHONE, ID} = require("../constants");
 const {deleteChannel} = require("./channels");
 const {deleteChat} = require("./chats");
-const {USERS,CHATS,CHANNELS} = require("../constants");
+const {USERS,CHATS,CHANNELS,BOT,CREATION_TIME,USERNAME,USERNAME_SEARCH} = require("../constants");
 
 exports.notifyUsers=async function(ids,payload) {
     if (ids && payload) {
@@ -49,6 +49,10 @@ exports.addUserToDatabase=async function(user){
     return null
 }
 
+exports.getUser = async function(id){
+    return admin.firestore().collection(USERS).doc(id).get()
+}
+
 exports.deleteUser=async function(user) {
     if (user) {
         try {
@@ -82,6 +86,18 @@ exports.deleteUser=async function(user) {
         } catch (e) {
             return functions.logger.error(e)
         }
+    }
+    return null
+}
+
+exports.updateUser = async function(before,after){
+    if (before && after){
+        after[ID] = before[ID]
+        after[PHONE] = before[PHONE]
+        after[BOT] = before[BOT]
+        after[CREATION_TIME] = before[CREATION_TIME]
+        after[USERNAME_SEARCH] = after[USERNAME].toString().toLowerCase() 
+        return await admin.firestore().collection(USERS).doc(before[ID]).set(after,{merge = true})
     }
     return null
 }

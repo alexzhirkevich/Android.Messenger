@@ -12,7 +12,7 @@
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
 <!--        android:orientation="vertical"-->
-<!--        tools:context="com.alexz.messenger.app.ui.fragments.ChannelPostsFragment">-->
+<!--        tools:context="com.community.messenger.app.ui.fragments.ChannelPostsFragment">-->
 
 <!--            <include layout="@layout/item_post_mutable" android:id="@+id/_post_mutable"/>-->
 

@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.alexz.messenger.app.ui.fragments.EditProfileFragment"
+    tools:context="com.community.messenger.app.ui.fragments.EditProfileFragment"
     android:background="@color/app_back">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         style="@style/Toolbar"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        app:title="@string/profile"/>
 
     <View
         android:layout_below="@id/toolbar"
@@ -35,7 +36,7 @@
         android:layout_marginTop="20dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_profile_edit_name"
+            android:id="@+id/layout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:counterMaxLength="@integer/profile_name_len_max"
@@ -48,21 +49,21 @@
             app:helperTextTextColor="@color/gray"
             app:helperTextTextAppearance="@style/Theme.App"
             android:textColorHint="@color/gray"
-            android:layout_marginHorizontal="@dimen/tab_chats_channels_hor_margin"
+            android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:labelFor="@id/et_profile_edit_username"
+            android:labelFor="@id/edit_username"
             app:boxBackgroundColor="@color/gray"
             app:startIconDrawable="@drawable/ic_person"
             app:startIconTint="@color/gray">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_profile_edit_name"
+                    android:id="@+id/edit_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:layout_marginTop="@dimen/profile_spacing_inner"
                     android:inputType="textPersonName|textCapWords"
                     android:maxLines="1"
-                    android:hint="@string/name"
+                    android:hint="@string/name_profile"
                     tools:text="Firstname Lastname"
                     android:maxLength="@integer/profile_name_len_max"
                     android:textSize="@dimen/font_size_big" />
@@ -74,7 +75,7 @@
             android:layout_height="10dp"
             android:rotation="180"
             android:elevation="5dp"
-            android:layout_below="@id/layout_profile_edit_name"
+            android:layout_below="@id/layout_name"
             android:layout_marginVertical="10dp"
             android:background="@drawable/drawable_shadow" />
 
@@ -96,7 +97,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
 
-                android:id="@+id/layout_profile_edit_username"
+                android:id="@+id/layout_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/_shadow_2"
@@ -110,14 +111,14 @@
                 app:helperTextTextColor="@color/gray"
                 app:helperTextTextAppearance="@style/Theme.App"
                 android:textColorHint="@color/gray"
-                android:layout_marginHorizontal="@dimen/tab_chats_channels_hor_margin"
+                android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 app:errorTextColor="@color/red"
                 app:errorEnabled="true"
                 app:startIconDrawable="@drawable/ic_at"
                 app:startIconTint="@color/gray">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_profile_edit_username"
+                    android:id="@+id/edit_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/profile_spacing_inner"
@@ -136,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="10dp"
             android:rotation="180"
-            android:layout_below="@id/layout_profile_edit_username"
+            android:layout_below="@id/layout_username"
             android:elevation="5dp"
             android:layout_marginVertical="10dp"
             android:background="@drawable/drawable_shadow" />
@@ -158,7 +159,7 @@
             android:background="@drawable/drawable_shadow" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_profile_edit_description"
+            android:id="@+id/layout_description"
             android:layout_width="match_parent"
             android:layout_below="@id/_shadow_4"
             android:layout_height="wrap_content"
@@ -172,13 +173,13 @@
             app:helperTextEnabled="true"
             app:helperText="@string/description_hint"
             android:textColorHint="@color/gray"
-            android:layout_marginHorizontal="@dimen/tab_chats_channels_hor_margin"
+            android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             app:boxBackgroundColor="@color/gray"
             app:startIconTint="@color/gray"
             app:startIconDrawable="@drawable/ic_description">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_profile_edit_description"
+                android:id="@+id/edit_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_size_big"
@@ -186,11 +187,11 @@
                 android:maxLength="@integer/profile_description_len_max"
                 android:background="@android:color/transparent"
                 android:inputType="textCapSentences|textMultiLine"
-                style="@style/ProfileDescriptionTextView"/>
+                style="@style/DescriptionTextView"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <View
-            android:layout_below="@id/layout_profile_edit_description"
+            android:layout_below="@id/layout_description"
             android:layout_width="wrap_content"
             android:layout_height="10dp"
             android:rotation="180"
@@ -204,7 +205,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_profile_edit_save"
+        android:id="@+id/fab"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_alignParentBottom="true"
@@ -216,7 +217,7 @@
         app:borderWidth="0dp"
         app:fabSize="normal"
         android:src="@drawable/ic_done"
-        android:backgroundTint="@color/green"/>
+        android:backgroundTint="@color/blue"/>
 
 
 

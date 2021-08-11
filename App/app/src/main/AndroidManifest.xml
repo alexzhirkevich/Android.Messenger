@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.messenger.app">
+    package="com.community.messenger.app">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -10,9 +10,13 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+
 
     <application
-        android:name="com.alexz.messenger.app.data.ChatApplication"
+        android:name="com.community.messenger.app.data.ChatApplication"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/app_image"
         android:label="@string/app_name"
@@ -21,8 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
         <activity
-            android:name="com.alexz.messenger.app.ui.activities.MainActivity"
-            android:screenOrientation="portrait"
+            android:name="com.community.messenger.app.ui.activities.MainActivity"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="uiMode"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.App">
@@ -32,7 +36,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name="com.alexz.messenger.app.data.services.CloudMessagingService"
+            android:name="com.community.messenger.app.data.services.CloudMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

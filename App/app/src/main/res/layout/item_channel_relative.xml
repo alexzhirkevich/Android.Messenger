@@ -7,13 +7,13 @@
     android:layout_height="wrap_content"
     android:foreground="?selectableItemBackground"
     android:background="@android:color/transparent"
-    tools:context="com.alexz.messenger.app.data.entities.imp.Group">
+    tools:context="com.community.messenger.common.entities.imp.Group">
 
-    <com.alexz.messenger.app.ui.views.AvatarImageView
+    <com.community.features.avatarimageview.AvatarImageView
         android:id="@+id/channel_avatar"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
-        android:layout_marginStart="@dimen/tab_chats_channels_hor_margin"
+        android:layout_marginStart="@dimen/tab_viewpager_horizontal_margin"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         android:src="@drawable/logo"
@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginEnd="@dimen/tab_chats_channels_hor_margin"
+        android:layout_marginEnd="@dimen/tab_viewpager_horizontal_margin"
         android:layout_alignParentEnd="true"
         android:paddingStart="15dp"
         android:layout_centerVertical="true">

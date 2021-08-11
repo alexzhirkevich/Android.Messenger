@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "215159501136-5pe4lput5sbgtmodrq2s75p4a6vqm81n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexz.messenger",
+            "certificate_hash": "874801ff9be16e8bbbbc720ceaa8b48008d32a4c"
+          }
+        },
+        {
+          "client_id": "215159501136-hb8bl5djm2tmfmgojh0od03qrhah46gl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexz.messenger",
+            "certificate_hash": "f9d71bc24106e8638f4cee3c6cd77326820a647d"
+          }
+        },
+        {
+          "client_id": "215159501136-jo92tb3qdrjmps71bo5qahhmga8mn1td.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexz.messenger",
+            "certificate_hash": "d8bad054bd581447fe9c1862b102ac845a91db25"
+          }
+        },
+        {
           "client_id": "215159501136-pbd6g3vi2crvcbdnt737tr5omdcj7hir.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -37,12 +61,36 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:215159501136:android:f8eb96176dab6fb0757c55",
+        "mobilesdk_app_id": "1:215159501136:android:96bdbacb546d3cd0757c55",
         "android_client_info": {
-          "package_name": "com.messenger.app"
+          "package_name": "com.community.messenger"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "215159501136-0av1srh1evmonf7073dik7m1nuau1omh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.community.messenger",
+            "certificate_hash": "d8bad054bd581447fe9c1862b102ac845a91db25"
+          }
+        },
+        {
+          "client_id": "215159501136-fdisa70fnc746sn6n79nh8c9p4os0p05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.community.messenger",
+            "certificate_hash": "f9d71bc24106e8638f4cee3c6cd77326820a647d"
+          }
+        },
+        {
+          "client_id": "215159501136-kc4matce2d4ki0ri3brpr52712kkafjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.community.messenger",
+            "certificate_hash": "874801ff9be16e8bbbbc720ceaa8b48008d32a4c"
+          }
+        },
         {
           "client_id": "215159501136-pbd6g3vi2crvcbdnt737tr5omdcj7hir.apps.googleusercontent.com",
           "client_type": 3

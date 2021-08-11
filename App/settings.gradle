@@ -1,3 +1,6 @@
-include ':firerecadapter'
+include ':recadapter'
 include ':app'
 rootProject.name = "App"
+include ':core'
+include ':common'
+include ':avatarimageview'

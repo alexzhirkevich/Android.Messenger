@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="10dp"
     android:layout_marginTop="@dimen/chat_message_space">
 
-    <com.alexz.messenger.app.ui.views.AvatarImageView
+    <com.community.features.avatarimageview.AvatarImageView
         android:id="@+id/message_avatar"
         android:padding="1dp"
         android:layout_width="40dp"
@@ -42,7 +42,7 @@
             android:textColor="@color/color_primary"
             android:textSize="@dimen/message_sender_size" />
 
-        <com.alexz.messenger.app.ui.views.VoiceView
+        <com.community.messenger.app.ui.views.VoiceView
             android:id="@+id/message_voice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,14 +73,14 @@
             android:layout_alignParentStart="true"
             android:layout_marginHorizontal="1dp"
             android:layout_marginVertical="1dp">
-            <com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout
-                android:id="@+id/message_media_content"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:background="@android:color/transparent">
-<!--                android:layout_marginHorizontal="1dp"-->
-<!--                android:layout_marginVertical="1dp">-->
-            </com.alexz.messenger.app.ui.common.contentgridlayout.ContentGridLayout>
+<!--            <com.community.messenger.app.ui.common.contentgridlayout.ContentGridLayout-->
+<!--                android:id="@+id/message_media_content"-->
+<!--                android:layout_width="300dp"-->
+<!--                android:layout_height="300dp"-->
+<!--                android:background="@android:color/transparent">-->
+<!--&lt;!&ndash;                android:layout_marginHorizontal="1dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_marginVertical="1dp">&ndash;&gt;-->
+<!--            </com.community.messenger.app.ui.common.contentgridlayout.ContentGridLayout>-->
         </androidx.cardview.widget.CardView>
 
     </RelativeLayout>

@@ -6,9 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
-    android:scrollbars="vertical"
-    android:scrollbarSize="1dp"
-    android:scrollbarThumbVertical="@color/gray">
+    style="@style/ScrollView">
 
 
     <LinearLayout
@@ -17,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.alexz.messenger.app.ui.views.ProfileView
-            android:id="@+id/layout_profile"
+        <com.community.messenger.app.ui.views.ProfileView
+            android:id="@+id/profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -73,7 +71,7 @@
             style="@style/MenuButton" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/exit"
+            android:id="@+id/btn_exit"
             android:layout_marginBottom="30dp"
             android:text="@string/signout"
             app:icon="@drawable/ic_exit"

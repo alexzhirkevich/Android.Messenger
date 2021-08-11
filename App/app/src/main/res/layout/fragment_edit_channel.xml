@@ -1,0 +1,245 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.community.messenger.app.ui.fragments.EditProfileFragment"
+    android:background="@color/app_back">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        android:layout_alignParentTop="true"
+        app:title="@string/channel" />
+
+    <View
+        android:id="@+id/_shadow_0"
+        android:layout_below="@id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:rotation="180"
+        android:background="@drawable/drawable_shadow" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_below="@id/toolbar"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:overScrollMode="never"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarSize="1dp"
+        android:scrollbarThumbVertical="@color/gray">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/_shadow_0">
+
+        <com.community.features.avatarimageview.AvatarImageView
+            android:id="@+id/btn_avatar"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:src="@drawable/ic_add_photo"
+            android:scaleType="center"
+            android:background="@drawable/drawable_circle_ripple"
+            android:backgroundTint="@color/blue"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/tab_viewpager_horizontal_margin"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toEndOf="@id/btn_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_avatar"
+            app:layout_constraintBottom_toBottomOf="@id/btn_avatar"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constrainedWidth="true"
+            app:counterMaxLength="@integer/channel_name_len_max"
+            app:counterEnabled="true"
+            app:counterTextColor="@color/white"
+            app:counterTextAppearance="@style/Theme.App"
+            app:helperTextTextColor="@color/gray"
+            app:helperTextTextAppearance="@style/Theme.App"
+            android:textColorHint="@color/gray"
+            android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:boxStrokeColor="@color/blue">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_big"
+                android:hint="@string/name"
+                android:maxLength="@integer/channel_name_len_max"
+                android:background="@android:color/transparent"
+                android:inputType="textCapSentences"
+                style="@style/DescriptionTextView"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/_shadow_1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/layout_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/drawable_shadow"
+            android:layout_marginVertical="20dp"
+            android:rotation="180"/>
+
+        <View
+            android:id="@+id/_shadow_2"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:elevation="5dp"
+            app:layout_constraintTop_toBottomOf="@id/_shadow_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/drawable_shadow" />
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/layout_tag"
+            app:layout_constraintTop_toBottomOf="@id/_shadow_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/_shadow_2"
+            app:counterMaxLength="@integer/profile_username_len_max"
+            app:counterEnabled="true"
+            android:layout_marginBottom="10dp"
+            app:counterTextColor="@color/white"
+            app:counterTextAppearance="@style/Theme.App"
+            app:helperTextEnabled="true"
+            app:helperText="@string/tag_hint"
+            app:helperTextTextColor="@color/gray"
+            app:helperTextTextAppearance="@style/Theme.App"
+            android:textColorHint="@color/gray"
+            android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:errorTextColor="@color/red"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_at"
+            app:startIconTint="@color/blue"
+            app:boxStrokeColor="@color/blue">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_spacing_inner"
+                android:maxLength="@integer/profile_username_len_max"
+                android:hint="@string/tag_optional"
+                app:helperTextEnabled="true"
+                android:background="@android:color/transparent"
+                android:textSize="@dimen/font_size_big"
+                android:inputType="text"
+                tools:text="Tag" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <View
+            android:id="@+id/_shadow_3"
+            app:layout_constraintTop_toBottomOf="@id/layout_tag"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:rotation="180"
+            android:elevation="5dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/drawable_shadow" />
+
+        <View
+            android:id="@+id/_shadow_4"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/_shadow_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/drawable_shadow"
+            android:layout_marginVertical="20dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/_shadow_4"
+            app:layout_constrainedWidth="true"
+            app:counterMaxLength="@integer/channel_description_len_max"
+            app:counterEnabled="true"
+            app:counterTextColor="@color/white"
+            app:counterTextAppearance="@style/Theme.App"
+            app:helperTextTextColor="@color/gray"
+            app:helperTextTextAppearance="@style/Theme.App"
+            android:textColorHint="@color/gray"
+            app:helperTextEnabled="true"
+            app:helperText="@string/create_channel_description_hint"
+            android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:startIconDrawable="@drawable/ic_description"
+            app:startIconTint="@color/blue"
+            app:boxStrokeColor="@color/blue">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_big"
+                android:hint="@string/description"
+                android:maxLength="@integer/channel_description_len_max"
+                android:background="@android:color/transparent"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="6"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/_shadow_5"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toBottomOf="@id/layout_description"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/drawable_shadow"
+            android:rotation="180"
+            android:layout_marginVertical="10dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        android:src="@drawable/ic_done"
+        android:backgroundTint="@color/blue"/>
+
+
+
+
+
+</RelativeLayout>

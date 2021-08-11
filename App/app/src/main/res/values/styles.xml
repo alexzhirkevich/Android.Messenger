@@ -37,7 +37,7 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="ProfileDescriptionTextView" parent="Widget.MaterialComponents.TextView">
+    <style name="DescriptionTextView" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/font_size_small</item>
         <item name="android:maxLines">4</item>
         <item name="android:lineSpacingMultiplier">1.3</item>
@@ -68,6 +68,14 @@
     <style name="Widget.Design.BottomNavigationView.TextAppearance.Active">
         <item name="android:textSize">@dimen/font_size_medium</item>
         <item name="android:fontFamily">@font/gotham_pro_light</item>
+    </style>
+
+    <style name="ScrollView">
+        <item name="android:scrollbarSize">@dimen/scrollbar_width</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarStyle">insideOverlay</item>
+        <item name="android:scrollbarThumbVertical">@color/gray</item>
+        <item name="android:overScrollMode">ifContentScrolls</item>
     </style>
 
 </resources>

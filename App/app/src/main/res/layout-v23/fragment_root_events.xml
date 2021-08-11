@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        android:layout_alignParentTop="true">
+
+        <ImageButton
+            android:id="@+id/search_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search"
+            android:padding="5dp"
+            android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
+            android:background="@drawable/transparent_ripple_circle"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_selected_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:textSize="@dimen/font_size_big"
+            android:fontFamily="@font/gotham_pro_bold"
+            tools:text="4"/>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/layout_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_chats_channels_height"
+        android:layout_below="@id/toolbar"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/tab_viewpager_horizontal_margin"
+        app:tabTextColor="@color/white"
+        app:tabIconTint="@color/white"
+        app:tabSelectedTextColor="@color/shadow"
+        app:tabTextAppearance="@style/ChatsChannelsTab"
+        app:tabIndicator="@drawable/tab_chats_channels"
+        app:tabIndicatorColor="@color/white"
+        app:tabUnboundedRipple="true"
+        app:tabMode="fixed"
+        android:background="@drawable/tab_chats_channels_background"
+        app:tabBackground="@drawable/tab_chats_channels_background" />
+
+    <View
+        android:id="@+id/shadow_events"
+        android:layout_below="@id/layout_tab"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:rotation="180"
+        android:elevation="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/drawable_shadow"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@id/shadow_events"/>
+
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_plus"
+        android:tint="@color/white"
+        app:borderWidth="0dp"
+        app:backgroundTint="@color/blue"
+        app:fabSize="normal"
+        app:maxImageSize="50dp"
+        tools:layout_editor_absoluteX="187dp"
+        tools:layout_editor_absoluteY="120dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/tab_viewpager_horizontal_margin"/>
+
+</RelativeLayout>

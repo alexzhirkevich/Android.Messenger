@@ -8,13 +8,14 @@
     android:clipChildren="false"
     android:background="@color/app_back">
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
         android:id="@+id/fragment_host_bottom_navigation"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
         android:layout_above="@id/bottom_navigation"
+        app:navGraph="@navigation/navigation_bottom"
         android:layout_alignParentTop="true" />
 
     <View
@@ -31,7 +32,7 @@
         app:itemIconTint="@color/color_bottom_navigation"
         app:itemTextColor="@color/color_bottom_navigation"
         app:backgroundTint="@color/app_back"
-        app:menu="@menu/menu_bottom_navigation"
+        app:menu="@menu/navigation_bottom"
         app:elevation="0dp"
         app:itemIconSize="24dp"
         app:itemTextAppearanceActive="@style/Widget.Design.BottomNavigationView.TextAppearance.Active"

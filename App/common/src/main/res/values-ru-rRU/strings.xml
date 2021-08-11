@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="short_year">г</string>
+    <string name="short_month">м</string>
+    <string name="short_week">н</string>
+    <string name="short_day">д</string>
+    <string name="short_hour">ч</string>
+</resources>

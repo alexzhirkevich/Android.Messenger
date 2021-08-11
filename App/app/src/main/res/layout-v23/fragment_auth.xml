@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollview_login"
+    android:id="@+id/scroll_view"
     android:background="@color/app_back"
     android:overScrollMode="never">
 
@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:gravity="center"
-            android:id="@+id/_info_layout"
+            android:id="@+id/layout_info"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,14 +30,14 @@
             android:layout_marginVertical="60dp">
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/register_view_pager"
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"/>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/register_tab_layout"
+            android:id="@+id/tab_layout"
             android:layout_width="80dp"
             android:layout_height="20dp"
             android:layout_marginBottom="10dp"
@@ -53,15 +53,15 @@
 
 
         <RelativeLayout
-            android:id="@+id/_layout_phone"
+            android:id="@+id/layout_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/_info_layout"
+            android:layout_below="@id/layout_info"
             android:layout_alignStart="@id/btn_send_code"
             android:layout_alignEnd="@id/btn_send_code">
 
             <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp"
+                android:id="@+id/country_code_picker"
                 android:paddingStart="5dp"
                 android:paddingVertical="3dp"
                 android:layout_width="wrap_content"
@@ -82,9 +82,9 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_centerHorizontal="true"
-                android:layout_toEndOf="@id/ccp"
-                android:layout_alignTop="@id/ccp"
-                android:layout_alignBottom="@id/ccp"
+                android:layout_toEndOf="@id/country_code_picker"
+                android:layout_alignTop="@id/country_code_picker"
+                android:layout_alignBottom="@id/country_code_picker"
                 android:background="@drawable/background_phone"
                 android:hint="@string/phone"
                 android:paddingHorizontal="1dp"
@@ -112,7 +112,7 @@
             android:paddingHorizontal="10dp"
             android:maxLength="@integer/verification_code_size"
             android:importantForAutofill="no"
-            android:layout_alignTop="@id/_layout_phone"
+            android:layout_alignTop="@id/layout_phone"
             android:inputType="number"
             android:visibility="visible"
             android:translationX="@dimen/auth_edits_translation"
@@ -121,12 +121,12 @@
             android:textSize="@dimen/main_text_size" />
 
         <ProgressBar
-            android:id="@+id/pb_login"
+            android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/btn_send_code"
             android:layout_alignEnd="@id/btn_send_code"
-            android:layout_alignTop="@id/_layout_phone"
+            android:layout_alignTop="@id/layout_phone"
             android:translationX="4dp"
             android:indeterminateTint="@color/white"
             android:visibility="invisible"/>
@@ -135,7 +135,7 @@
             android:id="@+id/btn_send_code"
             android:transitionName="@string/transition_btn_signin"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/_layout_phone"
+            android:layout_below="@id/layout_phone"
             android:layout_centerHorizontal="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/background_login_btn"
@@ -148,7 +148,7 @@
             android:text="@string/send_code"/>
 
         <LinearLayout
-            android:id="@+id/_layout_resend"
+            android:id="@+id/layout_resend"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
                 android:textSize="@dimen/font_size_small"
                 android:text="@string/didnt_get_code"/>
             <TextView
-                android:id="@+id/tv_resend_btn"
+                android:id="@+id/tv_resend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"

@@ -17,7 +17,7 @@
         android:layout_below="@id/toolbar"
         android:layout_above="@id/messge_input_layout"/>
 
-    <com.alexz.messenger.app.ui.views.MessageInput
+    <com.community.messenger.app.ui.views.MessageInput
         android:id="@+id/messge_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

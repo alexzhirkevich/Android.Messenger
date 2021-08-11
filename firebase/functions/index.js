@@ -2,15 +2,18 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const express = require("express");
 
-const {MESSAGES,POSTS,CHANNELS,USERS,CHATS,ONLINE,ID} = require("./constants");
+const {MESSAGES,POSTS,CHANNELS,USERS,CHATS,ONLINE,ID, CREATOR_ID} = require("./constants");
 const {joinChannel,leaveChannel,createChannel,deleteChannel} = require("./util/channels");
 const {createPost,replaceDeletedPost} = require("./util/posts");
-const {updateLastMessage,replaceDeletedMessage} = require("./util/messages");
+const {updateLastMessage,replaceDeletedMessage,checkForBotMessage} = require("./util/messages");
 const {addUserToDatabase,deleteUser} = require("./util/users");
 const {deleteChat,leaveChat,joinChat} = require("./util/chats");
 
 admin.initializeApp()
 
+function createServiceAccount(){
+
+}
 
 // exports._joinChannel = functions.https.onRequest(async (req,res)=> {
 //
@@ -57,18 +60,18 @@ exports.onUserOnlineChanged = functions.database.ref('/users/{id}/online')
 
 exports.onChatCreated = functions.firestore
     .document(`${CHATS}/{chatId}`)
-    .onCreate(((snapshot) => {
-        const data = snapshot.data()
-        if (data){
-            return joinChat(data.creatorId,data.id)
+    .onCreate((snapshot,context) => {
+            const data = snapshot.data()
+            return joinChat(data[CREATOR_ID],data[ID])
         }
-    }))
+    )
 
 exports.onChatJoined = functions.firestore
     .document(`${USERS}/{userId}/${CHATS}/{chatId}`)
     .onCreate((snapshot,context) => {
         let { userId, chatId } = context.params
         return joinChat(userId,chatId)
+    
     })
 
 exports.onChatLeaved = functions.firestore
@@ -80,12 +83,9 @@ exports.onChatLeaved = functions.firestore
 
 exports.onChatDeleted = functions.firestore
     .document(`${CHATS}/{chatId}`)
-    .onDelete(((snapshot) => {
-        const data = snapshot.data()
-        if (data){
-            return deleteChat(data.id)
-        }
-    }))
+    .onDelete((snapshot,context) => {
+        return deleteChat(snapshot.data()[ID])
+    })
 
 //***********************CHATS***********************
 
@@ -100,27 +100,23 @@ exports.onChannelJoined = functions.firestore
 
 exports.onChannelLeaved = functions.firestore
     .document(`${USERS}/{userId}/${CHANNELS}/{channelId}`)
-    .onCreate((snapshot,context) => {
+    .onDelete((snapshot,context) => {
         let { userId, channelId } = context.params
         return leaveChannel(userId,channelId)
     })
 
 exports.onChannelCreated = functions.firestore
     .document(`${CHANNELS}/{channelId}`)
-    .onCreate(((snapshot) => {
-        const data = snapshot.data()
-        if (data){
-            return createChannel(data.creatorId,data.id)
+    .onCreate((snapshot,context) =>  {
+        return createChannel(snapshot.data()) 
         }
-    }))
+    )
+
 exports.onChannelDeleted = functions.firestore
     .document(`${CHANNELS}/{channelId}`)
-    .onDelete(((snapshot) => {
-        const data = snapshot.data()
-        if (data) {
-            return deleteChannel(data.creatorId,data.id)
-        }
-    }))
+    .onDelete((snapshot,context) =>  {
+        return deleteChannel(context.params.channelId) 
+    })
 
 //**********************CHANNELS**********************
 
@@ -170,7 +166,13 @@ exports.onMessageChanged = functions.firestore
 
 exports.onMessageCreated = functions.firestore
     .document(`${CHATS}/{chatId}/${MESSAGES}/{msgId}`)
-    .onCreate((snapshot) => updateLastMessage(snapshot.data(),true,true))
+    .onCreate((snapshot) => Promise.all(
+            [
+                updateLastMessage(snapshot.data(), true, true),
+                checkForBotMessage(snapshot.data())
+            ]
+        )
+    )
 
 exports.onMessageDeleted = functions.firestore
     .document(`${CHATS}/{chatId}/${MESSAGES}/{msgId}`)
@@ -185,5 +187,10 @@ exports.onUserRegistered = functions.auth.user()
 
 exports.onUserDeleted = functions.auth.user()
     .onDelete((user) => deleteUser(user))
+
+exports.onUserUpdated = functions.firestore
+    .document(`${USERS}/{userId}`)
+    .onUpdate((shapshot,context)=>
+    updateUser(shapshot.before.data(),snapshot.after.data()))
 
 //***********************USERS***********************

@@ -17,15 +17,15 @@
         android:elevation="5dp"
         android:background="@drawable/drawable_shadow" />
 
-    <com.alexz.messenger.app.ui.views.ProfileView
-        android:id="@+id/layout_profile"
+    <com.community.messenger.app.ui.views.ProfileView
+        android:id="@+id/profile"
         android:layout_below="@id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"/>
 
     <View
-        android:layout_below="@id/layout_profile"
+        android:layout_below="@id/profile"
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="10dp"

@@ -1,0 +1,49 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/profile_username"
+        android:layout_width="@dimen/default_control_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/profile_spacing_inner"
+        android:gravity="center_horizontal"
+        android:text="@username"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/font_size_medium" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_profile_edit_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/description_profile"
+        android:layout_marginTop="@dimen/profile_spacing_center"
+        style="@style/ProfileTitleTextView"/>
+
+    <com.community.messenger.app.ui.views.AutoLinkTextView
+        android:id="@+id/profile_description_text"
+        android:layout_width="@dimen/default_control_width"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        tools:text="@tools:sample/lorem/random"
+        android:layout_marginTop="@dimen/profile_spacing_inner"
+        style="@style/DescriptionTextView"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/profile_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        tools:text="Online"
+        android:textColor="@color/gray"
+        android:layout_marginTop="@dimen/profile_spacing_center"
+        style="@style/ProfileTitleTextView"/>
+</LinearLayout>

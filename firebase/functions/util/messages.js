@@ -1,7 +1,8 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
-const {notifyUsers} = require("./users");
-const {CHATS,MESSAGES,USERS,TIME,CREATOR_ID,CHAT_ID,ID} = require("../constants");
+const {notifyUsers,getUser} = require("./users");
+const {redirectToBot} = require("./bots");
+const {CHATS,MESSAGES,USERS,TIME,CREATOR_ID,CHAT_ID,ID,BOT,USER1,USER2,SENDER_ID} = require("../constants");
 
 exports.updateLastMessage=async function(msgData, chatId, auth,isNew = false){
     if (msgData && chatId){
@@ -77,5 +78,32 @@ exports.replaceDeletedMessage=async function (msgData,chatId,auth){
         }
     }
     return null
+}
+
+exports.checkForBotMessage = async function(msgData){
+    if (msgData && msgData[id] && msgData[CHAT_ID]){
+
+        const chat = await admin.firestore().collection(CHATS).doc(msgData[CHAT_ID]).get()
+
+        if (chat[USER1] && chat[USER2]) {
+
+            const user1 = await getUser(chat[USER1])
+            const user2 = await getUser(chat[USER2])
+
+            const promises = []
+
+            if (user1[BOT] && user1[BOT] === true && user1[ID] && user2[ID] &&
+                msgData[ID] && msgData[SENDER_ID]===user2[ID]) {
+                promises.push(redirectToBot(msgData[ID],user1[ID]))
+            }
+
+            if (user2[BOT] && user2[BOT] === true && user1[ID] && user2[ID] &&
+                msgData[ID] && msgData[SENDER_ID]===user1[ID]) {
+                promises.push(redirectToBot(msgData[ID],user2[ID]))
+            }
+
+            return promises.length === 0 ? null : promises
+        }
+    } else return null
 }
 
